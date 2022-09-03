@@ -1,38 +1,491 @@
-.App {
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --primary: rgba(254, 44, 85, 1);
+}
+
+body {
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.btn {
+  min-width: 100px;
+  padding: 9px 12px;
+  font-size: 16px;
+  border: 1px solid rgba(22, 24, 35, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  background-color: transparent;
+  user-select: none;
+}
+.btn:hover {
+  background-color: rgba(22, 24, 35, 0.03);
+}
+
+.btn.primary {
+  border-color: transparent;
+  background-color: var(--primary);
+  font-weight: 700;
+  color: #fff;
+}
+.btn.primary:hover {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)),
+    #fe2c55;
+}
+
+.btn.border {
+  border-color: var(--primary);
+  font-weight: 700;
+  color: var(--primary);
+}
+.btn.border:hover {
+  background-color: rgba(254, 44, 85, 0.06);
+}
+
+.btn.rounded {
+  min-width: 20px;
+  border-radius: 999px;
+  border-color: transparent;
+}
+
+.btn.max {
+  width: 100%;
+}
+/* ----------------- Login ----------------- */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  /* height: 400px; */
+  width: 360px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+  border-radius: 12px;
+  padding: 24px;
+  background-color: #fff;
+}
+
+.login_title {
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.login_controls {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.login_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.login_btn + .login_btn {
+  margin-top: 12px;
+}
+
+.login_btn-icon {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 24px;
+}
+
+/* ----------------- Side bar ----------------- */
+.side-bar {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(22, 24, 35, 0.12);
+}
+
+/* User info */
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 16px;
+  border-bottom: 1px solid rgba(22, 24, 35, 0.12);
+  user-select: none;
+}
+
+.user-info_container {
+  display: flex;
+  align-items: center;
+}
+
+.user-info_img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-info_wrap {
+  margin-left: 8px;
+}
+
+.user-info_name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-info_invite-code {
+  font-size: 10px;
+  user-select: text;
+  color: var(--primary);
+}
+
+/* .user-info_signout-btn {
+} */
+
+/* Room list */
+.room-list-wrap {
+  margin-top: 12px;
+  padding-top: 12px;
+  padding-bottom: 24px;
+  user-select: none;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.room {
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+  margin: 0 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.room:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.room_img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.room_name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* Add room */
+.add-room {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ----------------- Chat window ----------------- */
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.chat-window_header {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+  user-select: none;
+}
+
+.chat-window_header-info {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.chat-window_header-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-window_header-name {
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.chat-window_header-users {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.header-user_icon {
+  color: var(--primary);
+  font-size: 20px;
+  padding: 8px;
+  margin: 0 4px;
+  cursor: pointer;
+}
+.header-user_icon:hover {
+  color: rgba(220, 37, 74, 0.9);
+}
+
+/* Tippy */
+.tippy-box-wrapper {
+  min-width: 200px;
+  min-height: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+.participants_img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #fff;
+  margin-left: -8px;
+  padding: 1px;
+  border: 2px solid var(--primary);
+}
+
+.participants_name {
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+/* Message list */
+.message-list {
+  flex: 1;
+  padding-top: 36px;
+  margin-bottom: 16px;
+  padding-bottom: 24px;
+  overflow-y: scroll;
+}
+
+.message-wrap {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 12px;
+  margin-top: 16px;
+}
+
+.message-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-time {
+  min-width: 100px;
+  min-height: 24px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 200;
+}
+
+.message-content {
+  margin-left: 12px;
+}
+
+.message-user-name {
+  font-size: 12px;
+  font-weight: 400;
+  color: #aaa;
+  margin-left: 16px;
+  margin-bottom: 4px;
+}
+
+.message-text {
+  background-color: #e4e6eb;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Message form */
+.message-form {
+  display: flex;
+  padding: 0 24px;
+  margin-bottom: 32px;
+}
+
+.message-form_input {
+  background-color: #f3f3f5;
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  font-size: 16px;
+  padding: 8px 12px;
+  caret-color: var(--primary);
+  flex: 1;
+}
+
+.message-form_btn {
+  margin-left: 8px;
+}
+
+
+/* Empty room */
+.empty-room {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-room_wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.empty-room_title {
+  color: rgba(185, 186, 189, 0.6);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
 }
 
-@keyframes App-logo-spin {
+.empty-room_img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.4;
+}
+
+/* ----------------- Modal ----------------- */
+.modal {
+  display: none;
+  flex-direction: column;
+  min-width: 250px;
+  min-height: 200px;
+  position: fixed;
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  border-radius: 12px;
+  padding: 24px;
+  z-index: 99;
+}
+
+.modal.modal--show {
+  display: flex;
+  animation: showModal 0.4s ease forwards;
+}
+@keyframes showModal {
   from {
-    transform: rotate(0deg);
+    bottom: -100px;
+    left: 50%;
+    opacity: 0;
   }
   to {
-    transform: rotate(360deg);
+    bottom: 50%;
+    left: 50%;
+    opacity: 1;
+    /* transform: translate(-50%, -50%); */
   }
+}
+
+.modal.modal--hide {
+  display: none;
+}
+
+.modal_title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.modal_children {
+  flex: 1;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.modal_controls {
+}
+
+.modal_ok {
+}
+
+.modal_cancel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 24px;
+  color: var(--primary);
+}
+.modal_cancel:hover {
+  color: rgba(220, 37, 74, 0.9);
+}
+
+
+/* Add Room Modal */
+.add-room-modal {
+  min-width: 300px;
+}
+
+.input-wrap + .input-wrap {
+  margin-top: 16px;
+}
+
+.input-label {
+  display: inline-block;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.input-box {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background-color: #f3f3f5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  caret-color: var(--primary);
 }
