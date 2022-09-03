@@ -155,7 +155,7 @@ function ChatWindow() {
               ref={inputRef}
               value={inputValue}
               onChange={handleInputChange}
-              onPressEnter={handleOnSubmit}
+              // onPressEnter={handleOnSubmit}
             />
             <button
               onClick={handleOnSubmit}
