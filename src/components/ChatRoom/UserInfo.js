@@ -20,7 +20,7 @@ function UserInfo() {
         <img
           className="user-info_img"
           src={photoURL || userPlacehoderImg}
-          alt="User photo"
+          alt=""
         />
         <div className="user-info_wrap">
           <h4 className="user-info_name">{displayName}</h4>
