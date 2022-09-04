@@ -103,7 +103,6 @@ function ChatWindow() {
 
   const messages = useFirestore("messages", messagesCondition);
 
-  console.log("message:", messages);
   // Phát âm báo mỗi lần có tin nhắn mới
   useEffect(() => {
     const audio = new Audio(messageSound);
