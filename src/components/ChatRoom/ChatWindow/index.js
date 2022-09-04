@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 
-import { useContext, useState, useMemo, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 
@@ -137,7 +137,7 @@ function ChatWindow() {
     }
 
     setAdmins(roomAdmin.admins);
-  }, [visibleAdmin, selectedRoomId]);
+  }, [visibleAdmin]);
 
   // Xử lý xóa phòng hiện tại
   // và toàn bộ tin nhắn của phòng
