@@ -1,0 +1,55 @@
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 12px;
+  margin-top: 16px;
+}
+
+.user-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.time {
+  min-width: 100px;
+  min-height: 24px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 200;
+}
+
+.content {
+  margin-left: 12px;
+  max-width: 40%;
+}
+
+.user-name {
+  font-size: 12px;
+  font-weight: 400;
+  color: #aaa;
+  margin-left: 16px;
+  margin-bottom: 4px;
+}
+
+.text {
+  background-color: #e4e6eb;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 16px;
+  color: #333;
+  transform-origin: 0 50%;
+  animation: popup 0.2s ease forwards;
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

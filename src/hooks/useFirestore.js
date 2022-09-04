@@ -49,8 +49,6 @@ function useFirestore(collectionName, condition) {
           };
         });
 
-        console.log("useFirestore - Real time data: ", documents);
-
         setDocuments(documents);
       },
       (error) => {

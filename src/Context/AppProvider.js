@@ -12,6 +12,9 @@ function AppProvider({ children }) {
   // Set trạng thái hiển thị cho modal Add Room
   const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
 
+  // Set trạng thái hiển thị cho modal Join Room
+  const [isJoinRoomVisible, setIsJoinRoomVisible] = useState(false);
+
   // Set trạng thái hiển thị cho modal Invite Members
   const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
 
@@ -81,6 +84,8 @@ function AppProvider({ children }) {
         members,
         isAddRoomVisible,
         setIsAddRoomVisible,
+        isJoinRoomVisible,
+        setIsJoinRoomVisible,
         selectedRoomId,
         setSelectedRoomId,
         selectedRoom,

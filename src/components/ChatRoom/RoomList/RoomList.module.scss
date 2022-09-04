@@ -1,0 +1,43 @@
+/* Room list */
+.wrapper {
+  margin-top: 12px;
+  padding-top: 12px;
+  padding-bottom: 24px;
+  user-select: none;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.room {
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+  margin: 0 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.room:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.room_img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.room_name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* Add room */
+.add-room {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

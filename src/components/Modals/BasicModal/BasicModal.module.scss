@@ -1,0 +1,59 @@
+.wrapper {
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+  border-radius: 8px;
+  position: relative;
+  animation: fadeDown 0.2s ease forwards;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    bottom: -60px;
+  }
+  to {
+    opacity: 1;
+    bottom: 0;
+  }
+}
+
+.cancel-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 4px;
+  color: var(--primary);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 0;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: none;
+  &.isVisible {
+    display: block;
+    animation: showModal 0.2s ease forwards;
+  }
+}
+
+@keyframes showModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

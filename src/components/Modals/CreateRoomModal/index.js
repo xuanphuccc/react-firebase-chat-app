@@ -1,11 +1,16 @@
+import classNames from "classnames/bind";
+import styles from "./CreateRoomModal.module.scss";
+
 import { useState, useContext } from "react";
 
-import Modal from "./Modal";
-import { AppContext } from "../../Context/AppProvider";
-import { addDocument } from "../../firebase/service";
-import { AuthContext } from "../../Context/AuthProvider";
+import Modal from "../Modal";
+import { AppContext } from "../../../Context/AppProvider";
+import { addDocument } from "../../../firebase/service";
+import { AuthContext } from "../../../Context/AuthProvider";
 
-function AddRoomModal() {
+const cx = classNames.bind(styles);
+
+function CreateRoomModal() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [photoURL, setPhotoURL] = useState("");
@@ -43,18 +48,18 @@ function AddRoomModal() {
 
   return (
     <Modal
-      title="Thêm phòng"
+      title="Tạo phòng"
       visible={isAddRoomVisible}
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <div className="add-room-modal">
-        <div className="input-wrap">
-          <label className="input-label" htmlFor="">
+      <div className={cx("add-room-modal")}>
+        <div className={cx("input-wrap")}>
+          <label className={cx("input-label")} htmlFor="">
             Tên phòng *
           </label>
           <input
-            className="input-box"
+            className={cx("input-box")}
             type="text"
             placeholder="Nhập tên phòng"
             onChange={(e) => {
@@ -63,12 +68,12 @@ function AddRoomModal() {
             value={name}
           />
         </div>
-        <div className="input-wrap">
-          <label className="input-label" htmlFor="">
+        <div className={cx("input-wrap")}>
+          <label className={cx("input-label")} htmlFor="">
             Mô tả *
           </label>
           <input
-            className="input-box"
+            className={cx("input-box")}
             type="text"
             placeholder="Nhập mô tả"
             onChange={(e) => {
@@ -77,12 +82,12 @@ function AddRoomModal() {
             value={description}
           />
         </div>
-        <div className="input-wrap">
-          <label className="input-label" htmlFor="">
+        <div className={cx("input-wrap")}>
+          <label className={cx("input-label")} htmlFor="">
             Ảnh đại diện
           </label>
           <input
-            className="input-box"
+            className={cx("input-box")}
             type="text"
             placeholder="URL hình ảnh"
             onChange={(e) => {
@@ -96,4 +101,4 @@ function AddRoomModal() {
   );
 }
 
-export default AddRoomModal;
+export default CreateRoomModal;

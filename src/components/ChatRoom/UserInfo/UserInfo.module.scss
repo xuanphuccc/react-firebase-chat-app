@@ -1,0 +1,101 @@
+/* User info */
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 16px;
+  border-bottom: 1px solid rgba(22, 24, 35, 0.12);
+  user-select: none;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.name-wrap {
+  margin-left: 8px;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-controls {
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
+}
+
+.invite-wrap {
+  background-color: #e4e6eb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  user-select: text;
+}
+
+.invite-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.invite-code {
+  font-size: 12px;
+  color: var(--primary);
+  margin-top: 4px;
+}
+
+.btn-wrap {
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+.signout-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Be Vietnam Pro", sans-serif;
+  cursor: pointer;
+  margin-top: 6px;
+  padding: 6px 0 12px;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.signout-btn-content {
+  margin-right: 4px;
+}
+
+/* New room*/
+.new-room-wrap {
+}
+.new-room-icon {
+  font-size: 20px;
+  color: var(--primary);
+  padding: 8px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.add-room {
+  padding: 12px;
+}
+
+.add-room-btn {
+  & + .add-room-btn {
+    margin-left: 12px;
+  }
+}

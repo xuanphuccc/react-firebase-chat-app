@@ -1,0 +1,172 @@
+/* ----------------- Chat window ----------------- */
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.chat-window_header {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+  user-select: none;
+}
+
+.chat-window_header-info {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.chat-window_header-name-wrap {
+  margin-left: 8px;
+}
+
+.chat-window_header-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-window_header-name {
+  font-size: 14px;
+}
+
+.chat-window_header-users {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.header-user_icon {
+  color: var(--primary);
+  font-size: 20px;
+  padding: 6px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+  &.icon-small {
+    padding: 6px;
+  }
+}
+.header-user_icon:hover {
+  color: rgba(220, 37, 74, 0.9);
+}
+
+/*-------------- Room Menu --------------*/
+.wrapper {
+  padding: 0 12px;
+  min-width: 260px;
+}
+
+/*Room code*/
+.room-code-wrap {
+  background-color: #e4e6eb;
+  border-radius: 8px;
+  padding: 12px;
+  user-select: text;
+}
+
+.room-code-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.room-code {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary);
+  margin-top: 4px;
+}
+
+/* Participants */
+.participants-wrapper {
+  min-width: 200px;
+  max-width: 300px;
+  max-height: 104px;
+  overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #fff;
+  padding: 8px 16px;
+  margin: 12px 0;
+}
+
+.participants_img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #fff;
+  margin: 4px 2px 0;
+  padding: 1px;
+  border: 2px solid var(--primary);
+}
+
+.participants_name {
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+/* Leave Room */
+.leave-room {
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+.leave-room-btn {
+  padding: 6px 0 12px;
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.leave-room-icon {
+  margin-left: 4px;
+}
+
+/*-------------- Message --------------*/
+/* Message list */
+.message-list {
+  flex: 1;
+  padding-top: 36px;
+  margin-bottom: 16px;
+  padding-bottom: 24px;
+  overflow-y: scroll;
+}
+
+/* Message form */
+.message-form {
+  display: flex;
+  padding: 0 24px;
+  margin-bottom: 32px;
+}
+
+.message-form_input {
+  background-color: #f3f3f5;
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  font-size: 16px;
+  padding: 8px 12px;
+  caret-color: var(--primary);
+  flex: 1;
+}
+
+.message-form_btn {
+  margin-left: 8px;
+}
