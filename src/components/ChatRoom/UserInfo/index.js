@@ -6,10 +6,8 @@ import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
-  faCircleXmark,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import Tippy from "@tippyjs/react";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../../../firebase/config";
