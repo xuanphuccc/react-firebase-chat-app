@@ -137,7 +137,7 @@ function ChatWindow() {
     }
 
     setAdmins(roomAdmin.admins);
-  }, [visibleAdmin]);
+  }, [selectedRoom, visibleAdmin]);
 
   // Xử lý xóa phòng hiện tại
   // và toàn bộ tin nhắn của phòng
