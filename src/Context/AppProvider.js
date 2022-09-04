@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./AuthProvider";
 import useFirestore from "../hooks/useFirestore";
 
@@ -77,11 +77,25 @@ function AppProvider({ children }) {
 
   const members = useFirestore("users", usersCondition);
 
+  // Lấy message của phòng được selected
+  const messagesCondition = useMemo(() => {
+    // Kiểm tra xem tin nhắn có roomId
+    // trùng với selectedRoomId không
+    return {
+      fielName: "roomId",
+      operator: "==",
+      compareValue: selectedRoomId,
+    };
+  }, [selectedRoomId]);
+
+  const messages = useFirestore("messages", messagesCondition);
+
   return (
     <AppContext.Provider
       value={{
         rooms,
         members,
+        messages,
         isAddRoomVisible,
         setIsAddRoomVisible,
         isJoinRoomVisible,

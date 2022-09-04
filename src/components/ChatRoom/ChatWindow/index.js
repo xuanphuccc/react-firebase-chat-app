@@ -7,6 +7,8 @@ import {
   faPaperPlane,
   faPersonWalkingArrowRight,
   faEllipsisVertical,
+  faTrash,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 
@@ -14,9 +16,15 @@ import { useContext, useState, useMemo, useRef, useEffect } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 
-import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { addDocument } from "../../../firebase/service";
-import useFirestore from "../../../hooks/useFirestore";
+import { db } from "../../../firebase/config";
 
 import EmptyRoom from "../EmptyRoom";
 import Message from "../Message";
@@ -25,16 +33,22 @@ import BasicModal from "../../Modals/BasicModal";
 
 import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
-import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
 function ChatWindow() {
-  const { selectedRoom, selectedRoomId, members, setIsInviteMemberVisible } =
-    useContext(AppContext);
+  const {
+    selectedRoom,
+    selectedRoomId,
+    members,
+    setIsInviteMemberVisible,
+    messages,
+  } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
+  const [admins, setAdmins] = useState([]);
+  const [visibleAdmin, setVisibleAdmin] = useState(false);
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
 
@@ -90,19 +104,6 @@ function ChatWindow() {
     }
   };
 
-  // Lấy message của phòng được selected
-  const messagesCondition = useMemo(() => {
-    // Kiểm tra xem tin nhắn có roomId
-    // trùng với selectedRoomId không
-    return {
-      fielName: "roomId",
-      operator: "==",
-      compareValue: selectedRoomId,
-    };
-  }, [selectedRoomId]);
-
-  const messages = useFirestore("messages", messagesCondition);
-
   // Phát âm báo mỗi lần có tin nhắn mới
   useEffect(() => {
     const audio = new Audio(messageSound);
@@ -123,6 +124,61 @@ function ChatWindow() {
     // Đóng modal sau khi rời phòng
     setIsRoomMenuVisible(false);
     console.log("Leave Room!");
+  };
+
+  // ------ HANDLE ADMINS CONTROLS ------
+  // Check selectedRoom có tồn tại hay không
+  useEffect(() => {
+    let roomAdmin = selectedRoom;
+    if (!roomAdmin) {
+      roomAdmin = {
+        admins: [],
+      };
+    }
+
+    setAdmins(roomAdmin.admins);
+  }, [visibleAdmin, selectedRoomId]);
+
+  // Xử lý xóa phòng hiện tại
+  // và toàn bộ tin nhắn của phòng
+  const handleDeleteRoom = () => {
+    if (admins.includes(uid)) {
+      // Xóa toàn bộ tin nhắn của phòng bị xóa
+      messages.forEach((message) => {
+        deleteDoc(doc(db, "messages", message.id));
+      });
+
+      // Xóa phòng hiện tại
+      deleteDoc(doc(db, "rooms", selectedRoomId));
+    }
+  };
+
+  // Xử lý thêm admin
+  const handleAddAdmin = (userId) => {
+    if (admins.includes(uid)) {
+      const roomRef = doc(db, "rooms", selectedRoomId);
+
+      updateDoc(roomRef, {
+        admins: arrayUnion(userId),
+      });
+
+      // Có tác dụng cập nhật hiển thị lên admin
+      setVisibleAdmin(!visibleAdmin);
+    }
+  };
+
+  // Xử lý Xóa admin
+  const handleRemoveAdmin = (userId) => {
+    if (admins.includes(uid)) {
+      const roomRef = doc(db, "rooms", selectedRoomId);
+
+      updateDoc(roomRef, {
+        admins: arrayRemove(userId),
+      });
+
+      // Có tác dụng cập nhật hiển thị lên admin
+      setVisibleAdmin(!visibleAdmin);
+    }
   };
 
   return (
@@ -162,38 +218,90 @@ function ChatWindow() {
                       <h4 className={cx("room-code-title")}>Mã phòng</h4>
                       <p className={cx("room-code")}>{selectedRoomId}</p>
                     </div>
+                    <p className={cx("q-and-a")}>
+                      <span className={cx("q-and-a-title")}>Admin</span>
+                      <FontAwesomeIcon icon={faCrown} />
+                    </p>
+
                     <div className={cx("participants-wrapper")}>
                       {members.map((member) => (
                         <div key={member.id}>
                           <Tippy
                             placement="bottom"
                             content={
-                              <div className={cx("participants_name")}>
+                              <div className={cx("participant_name")}>
                                 {member.displayName}
                               </div>
                             }
                           >
-                            <img
-                              key={member.uid}
-                              className={cx("participants_img")}
-                              src={member.photoURL}
-                              alt=""
-                            />
+                            <div
+                              className={cx("participant_wrap", {
+                                admin: admins.includes(member.uid),
+                              })}
+                            >
+                              <img
+                                key={member.uid}
+                                className={cx("participant_img")}
+                                src={member.photoURL}
+                                alt=""
+                              />
+                              <i className={cx("admin-icon")}>
+                                <i
+                                  onClick={() => {
+                                    handleRemoveAdmin(member.uid);
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    className={cx("inner-icon-true")}
+                                    icon={faCrown}
+                                  />
+                                </i>
+                                {admins.includes(uid) ? (
+                                  <i
+                                    onClick={() => {
+                                      handleAddAdmin(member.uid);
+                                    }}
+                                  >
+                                    <FontAwesomeIcon
+                                      className={cx("inner-icon-false")}
+                                      icon={faCirclePlus}
+                                    />
+                                  </i>
+                                ) : (
+                                  ""
+                                )}
+                              </i>
+                            </div>
                           </Tippy>
                         </div>
                       ))}
                     </div>
-                    <div className={cx("leave-room")}>
+                    <div className={cx("room-control")}>
                       <button
                         onClick={handleLeaveRoom}
-                        className={cx("leave-room-btn")}
+                        className={cx("room-control-btn")}
                       >
                         <span>Rời phòng</span>
-                        <i className={cx("leave-room-icon")}>
+                        <i className={cx("room-control-icon")}>
                           <FontAwesomeIcon icon={faPersonWalkingArrowRight} />
                         </i>
                       </button>
                     </div>
+                    {admins.includes(uid) ? (
+                      <div className={cx("room-control")}>
+                        <button
+                          onClick={handleDeleteRoom}
+                          className={cx("room-control-btn")}
+                        >
+                          <span>Xóa phòng</span>
+                          <i className={cx("room-control-icon")}>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </i>
+                        </button>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 }
               >

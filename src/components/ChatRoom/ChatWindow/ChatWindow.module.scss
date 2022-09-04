@@ -82,6 +82,17 @@
   margin-top: 4px;
 }
 
+/* Q&A*/
+.q-and-a {
+  margin-top: 8px;
+  color: var(--primary);
+  font-size: 14px;
+}
+
+.q-and-a-title {
+  margin-right: 2px;
+}
+
 /* Participants */
 .participants-wrapper {
   min-width: 200px;
@@ -96,18 +107,48 @@
   margin: 12px 0;
 }
 
-.participants_img {
+.participant_wrap {
+  position: relative;
+}
+
+.participant_img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   background-color: #fff;
-  margin: 4px 2px 0;
+  margin: 4px 6px 0;
   padding: 1px;
   border: 2px solid var(--primary);
 }
 
-.participants_name {
+.admin-icon {
+  display: block;
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  color: var(--primary);
+  font-size: 20px;
+  cursor: pointer;
+  & .inner-icon-false {
+    display: inline;
+  }
+  & .inner-icon-true {
+    display: none;
+  }
+}
+
+.participant_wrap.admin .admin-icon {
+  background-color: transparent;
+  & .inner-icon-true {
+    display: inline;
+  }
+  & .inner-icon-false {
+    display: none;
+  }
+}
+
+.participant_name {
   background-color: var(--primary);
   color: #fff;
   font-size: 14px;
@@ -116,12 +157,12 @@
 }
 
 /* Leave Room */
-.leave-room {
+.room-control {
   border-top: 1px solid #ddd;
   text-align: center;
 }
 
-.leave-room-btn {
+.room-control-btn {
   padding: 6px 0 12px;
   margin-top: 6px;
   font-size: 16px;
@@ -135,7 +176,7 @@
   }
 }
 
-.leave-room-icon {
+.room-control-icon {
   margin-left: 4px;
 }
 

@@ -17,6 +17,8 @@ function JoinRoomModal() {
   const { isJoinRoomVisible, setIsJoinRoomVisible } = useContext(AppContext);
   const currentUser = useContext(AuthContext);
 
+  // Xử lý thêm người dùng hiện tại
+  // vào mảng members của room vừa nhập mã
   const handleOk = () => {
     if (roomCode.trim()) {
       const roomRef = doc(db, "rooms", roomCode.trim());

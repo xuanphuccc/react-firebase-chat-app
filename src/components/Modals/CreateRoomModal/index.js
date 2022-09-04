@@ -25,6 +25,7 @@ function CreateRoomModal() {
       description,
       photoURL,
       members: [currentUser.uid],
+      admins: [currentUser.uid],
     };
 
     if (name !== "" && description !== "") {
