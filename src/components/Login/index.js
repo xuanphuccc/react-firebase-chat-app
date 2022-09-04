@@ -1,6 +1,5 @@
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
-import background from "../../assets/images/background.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -98,12 +97,10 @@ function Login() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("overlay")}>
-        {/* <img className={cx('overlay-')} src={background} alt="" /> */}
-      </div>
+      <div className={cx("overlay")}></div>
       <div className={cx("login")}>
         <div className={cx("content")}>
-          <h2 className={cx("title")}>Đăng nhập</h2>
+          <h2 className={cx("title")}>Wellcome!</h2>
           <div className={cx("controls")}>
             <button
               className={cx("login-btn", "btn", "primary")}
