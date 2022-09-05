@@ -402,6 +402,7 @@ function ChatWindow() {
                 displayName={message.displayName}
                 createAt={message.createAt}
                 photoURL={message.photoURL}
+                userId={message.uid}
               />
             ))}
             <span ref={mesListRef}></span>

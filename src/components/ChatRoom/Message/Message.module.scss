@@ -1,8 +1,21 @@
 .wrapper {
   display: flex;
   align-items: flex-end;
-  margin-left: 12px;
-  margin-top: 16px;
+  margin: 16px 12px 0;
+}
+
+.wrapper.received {
+  .user-img {
+    display: none;
+  }
+  .user-name {
+    display: none;
+  }
+  .text {
+    background-color: var(--primary);
+    color: #fff;
+  }
+  justify-content: flex-end;
 }
 
 .user-img {
@@ -24,7 +37,7 @@
 
 .content {
   margin-left: 12px;
-  max-width: 40%;
+  max-width: 50%;
 }
 
 .user-name {

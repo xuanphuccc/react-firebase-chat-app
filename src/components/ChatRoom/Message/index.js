@@ -3,9 +3,16 @@ import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
 
+import { useContext } from "react";
+import { AuthContext } from "../../../Context/AuthProvider";
+
 const cx = classNames.bind(styles);
 
-function Message({ content, displayName, createAt, photoURL }) {
+function Message({ content, displayName, createAt, photoURL, userId }) {
+  const { uid } = useContext(AuthContext);
+
+  const isReceivedMsg = userId === uid;
+
   const options = {
     year: "numeric",
     month: "numeric",
@@ -19,7 +26,7 @@ function Message({ content, displayName, createAt, photoURL }) {
   const time = new Intl.DateTimeFormat("en-US", options).format(createAt);
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("wrapper", { received: isReceivedMsg })}>
       <img className={cx("user-img")} src={photoURL} alt="" />
       <Tippy
         placement="left"
