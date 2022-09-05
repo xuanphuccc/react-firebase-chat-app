@@ -146,6 +146,9 @@
   & .inner-icon-false {
     display: none;
   }
+  &.disable {
+    color: #000;
+  }
 }
 
 .participant_name {
@@ -171,13 +174,50 @@
   background-color: transparent;
   border: none;
   outline: none;
+  cursor: pointer;
   &:hover {
     text-decoration: underline;
   }
 }
 
+.leave-room-btn.disable {
+  text-decoration: none;
+  position: relative;
+  & .btn-content {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  &:hover .disable-message {
+    display: block;
+    cursor: default;
+    text-decoration: none;
+  }
+}
+
 .room-control-icon {
   margin-left: 4px;
+}
+
+.disable-message {
+  min-width: 200px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
+
+  display: none;
+  background-color: #fff;
+  .title {
+    font-size: 14px;
+  }
+  .content {
+    font-size: 12px;
+    color: #333;
+    margin-top: 4px;
+  }
 }
 
 /*-------------- Message --------------*/

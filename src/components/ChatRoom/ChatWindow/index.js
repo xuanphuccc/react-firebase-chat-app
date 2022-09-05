@@ -49,6 +49,7 @@ function ChatWindow() {
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
+  const [isOnlyAdmin, setIsOnlyAdmin] = useState(false);
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
 
@@ -71,13 +72,16 @@ function ChatWindow() {
     setInputValue(e.target.value);
   };
 
-  // Xử lý scroll tin nhắn lên mỗi khi gửi
-  const handleScroll = () => {
-    const timeId = setTimeout(() => {
-      mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
-      clearTimeout(timeId);
-    }, 100);
-  };
+  // Xử lý scroll tin nhắn lên mỗi khi có tin nhắn mới
+  useEffect(() => {
+    if (mesListRef.current) {
+      mesListRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  }, [messages]);
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
@@ -94,7 +98,7 @@ function ChatWindow() {
     // Clear input and focus
     setInputValue("");
     inputRef.current.focus();
-    handleScroll();
+    // handleScroll();
   };
 
   // Xử lý sự kiện nhấn nút Enter vào input
@@ -117,13 +121,22 @@ function ChatWindow() {
     // khỏi trường members của rooms
     const roomRef = doc(db, "rooms", selectedRoomId);
 
-    updateDoc(roomRef, {
-      members: arrayRemove(uid),
-    });
+    if (admins.includes(uid) && admins.length === 1) {
+      console.log("You are the only admin!!!");
+      setIsOnlyAdmin(true);
+    } else {
+      updateDoc(roomRef, {
+        members: arrayRemove(uid),
+      });
 
-    // Đóng modal sau khi rời phòng
-    setIsRoomMenuVisible(false);
-    console.log("Leave Room!");
+      // Nếu là admin và không là admin duy nhất
+      // thì xóa vai trò admin
+      handleRemoveAdmin(uid);
+
+      // Đóng modal sau khi rời phòng
+      setIsRoomMenuVisible(false);
+      console.log("Leave Room!");
+    }
   };
 
   // ------ HANDLE ADMINS CONTROLS ------
@@ -164,6 +177,10 @@ function ChatWindow() {
 
       // Có tác dụng cập nhật hiển thị lên admin
       setVisibleAdmin(!visibleAdmin);
+
+      // Sau khi thêm admin thì chuyển trạng thái
+      // only admin thành false
+      setIsOnlyAdmin(false);
     }
   };
 
@@ -172,9 +189,16 @@ function ChatWindow() {
     if (admins.includes(uid)) {
       const roomRef = doc(db, "rooms", selectedRoomId);
 
-      updateDoc(roomRef, {
-        admins: arrayRemove(userId),
-      });
+      // Nếu người dùng là admin duy nhất thì không được xóa
+      // vai trò của mình
+      if (userId === uid && admins.length === 1) {
+        console.log("You are the only admin!!!");
+        setIsOnlyAdmin(true);
+      } else {
+        updateDoc(roomRef, {
+          admins: arrayRemove(userId),
+        });
+      }
 
       // Có tác dụng cập nhật hiển thị lên admin
       setVisibleAdmin(!visibleAdmin);
@@ -185,7 +209,9 @@ function ChatWindow() {
     <>
       {selectedRoom ? (
         <div className={cx("chat-window")}>
+          {/*=========== Header ===========*/}
           <div className={cx("chat-window_header")}>
+            {/* Room Name And Image */}
             <div className={cx("chat-window_header-info")}>
               <img
                 src={selectedRoom.photoURL || placeHolderImg}
@@ -198,6 +224,8 @@ function ChatWindow() {
                 </h4>
               </div>
             </div>
+
+            {/* Invite Members And Room Controls */}
             <div className={cx("chat-window_header-users")}>
               <i
                 onClick={handleInviteMemberModal}
@@ -206,8 +234,10 @@ function ChatWindow() {
                 <FontAwesomeIcon icon={faCirclePlus} />
               </i>
 
+              {/* Invite Members Modal */}
               <InviteMemberModal />
 
+              {/* Room Controls Modal */}
               <BasicModal
                 isVisible={isRoomMenuVisible}
                 handleVisible={handleRoomMenuVisible}
@@ -223,6 +253,7 @@ function ChatWindow() {
                       <FontAwesomeIcon icon={faCrown} />
                     </p>
 
+                    {/* Controls participants */}
                     <div className={cx("participants-wrapper")}>
                       {members.map((member) => (
                         <div key={member.id}>
@@ -245,7 +276,11 @@ function ChatWindow() {
                                 src={member.photoURL}
                                 alt=""
                               />
-                              <i className={cx("admin-icon")}>
+                              <i
+                                className={cx("admin-icon", {
+                                  disable: isOnlyAdmin,
+                                })}
+                              >
                                 <i
                                   onClick={() => {
                                     handleRemoveAdmin(member.uid);
@@ -256,6 +291,8 @@ function ChatWindow() {
                                     icon={faCrown}
                                   />
                                 </i>
+
+                                {/* Hiện icon nếu là admin */}
                                 {admins.includes(uid) ? (
                                   <i
                                     onClick={() => {
@@ -276,15 +313,28 @@ function ChatWindow() {
                         </div>
                       ))}
                     </div>
+
+                    {/* Room Control Buttons */}
                     <div className={cx("room-control")}>
                       <button
                         onClick={handleLeaveRoom}
-                        className={cx("room-control-btn")}
+                        className={cx("room-control-btn", "leave-room-btn", {
+                          disable: isOnlyAdmin,
+                        })}
                       >
-                        <span>Rời phòng</span>
-                        <i className={cx("room-control-icon")}>
-                          <FontAwesomeIcon icon={faPersonWalkingArrowRight} />
-                        </i>
+                        <div className={cx("btn-content")}>
+                          <span>Rời phòng</span>
+                          <i className={cx("room-control-icon")}>
+                            <FontAwesomeIcon icon={faPersonWalkingArrowRight} />
+                          </i>
+                        </div>
+                        <div className={cx("disable-message")}>
+                          <p className={cx("title")}>Bạn là admin duy nhất!</p>
+                          <p className={cx("content")}>
+                            Vui lòng chuyển vị trí admin cho những người khác
+                            trước khi rời phòng
+                          </p>
+                        </div>
                       </button>
                     </div>
                     {admins.includes(uid) ? (
@@ -315,7 +365,8 @@ function ChatWindow() {
             </div>
           </div>
 
-          <div ref={mesListRef} className={cx("message-list")}>
+          {/*=========== Message List ===========*/}
+          <div className={cx("message-list")}>
             {messages.map((message, index) => (
               <Message
                 key={index}
@@ -325,7 +376,10 @@ function ChatWindow() {
                 photoURL={message.photoURL}
               />
             ))}
+            <span ref={mesListRef}></span>
           </div>
+
+          {/*=========== Message Form ===========*/}
           <div className={cx("message-form")}>
             <input
               className={cx("message-form_input")}

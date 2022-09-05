@@ -13,7 +13,7 @@ function RoomList() {
   // gây lãng phí số lần query đến database
   // -> Cách khắc phục: dùng useContext
   // const rooms = useFirestore("rooms", roomsCondition);
-  const { rooms, setSelectedRoomId } = useContext(AppContext);
+  const { rooms, setSelectedRoomId, selectedRoomId } = useContext(AppContext);
 
   return (
     <div className={cx("wrapper")}>
@@ -21,7 +21,7 @@ function RoomList() {
         {rooms.map((room) => (
           <li
             key={room.id}
-            className={cx("room")}
+            className={cx("room", { active: room.id === selectedRoomId })}
             onClick={() => {
               setSelectedRoomId(room.id);
             }}
