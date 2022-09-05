@@ -1,6 +1,8 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./AuthProvider";
 import useFirestore from "../hooks/useFirestore";
+
+import useViewport from "../hooks/useViewport";
 
 const AppContext = createContext();
 
@@ -90,6 +92,21 @@ function AppProvider({ children }) {
 
   const messages = useFirestore("messages", messagesCondition);
 
+  const viewport = useViewport();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [toggleComponent, setToggleComponent] = useState(true);
+
+  useEffect(() => {
+    if (viewport.width < 768) {
+      setIsMobile(true);
+      setIsDesktop(false);
+    } else {
+      setIsMobile(false);
+      setIsDesktop(true);
+    }
+  }, [viewport.width]);
+
   return (
     <AppContext.Provider
       value={{
@@ -105,6 +122,10 @@ function AppProvider({ children }) {
         selectedRoom,
         isInviteMemberVisible,
         setIsInviteMemberVisible,
+        isMobile,
+        isDesktop,
+        toggleComponent,
+        setToggleComponent,
       }}
     >
       {children}

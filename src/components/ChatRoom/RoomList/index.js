@@ -13,7 +13,12 @@ function RoomList() {
   // gây lãng phí số lần query đến database
   // -> Cách khắc phục: dùng useContext
   // const rooms = useFirestore("rooms", roomsCondition);
-  const { rooms, setSelectedRoomId, selectedRoomId } = useContext(AppContext);
+  const { rooms, setSelectedRoomId, selectedRoomId, setToggleComponent } =
+    useContext(AppContext);
+
+  const handleToggleComponent = () => {
+    setToggleComponent(false);
+  };
 
   return (
     <div className={cx("wrapper")}>
@@ -24,6 +29,7 @@ function RoomList() {
             className={cx("room", { active: room.id === selectedRoomId })}
             onClick={() => {
               setSelectedRoomId(room.id);
+              handleToggleComponent();
             }}
           >
             <img

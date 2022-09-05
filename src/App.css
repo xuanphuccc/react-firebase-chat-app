@@ -40,11 +40,6 @@ button {
   font-family: "Be Vietnam Pro", sans-serif;
 }
 
-.app {
-  display: flex;
-  height: 100vh;
-}
-
 .btn {
   min-width: 100px;
   padding: 9px 12px;

@@ -20,7 +20,8 @@ function AuthProvider({ children }) {
           uid,
           photoURL,
         });
-        // Chuyển về Chat room (trang chủ) khi đăng nhập thành công
+
+        // Chuyển về trang chủ khi đăng nhập thành công
         navigate("/");
       } else {
         // Chuyển về trang login khi đăng nhập không thành công
@@ -32,7 +33,7 @@ function AuthProvider({ children }) {
     return () => {
       unsubcribed();
     };
-  }, [navigate]);
+  }, []);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }

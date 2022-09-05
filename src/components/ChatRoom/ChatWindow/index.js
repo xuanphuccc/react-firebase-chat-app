@@ -9,6 +9,7 @@ import {
   faEllipsisVertical,
   faTrash,
   faCrown,
+  faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 
@@ -43,6 +44,8 @@ function ChatWindow() {
     members,
     setIsInviteMemberVisible,
     messages,
+    isMobile,
+    setToggleComponent,
   } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
@@ -50,6 +53,7 @@ function ChatWindow() {
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
   const [isOnlyAdmin, setIsOnlyAdmin] = useState(false);
+  const [messageId, setMessageId] = useState("");
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
 
@@ -110,10 +114,22 @@ function ChatWindow() {
 
   // Phát âm báo mỗi lần có tin nhắn mới
   useEffect(() => {
+    if (messages.length) {
+      const messagesLength = messages.length;
+      setMessageId(messages[messagesLength - 1].id);
+    }
+  }, [messages]);
+
+  useEffect(() => {
     const audio = new Audio(messageSound);
     audio.volume = 0.5;
     audio.play();
-  }, [messages]);
+  }, [messageId]);
+
+  // ------ HANDLE RESPONSIVE -------
+  const handleToggleComponent = () => {
+    setToggleComponent(true);
+  };
 
   // ------ HANDLE LEAVE ROOM ------
   const handleLeaveRoom = () => {
@@ -213,6 +229,18 @@ function ChatWindow() {
           <div className={cx("chat-window_header")}>
             {/* Room Name And Image */}
             <div className={cx("chat-window_header-info")}>
+              {isMobile ? (
+                <button
+                  onClick={() => {
+                    handleToggleComponent();
+                  }}
+                  className={cx("back-btn")}
+                >
+                  <FontAwesomeIcon icon={faAngleLeft} />
+                </button>
+              ) : (
+                false
+              )}
               <img
                 src={selectedRoom.photoURL || placeHolderImg}
                 alt=""

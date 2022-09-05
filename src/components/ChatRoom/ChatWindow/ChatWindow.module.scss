@@ -1,9 +1,9 @@
 /* ----------------- Chat window ----------------- */
 .chat-window {
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
 }
 
 /* Header */
@@ -18,7 +18,16 @@
 .chat-window_header-info {
   display: flex;
   align-items: center;
-  margin-left: 8px;
+}
+
+.back-btn {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 20px;
+  color: var(--primary);
+  padding: 12px;
+  cursor: pointer;
 }
 
 .chat-window_header-name-wrap {
@@ -30,6 +39,7 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  margin-left: 12px;
 }
 
 .chat-window_header-name {

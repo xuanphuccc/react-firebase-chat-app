@@ -32,7 +32,6 @@ function CreateRoomModal() {
       addDocument("rooms", inputData);
     }
 
-    console.log("Input data: ", inputData);
     // Đóng modal và xóa input
     setIsAddRoomVisible(false);
     setName("");
