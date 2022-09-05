@@ -33,7 +33,7 @@ function AuthProvider({ children }) {
     return () => {
       unsubcribed();
     };
-  }, []);
+  }, [navigate]);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
