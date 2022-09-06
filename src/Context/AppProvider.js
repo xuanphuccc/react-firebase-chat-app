@@ -23,6 +23,13 @@ function AppProvider({ children }) {
   // Phòng đang được chọn để hiển thị chat
   const [selectedRoomId, setSelectedRoomId] = useState("");
 
+  // Set trạng thái hiển thị của Room Menu
+  const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
+  // Hàm xử lý mở modal Room Menu
+  const handleRoomMenuVisible = () => {
+    setIsRoomMenuVisible(!isRoomMenuVisible);
+  };
+
   // Lấy ra uid của user hiện tại
   const { uid } = useContext(AuthContext);
 
@@ -95,6 +102,7 @@ function AppProvider({ children }) {
   const viewport = useViewport();
   const [isMobile, setIsMobile] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  // Chuyển đối giữa sidebar và chat window (true)
   const [toggleComponent, setToggleComponent] = useState(true);
 
   useEffect(() => {
@@ -126,6 +134,9 @@ function AppProvider({ children }) {
         isDesktop,
         toggleComponent,
         setToggleComponent,
+        isRoomMenuVisible,
+        setIsRoomMenuVisible,
+        handleRoomMenuVisible,
       }}
     >
       {children}

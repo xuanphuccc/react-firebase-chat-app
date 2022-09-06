@@ -10,8 +10,10 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
-
 import { addDocument } from "../../firebase/service";
+
+import { useContext } from "react";
+import { AppContext } from "../../Context/AppProvider";
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +21,8 @@ const fbProvider = new FacebookAuthProvider(); //OK
 const googleProvider = new GoogleAuthProvider();
 
 function Login() {
+  const { isDesktop } = useContext(AppContext);
+
   // Login với Facebook
   // Đồng thời ghi dữ liệu người dùng vào database
   const handleFblogin = () => {
@@ -98,7 +102,7 @@ function Login() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("overlay")}></div>
-      <div className={cx("login")}>
+      <div className={cx("login", { isDesktop })}>
         <div className={cx("content")}>
           <h2 className={cx("title")}>Wellcome!</h2>
           <div className={cx("controls")}>
