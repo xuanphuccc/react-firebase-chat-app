@@ -65,7 +65,7 @@ function RoomControlsModal({ children }) {
       setIsRoomMenuVisible(false);
       console.log("Leave Room!");
 
-      // Chuyển về sidebar
+      // Chuyển về sidebar (mobile)
       setToggleComponent(true);
     }
   };
@@ -94,6 +94,9 @@ function RoomControlsModal({ children }) {
 
       // Xóa phòng hiện tại
       deleteDoc(doc(db, "rooms", selectedRoomId));
+
+      // Chuyển về sidebar (mobile)
+      setToggleComponent(true);
     }
   };
 
