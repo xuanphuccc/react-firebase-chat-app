@@ -5,8 +5,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
+import { useEffect, useState } from "react";
 
 function useFirestore(collectionName, condition) {
   const [documents, setDocuments] = useState([]);
@@ -53,6 +53,9 @@ function useFirestore(collectionName, condition) {
       },
       (error) => {
         console.error(error);
+        alert(
+          "Thông báo: hiện tại ứng dụng đã hết lượt truy cập. Vui lòng thử lại sau 🙄"
+        );
       }
     );
 

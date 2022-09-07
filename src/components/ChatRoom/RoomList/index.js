@@ -48,6 +48,11 @@ function RoomList() {
           </li>
         ))}
       </ul>
+      {/* <div className={cx("error-message")}>
+        <p className={cx("error-content")}>
+          Thông báo: Hiện tại ứng dụng đã hết lượt truy cập dữ liệu 🙄
+        </p>
+      </div> */}
     </div>
   );
 }
