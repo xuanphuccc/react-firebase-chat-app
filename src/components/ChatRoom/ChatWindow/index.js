@@ -62,6 +62,16 @@ function ChatWindow() {
     if (mesListRef.current) {
       mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
     }
+  }, []);
+
+  useEffect(() => {
+    if (LastMesListRef.current) {
+      LastMesListRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
   }, [messageId]);
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
