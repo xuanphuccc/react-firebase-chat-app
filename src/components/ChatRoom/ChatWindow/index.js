@@ -60,14 +60,11 @@ function ChatWindow() {
   // Xử lý scroll tin nhắn lên mỗi khi có tin nhắn mới
   useEffect(() => {
     if (mesListRef.current) {
-      const timeId = setTimeout(() => {
-        mesListRef.current.scrollTo({
-          top: mesListRef.current.scrollHeight + 100,
-          left: 0,
-          behavior: "smooth",
-        });
-        clearTimeout(timeId);
-      }, 0);
+      mesListRef.current.scrollTo({
+        top: mesListRef.current.scrollHeight,
+        left: 0,
+        behavior: "instant",
+      });
     }
   }, [messageId]);
 
