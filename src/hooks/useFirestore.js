@@ -54,7 +54,7 @@ function useFirestore(collectionName, condition) {
       (error) => {
         console.error(error);
         alert(
-          "Thông báo: hiện tại ứng dụng đã hết lượt truy cập. Vui lòng thử lại sau 🙄"
+          "Thông báo: Hiện tại ứng dụng đã hết lượt truy cập. Vui lòng thử lại sau 😵‍💫"
         );
       }
     );
