@@ -63,7 +63,7 @@ function ChatWindow() {
       const timeId = setTimeout(() => {
         mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
         clearTimeout(timeId);
-      }, 200);
+      }, 1000);
     }
   }, []);
 
