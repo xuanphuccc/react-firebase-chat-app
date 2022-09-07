@@ -61,21 +61,25 @@ function ChatWindow() {
   useEffect(() => {
     if (mesListRef.current) {
       const timeId = setTimeout(() => {
-        mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
+        mesListRef.current.scrollTo({
+          top: mesListRef.current.scrollHeight + 100,
+          left: 0,
+          behavior: "smooth",
+        });
         clearTimeout(timeId);
-      }, 1000);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (LastMesListRef.current) {
-      LastMesListRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
+      }, 0);
     }
   }, [messageId]);
+
+  // useEffect(() => {
+  //   if (LastMesListRef.current) {
+  //     LastMesListRef.current.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //       inline: "nearest",
+  //     });
+  //   }
+  // }, [messageId]);
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
