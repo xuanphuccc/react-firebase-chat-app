@@ -60,7 +60,10 @@ function ChatWindow() {
   // Xử lý scroll tin nhắn lên mỗi khi có tin nhắn mới
   useEffect(() => {
     if (mesListRef.current) {
-      mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
+      const timeId = setTimeout(() => {
+        mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
+        clearTimeout(timeId);
+      }, 200);
     }
   }, []);
 
