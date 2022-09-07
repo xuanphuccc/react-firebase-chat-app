@@ -26,7 +26,8 @@ function UserInfo() {
   const { displayName, photoURL, uid } = user;
 
   // Set trạng thái của Modal Add Room và Join Room
-  const { setIsAddRoomVisible, setIsJoinRoomVisible } = useContext(AppContext);
+  const { setIsAddRoomVisible, setIsJoinRoomVisible, isMobile } =
+    useContext(AppContext);
 
   // Trạng thái hiển thị của menu user
   const [isVisible, setIsVisible] = useState(false);
@@ -68,7 +69,7 @@ function UserInfo() {
   };
 
   return (
-    <div className={cx("user-info")}>
+    <div className={cx("user-info", { fixed: isMobile })}>
       <BasicModal
         isVisible={isVisible}
         handleVisible={handleMenuVisible}

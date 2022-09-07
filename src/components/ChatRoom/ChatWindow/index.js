@@ -44,6 +44,7 @@ function ChatWindow() {
 
   const inputRef = useRef();
   const mesListRef = useRef();
+  const LastMesListRef = useRef();
 
   // Hàm xử lý mở modal Invite Member
   const handleInviteMemberModal = () => {
@@ -59,13 +60,9 @@ function ChatWindow() {
   // Xử lý scroll tin nhắn lên mỗi khi có tin nhắn mới
   useEffect(() => {
     if (mesListRef.current) {
-      mesListRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
+      mesListRef.current.scrollTo(0, mesListRef.current.scrollHeight);
     }
-  }, [messages]);
+  }, [messageId]);
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
@@ -114,9 +111,9 @@ function ChatWindow() {
   return (
     <>
       {selectedRoom ? (
-        <div className={cx("chat-window")}>
+        <div className={cx("chat-window", { fixed: isMobile })}>
           {/*=========== Header ===========*/}
-          <div className={cx("chat-window_header", { fixed: isMobile })}>
+          <div className={cx("chat-window_header")}>
             {/* Room Name And Image */}
             <div className={cx("chat-window_header-info")}>
               {isMobile ? (
@@ -171,7 +168,7 @@ function ChatWindow() {
 
           {/*=========== Message List ===========*/}
 
-          <div className={cx("message-list")}>
+          <div ref={mesListRef} className={cx("message-list")}>
             {messages.map((message, index) => (
               <Message
                 key={index}
@@ -183,7 +180,7 @@ function ChatWindow() {
               />
             ))}
 
-            <span ref={mesListRef}></span>
+            <span ref={LastMesListRef}></span>
           </div>
 
           {/*=========== Message Form ===========*/}

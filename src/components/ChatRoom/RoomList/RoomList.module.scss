@@ -6,6 +6,10 @@
   user-select: none;
   flex: 1;
   overflow-y: scroll;
+
+  &.isMobile {
+    margin-top: 62px;
+  }
 }
 
 .room {
@@ -29,6 +33,11 @@
   height: 60px;
   border-radius: 999px;
   object-fit: cover;
+}
+
+.room-info {
+  flex: 1;
+  height: 100%;
 }
 
 .room_name {

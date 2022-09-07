@@ -1,11 +1,19 @@
 /* User info */
 .user-info {
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 16px;
+  padding: 0 16px;
   border-bottom: 1px solid rgba(22, 24, 35, 0.12);
   user-select: none;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 .container {
@@ -15,8 +23,8 @@
 }
 
 .user-img {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   object-fit: cover;
   border-radius: 50%;
 }
