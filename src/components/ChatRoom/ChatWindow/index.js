@@ -61,7 +61,7 @@ function ChatWindow() {
   useEffect(() => {
     if (mesListRef.current) {
       mesListRef.current.scrollTo({
-        top: mesListRef.current.scrollHeight,
+        top: mesListRef.current.scrollHeight + 300,
         left: 0,
         behavior: "instant",
       });
