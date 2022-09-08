@@ -66,7 +66,7 @@ function ChatWindow() {
         behavior: "instant",
       });
     }
-  }, [messageId]);
+  }, [messageId, selectedRoomId]);
 
   // useEffect(() => {
   //   if (LastMesListRef.current) {
