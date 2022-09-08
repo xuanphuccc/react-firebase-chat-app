@@ -61,10 +61,11 @@ function ChatWindow() {
   useEffect(() => {
     if (mesListRef.current) {
       mesListRef.current.scrollTo({
-        top: mesListRef.current.scrollHeight + 300,
+        top: mesListRef.current.scrollHeight,
         left: 0,
         behavior: "instant",
       });
+      console.log("Change scroll:", mesListRef.current.scrollHeight);
     }
   }, [messageId, selectedRoomId]);
 
