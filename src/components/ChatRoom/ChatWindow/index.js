@@ -67,7 +67,6 @@ function ChatWindow() {
         left: 0,
         behavior: "instant",
       });
-      console.log("Change scroll:", mesListRef.current.scrollHeight);
     }
   }, [messageId, selectedRoomId]);
 

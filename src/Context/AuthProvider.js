@@ -35,7 +35,6 @@ function AuthProvider({ children }) {
       }
     });
 
-    console.log("Reload AuthProvider");
     return () => {
       unsubcribed();
     };

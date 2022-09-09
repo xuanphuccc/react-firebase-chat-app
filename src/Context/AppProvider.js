@@ -114,8 +114,6 @@ function AppProvider({ children }) {
     }
   }, [viewport.width]);
 
-  console.log("APP PROVIDER");
-
   return (
     <AppContext.Provider
       value={{
