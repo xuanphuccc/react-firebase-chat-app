@@ -42,7 +42,6 @@ function RoomControlsModal({ children }) {
     isRoomMenuVisible,
     setIsRoomMenuVisible,
     handleRoomMenuVisible,
-    setToggleComponent,
   } = useContext(AppContext);
 
   const { uid } = useContext(AuthContext);
