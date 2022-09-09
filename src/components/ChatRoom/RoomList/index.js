@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./RoomList.module.scss";
 
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AppContext } from "../../../Context/AppProvider";
 
 const cx = classNames.bind(styles);
@@ -17,29 +17,34 @@ function RoomList() {
   const { rooms, setSelectedRoomId, selectedRoomId, isMobile } =
     useContext(AppContext);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className={cx("wrapper", { isMobile })}>
       <ul className={cx("room-list")}>
         {rooms.map((room) => (
-          <li
+          <Link
             key={room.id}
-            className={cx("room", { active: room.id === selectedRoomId })}
-            onClick={() => {
-              setSelectedRoomId(room.id);
-              navigate("/chat-window");
-            }}
+            to={"/chat-window"}
+            className={cx("text-decor-none")}
           >
-            <img
-              className={cx("room_img")}
-              src={room.photoURL || userPlacehoderImg}
-              alt=""
-            />
-            <div className={cx("room-info")}>
-              <h4 className={cx("room_name")}>{room.name}</h4>
-            </div>
-          </li>
+            <li
+              className={cx("room", { active: room.id === selectedRoomId })}
+              onClick={() => {
+                setSelectedRoomId(room.id);
+                // navigate("/chat-window");
+              }}
+            >
+              <img
+                className={cx("room_img")}
+                src={room.photoURL || userPlacehoderImg}
+                alt=""
+              />
+              <div className={cx("room-info")}>
+                <h4 className={cx("room_name")}>{room.name}</h4>
+              </div>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

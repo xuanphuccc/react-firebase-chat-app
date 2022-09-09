@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./ChatWindow.module.scss";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -42,7 +42,7 @@ function ChatWindow() {
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const inputRef = useRef();
   const mesListRef = useRef();
@@ -129,17 +129,19 @@ function ChatWindow() {
             {/* Room Name And Image */}
             <div className={cx("chat-window_header-info")}>
               {isMobile ? (
-                <button
-                  onClick={() => {
-                    // Chuyển về room-list
-                    navigate("/room-list");
-                    // Bỏ active room
-                    setSelectedRoomId("");
-                  }}
-                  className={cx("back-btn")}
-                >
-                  <FontAwesomeIcon icon={faAngleLeft} />
-                </button>
+                <Link to={"/room-list"}>
+                  <button
+                    onClick={() => {
+                      // Chuyển về room-list
+                      // navigate("/room-list");
+                      // Bỏ active room
+                      setSelectedRoomId("");
+                    }}
+                    className={cx("back-btn")}
+                  >
+                    <FontAwesomeIcon icon={faAngleLeft} />
+                  </button>
+                </Link>
               ) : (
                 false
               )}
