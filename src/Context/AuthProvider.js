@@ -34,10 +34,11 @@ function AuthProvider({ children }) {
       }
     });
 
+    console.log("Reload AuthProvider");
     return () => {
       unsubcribed();
     };
-  }, [navigate, location.pathname]);
+  }, [location.pathname, navigate]);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
