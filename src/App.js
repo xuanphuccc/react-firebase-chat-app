@@ -15,8 +15,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<ChatRoom />}>
-              <Route path="room-list" element={<Sidebar />} />
+              <Route path="room-list" index element={<Sidebar />} />
               <Route path="chat-window" element={<ChatWindow />} />
+              <Route path="*" element={<Sidebar />} />
             </Route>
           </Routes>
         </AppProvider>
