@@ -1,6 +1,6 @@
 import { useEffect, useState, createContext } from "react";
 import { auth } from "../firebase/config";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -8,7 +8,7 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   useEffect(() => {
     // Lấy người dùng hiện tại khi đăng nhập xong
@@ -24,7 +24,8 @@ function AuthProvider({ children }) {
 
         // Chuyển về trang chủ khi đăng nhập thành công
         // ngăn không cho về trang login
-        if (location.pathname === "/login") {
+
+        if (window.location.pathname === "/login") {
           navigate("/room-list");
         }
       } else {
@@ -38,7 +39,7 @@ function AuthProvider({ children }) {
     return () => {
       unsubcribed();
     };
-  }, [location.pathname, navigate]);
+  }, [navigate]);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
