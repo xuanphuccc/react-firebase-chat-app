@@ -25,7 +25,10 @@ function AuthProvider({ children }) {
         // Chuyển về trang chủ khi đăng nhập thành công
         // ngăn không cho về trang login
 
-        if (window.location.pathname === "/login") {
+        if (
+          window.location.pathname === "/login" ||
+          window.location.pathname === "/"
+        ) {
           navigate("/room-list");
         }
       } else {
