@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./ChatWindow.module.scss";
+import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -33,7 +34,6 @@ function ChatWindow() {
     setIsInviteMemberVisible,
     messages,
     isMobile,
-    setToggleComponent,
     handleRoomMenuVisible,
   } = useContext(AppContext);
 
@@ -41,6 +41,8 @@ function ChatWindow() {
   const [messageId, setMessageId] = useState("");
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const inputRef = useRef();
   const mesListRef = useRef();
@@ -118,11 +120,6 @@ function ChatWindow() {
     audio.play();
   }, [messageId]);
 
-  // ------ HANDLE RESPONSIVE -------
-  const handleToggleComponent = () => {
-    setToggleComponent(true);
-  };
-
   return (
     <>
       {selectedRoom ? (
@@ -134,7 +131,9 @@ function ChatWindow() {
               {isMobile ? (
                 <button
                   onClick={() => {
-                    handleToggleComponent();
+                    // Chuyển về room-list
+                    navigate("/room-list");
+                    // Bỏ active room
                     setSelectedRoomId("");
                   }}
                   className={cx("back-btn")}
@@ -204,6 +203,7 @@ function ChatWindow() {
               className={cx("message-form_input")}
               type="text"
               placeholder="Aa"
+              spellCheck="false"
               ref={inputRef}
               value={inputValue}
               onChange={handleInputChange}

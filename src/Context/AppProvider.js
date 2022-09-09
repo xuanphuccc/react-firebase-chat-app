@@ -99,11 +99,10 @@ function AppProvider({ children }) {
 
   const messages = useFirestore("messages", messagesCondition);
 
+  // Xử lý responsive
   const viewport = useViewport();
   const [isMobile, setIsMobile] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  // Chuyển đối giữa sidebar và chat window (true)
-  const [toggleComponent, setToggleComponent] = useState(true);
 
   useEffect(() => {
     if (viewport.width < 768) {
@@ -114,6 +113,8 @@ function AppProvider({ children }) {
       setIsDesktop(true);
     }
   }, [viewport.width]);
+
+  console.log("APP PROVIDER");
 
   return (
     <AppContext.Provider
@@ -132,8 +133,6 @@ function AppProvider({ children }) {
         setIsInviteMemberVisible,
         isMobile,
         isDesktop,
-        toggleComponent,
-        setToggleComponent,
         isRoomMenuVisible,
         setIsRoomMenuVisible,
         handleRoomMenuVisible,

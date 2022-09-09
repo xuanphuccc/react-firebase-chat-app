@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 
+import { useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
@@ -30,6 +31,8 @@ function RoomControlsModal({ children }) {
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
   const [isOnlyAdmin, setIsOnlyAdmin] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     selectedRoom,
@@ -66,7 +69,7 @@ function RoomControlsModal({ children }) {
       console.log("Leave Room!");
 
       // Chuyển về sidebar (mobile)
-      setToggleComponent(true);
+      navigate("/room-list");
     }
   };
 
@@ -96,7 +99,7 @@ function RoomControlsModal({ children }) {
       deleteDoc(doc(db, "rooms", selectedRoomId));
 
       // Chuyển về sidebar (mobile)
-      setToggleComponent(true);
+      navigate("/room-list");
     }
   };
 

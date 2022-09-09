@@ -3,6 +3,8 @@ import AuthProvider from "./Context/AuthProvider";
 import AppProvider from "./Context/AppProvider";
 import Login from "./components/Login";
 import ChatRoom from "./components/ChatRoom";
+import Sidebar from "./components/ChatRoom/Sidebar";
+import ChatWindow from "./components/ChatRoom/ChatWindow";
 import "./App.css";
 
 function App() {
@@ -12,7 +14,10 @@ function App() {
         <AppProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<ChatRoom />} />
+            <Route path="/" element={<ChatRoom />}>
+              <Route path="room-list" element={<Sidebar />} />
+              <Route path="chat-window" element={<ChatWindow />} />
+            </Route>
           </Routes>
         </AppProvider>
       </AuthProvider>

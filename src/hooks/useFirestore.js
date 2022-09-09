@@ -16,10 +16,11 @@ function useFirestore(collectionName, condition) {
   useEffect(() => {
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
-        console.log("End Game useFirestore!");
+        console.log("End useFirestore!");
         return;
       }
     }
+    console.log("useFirestore");
 
     let collectionRef = collection(db, collectionName);
 
@@ -61,6 +62,7 @@ function useFirestore(collectionName, condition) {
 
     // Cleanup function
     return () => {
+      console.log("Clean up useFirestore");
       unsubscribe();
     };
   }, [collectionName, condition]);

@@ -88,3 +88,7 @@ button {
 .btn.max {
   width: 100%;
 }
+
+.firebase-emulator-warning {
+  display: none;
+}

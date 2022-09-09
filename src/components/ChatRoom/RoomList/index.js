@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./RoomList.module.scss";
 
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../../Context/AppProvider";
 
 const cx = classNames.bind(styles);
@@ -13,17 +14,10 @@ function RoomList() {
   // gây lãng phí số lần query đến database
   // -> Cách khắc phục: dùng useContext
   // const rooms = useFirestore("rooms", roomsCondition);
-  const {
-    rooms,
-    setSelectedRoomId,
-    selectedRoomId,
-    setToggleComponent,
-    isMobile,
-  } = useContext(AppContext);
+  const { rooms, setSelectedRoomId, selectedRoomId, isMobile } =
+    useContext(AppContext);
 
-  const handleToggleComponent = () => {
-    setToggleComponent(false);
-  };
+  const navigate = useNavigate();
 
   return (
     <div className={cx("wrapper", { isMobile })}>
@@ -34,7 +28,7 @@ function RoomList() {
             className={cx("room", { active: room.id === selectedRoomId })}
             onClick={() => {
               setSelectedRoomId(room.id);
-              handleToggleComponent();
+              navigate("/chat-window");
             }}
           >
             <img
@@ -48,11 +42,6 @@ function RoomList() {
           </li>
         ))}
       </ul>
-      {/* <div className={cx("error-message")}>
-        <p className={cx("error-content")}>
-          Thông báo: Hiện tại ứng dụng đã hết lượt truy cập dữ liệu 🙄
-        </p>
-      </div> */}
     </div>
   );
 }
