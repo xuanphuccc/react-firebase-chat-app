@@ -29,7 +29,7 @@ function AuthProvider({ children }) {
           window.location.pathname === "/login" ||
           window.location.pathname === "/"
         ) {
-          navigate("/room-list");
+          navigate("/room/room-id");
         }
       } else {
         // Chuyển về trang login khi đăng nhập không thành công
