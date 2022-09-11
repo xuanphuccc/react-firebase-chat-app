@@ -20,7 +20,7 @@ function useFirestore(collectionName, condition) {
         return;
       }
     }
-    console.log("useFirestore");
+    console.log("useFirestore: ", collectionName);
 
     let collectionRef = collection(db, collectionName);
 
@@ -62,7 +62,7 @@ function useFirestore(collectionName, condition) {
 
     // Cleanup function
     return () => {
-      console.log("Clean up useFirestore");
+      console.log("Clean up useFirestore: ", collectionName);
       unsubscribe();
     };
   }, [collectionName, condition]);

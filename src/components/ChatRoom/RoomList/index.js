@@ -25,7 +25,7 @@ function RoomList() {
         {rooms.map((room) => (
           <Link
             key={room.id}
-            to={"/chat-window"}
+            to={`/room/${room.id}`}
             className={cx("text-decor-none")}
           >
             <li
@@ -42,6 +42,7 @@ function RoomList() {
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
+                <p className={cx("room-desc")}>Bạn: Xin chào cả nhà</p>
               </div>
             </li>
           </Link>

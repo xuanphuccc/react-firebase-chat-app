@@ -10,13 +10,13 @@ import {
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 
 import { addDocument } from "../../../firebase/service";
+import useFirestore from "../../../hooks/useFirestore";
 
-import EmptyRoom from "../EmptyRoom";
 import Message from "../Message";
 import InviteMemberModal from "../../Modals/InviteMemberModal";
 import RoomControlsModal from "../../Modals/RoomControlsModal";
@@ -26,13 +26,11 @@ import placeHolderImg from "../../../assets/images/user.png";
 
 const cx = classNames.bind(styles);
 
-function ChatWindow() {
+function ChatWindow({ roomId }) {
   const {
-    selectedRoom,
-    selectedRoomId,
+    rooms,
     setSelectedRoomId,
     setIsInviteMemberVisible,
-    messages,
     isMobile,
     handleRoomMenuVisible,
   } = useContext(AppContext);
@@ -41,8 +39,6 @@ function ChatWindow() {
   const [messageId, setMessageId] = useState("");
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
-
-  // const navigate = useNavigate();
 
   const inputRef = useRef();
   const mesListRef = useRef();
@@ -68,7 +64,7 @@ function ChatWindow() {
         behavior: "instant",
       });
     }
-  }, [messageId, selectedRoomId]);
+  }, [messageId, roomId]);
 
   // useEffect(() => {
   //   if (LastMesListRef.current) {
@@ -88,7 +84,7 @@ function ChatWindow() {
         uid,
         photoURL,
         displayName,
-        roomId: selectedRoomId,
+        roomId: roomId,
       });
     }
 
@@ -104,6 +100,26 @@ function ChatWindow() {
       handleOnSubmit();
     }
   };
+
+  // HANDLE GET MESSAGES
+  // Lấy message của phòng được selected
+  const messagesCondition = useMemo(() => {
+    // Kiểm tra xem tin nhắn có roomId
+    // trùng với current roomId không
+    return {
+      fielName: "roomId",
+      operator: "==",
+      compareValue: roomId,
+    };
+  }, [roomId]);
+
+  const messages = useFirestore("messages", messagesCondition);
+
+  // Lấy ra phòng được selected
+  const selectedRoom = useMemo(
+    () => rooms.find((room) => room.id === roomId),
+    [rooms, roomId]
+  );
 
   // Phát âm báo mỗi lần có tin nhắn mới
   useEffect(() => {
@@ -121,7 +137,7 @@ function ChatWindow() {
 
   return (
     <>
-      {selectedRoom ? (
+      {selectedRoom && (
         <div className={cx("chat-window", { fixed: isMobile })}>
           {/*=========== Header ===========*/}
           <div className={cx("chat-window_header")}>
@@ -131,8 +147,6 @@ function ChatWindow() {
                 <Link to={"/room-list"}>
                   <button
                     onClick={() => {
-                      // Chuyển về room-list
-                      // navigate("/room-list");
                       // Bỏ active room
                       setSelectedRoomId("");
                     }}
@@ -154,6 +168,7 @@ function ChatWindow() {
                 <h4 className={cx("chat-window_header-name")}>
                   {selectedRoom.name}
                 </h4>
+                <p className={cx("chat-desc")}>Đang hoạt động</p>
               </div>
             </div>
 
@@ -184,9 +199,9 @@ function ChatWindow() {
           {/*=========== Message List ===========*/}
 
           <div ref={mesListRef} className={cx("message-list")}>
-            {messages.map((message, index) => (
+            {messages.map((message) => (
               <Message
-                key={index}
+                key={message.id}
                 content={message.text}
                 displayName={message.displayName}
                 createAt={message.createAt}
@@ -218,11 +233,9 @@ function ChatWindow() {
             </button>
           </div>
         </div>
-      ) : (
-        <EmptyRoom />
       )}
     </>
   );
 }
 
-export default ChatWindow;
+export default memo(ChatWindow);

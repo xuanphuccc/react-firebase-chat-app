@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
-function DesktopLayout() {
+function MobileLayout() {
   return (
     <div className={cx("wrapper")}>
       <Outlet />
@@ -13,4 +13,4 @@ function DesktopLayout() {
   );
 }
 
-export default DesktopLayout;
+export default MobileLayout;

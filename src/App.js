@@ -1,28 +1,35 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
-import AuthProvider from "./Context/AuthProvider";
-import AppProvider from "./Context/AppProvider";
+import { useContext } from "react";
+import { Route, Routes } from "react-router-dom";
+
+import { AppContext } from "./Context/AppProvider";
+
 import Login from "./components/Login";
 import ChatRoom from "./components/ChatRoom";
 import Sidebar from "./components/ChatRoom/Sidebar";
 import ChatWindow from "./components/ChatRoom/ChatWindow";
+import EmptyRoom from "./components/ChatRoom/EmptyRoom";
 import "./App.css";
 
 function App() {
+  const { rooms } = useContext(AppContext);
+
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<ChatRoom />}>
-              <Route path="room-list" index element={<Sidebar />} />
-              <Route path="chat-window" element={<ChatWindow />} />
-              <Route path="*" element={<Sidebar />} />
-            </Route>
-          </Routes>
-        </AppProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/room" element={<ChatRoom />}>
+        {rooms.map((room) => (
+          <Route
+            path={room.id}
+            element={<ChatWindow roomId={room.id} />}
+            key={room.id}
+          />
+        ))}
+        <Route path="*" element={<EmptyRoom />} />
+      </Route>
+      <Route path="/room-list" element={<Sidebar />} />
+      <Route path="*" element={<EmptyRoom />} />
+    </Routes>
   );
 }
 

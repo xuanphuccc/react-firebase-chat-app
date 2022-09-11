@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 import styles from "./DesktopLayout.module.scss";
 
+import { Outlet } from "react-router-dom";
+
 import Sidebar from "../Sidebar";
 import ChatWindow from "../ChatWindow";
 
@@ -13,7 +15,8 @@ function DesktopLayout() {
         <Sidebar />
       </div>
       <div className={cx("chat-window")}>
-        <ChatWindow />
+        {/* <ChatWindow /> */}
+        <Outlet />
       </div>
     </div>
   );

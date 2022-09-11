@@ -29,8 +29,8 @@
 }
 
 .room_img {
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
   object-fit: cover;
 }
@@ -38,13 +38,20 @@
 .room-info {
   flex: 1;
   height: 100%;
+  margin-left: 12px;
 }
 
 .room_name {
   font-size: 15px;
   font-weight: 600;
   color: #333;
-  margin-left: 12px;
+}
+
+.room-desc {
+  font-size: 12px;
+  color: #65676b;
+  font-weight: 300;
+  margin-top: 6px;
 }
 
 .text-decor-none {

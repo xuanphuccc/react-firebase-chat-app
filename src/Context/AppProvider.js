@@ -75,7 +75,7 @@ function AppProvider({ children }) {
 
   // Lấy danh sách users trong phòng chat
   const usersCondition = useMemo(() => {
-    // uid có nằm trong mảng members của selectedRoom không
+    // Tìm các users có uid có nằm trong mảng members của selectedRoom
     return {
       fielName: "uid",
       operator: "in",
@@ -86,18 +86,18 @@ function AppProvider({ children }) {
 
   const members = useFirestore("users", usersCondition);
 
-  // Lấy message của phòng được selected
-  const messagesCondition = useMemo(() => {
-    // Kiểm tra xem tin nhắn có roomId
-    // trùng với selectedRoomId không
-    return {
-      fielName: "roomId",
-      operator: "==",
-      compareValue: selectedRoomId,
-    };
-  }, [selectedRoomId]);
+  // // Lấy message của phòng được selected
+  // const messagesCondition = useMemo(() => {
+  //   // Kiểm tra xem tin nhắn có roomId
+  //   // trùng với selectedRoomId không
+  //   return {
+  //     fielName: "roomId",
+  //     operator: "==",
+  //     compareValue: selectedRoomId,
+  //   };
+  // }, [selectedRoomId]);
 
-  const messages = useFirestore("messages", messagesCondition);
+  // const messages = useFirestore("messages", messagesCondition);
 
   // Xử lý responsive
   const viewport = useViewport();
@@ -119,7 +119,7 @@ function AppProvider({ children }) {
       value={{
         rooms,
         members,
-        messages,
+        // messages,
         isAddRoomVisible,
         setIsAddRoomVisible,
         isJoinRoomVisible,
