@@ -135,9 +135,10 @@ function ChatWindow({ roomId }) {
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {
     let newMessages = [...messages];
-    if (newMessages) {
+    if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
         if (i === 0) {
+          console.log("inner messages 0000: ", newMessages[i].uid);
           if (newMessages[i].uid === newMessages[i + 1].uid) {
             newMessages[i].type = "first-message";
           } else newMessages[i].type = "default";
@@ -160,8 +161,17 @@ function ChatWindow({ roomId }) {
           }
         }
       }
+    } else if (newMessages.length === 2) {
+      if (newMessages[0].uid === newMessages[1].uid) {
+        newMessages[0].type = "first-message";
+        newMessages[1].type = "last-message";
+      } else {
+        newMessages[0].type = "default";
+        newMessages[1].type = "default";
+      }
+    } else {
+      newMessages[0].type = "default";
     }
-
     return newMessages;
   }, [messages]);
 
