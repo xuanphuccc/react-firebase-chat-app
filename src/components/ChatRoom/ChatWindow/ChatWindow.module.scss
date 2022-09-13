@@ -107,6 +107,7 @@
 /* Message form */
 .message-form {
   display: flex;
+  align-items: center;
   background-color: #fff;
   padding: 8px 24px;
 }
@@ -127,11 +128,24 @@
   outline: none;
   border-radius: 999px;
   font-size: 16px;
-  padding: 8px 12px;
+  padding: 9px 12px;
   caret-color: var(--primary);
   flex: 1;
 }
 
+.button-wrap {
+  width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .message-form_btn {
-  margin-left: 8px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--primary);
 }

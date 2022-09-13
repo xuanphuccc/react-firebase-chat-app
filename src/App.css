@@ -56,7 +56,7 @@ button {
   font-family: "Be Vietnam Pro", sans-serif;
 }
 .btn:hover {
-  background-color: rgba(22, 24, 35, 0.03);
+  background-color: #f3f3f5;
 }
 
 .btn.primary {

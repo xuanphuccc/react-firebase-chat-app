@@ -94,6 +94,23 @@ function ChatWindow({ roomId }) {
     // handleScroll();
   };
 
+  const handleSendIcon = (value) => {
+    if (value) {
+      addDocument("messages", {
+        text: value,
+        uid,
+        photoURL,
+        displayName,
+        roomId: roomId,
+      });
+    }
+
+    // Clear input and focus
+    setInputValue("");
+    inputRef.current.focus();
+    // handleScroll();
+  };
+
   // Xử lý sự kiện nhấn nút Enter vào input
   const handleKeyUp = (e) => {
     if (e.key === "Enter") {
@@ -258,12 +275,25 @@ function ChatWindow({ roomId }) {
               onKeyUp={handleKeyUp}
             />
 
-            <button
-              onClick={handleOnSubmit}
-              className={cx("message-form_btn", "btn", "rounded", "primary")}
-            >
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
+            <div className={cx("button-wrap")}>
+              {inputValue.trim() ? (
+                <button
+                  onClick={handleOnSubmit}
+                  className={cx("message-form_btn", "btn", "rounded")}
+                >
+                  <FontAwesomeIcon icon={faPaperPlane} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    handleSendIcon("😂");
+                  }}
+                  className={cx("message-form_btn", "btn", "rounded")}
+                >
+                  😂
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
