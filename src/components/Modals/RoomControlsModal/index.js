@@ -28,7 +28,7 @@ import BasicModal from "../BasicModal";
 
 const cx = classNames.bind(styles);
 
-function RoomControlsModal({ children }) {
+function RoomControlsModal({ children, messages }) {
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
   const [isOnlyAdmin, setIsOnlyAdmin] = useState(false);
@@ -39,7 +39,6 @@ function RoomControlsModal({ children }) {
     selectedRoom,
     selectedRoomId,
     members,
-    messages,
     isRoomMenuVisible,
     setIsRoomMenuVisible,
     handleRoomMenuVisible,
@@ -92,7 +91,7 @@ function RoomControlsModal({ children }) {
   // Xử lý xóa phòng hiện tại
   // và toàn bộ tin nhắn của phòng
   const handleDeleteRoom = () => {
-    if (admins.includes(uid)) {
+    if (admins.includes(uid) && messages) {
       // Xóa toàn bộ tin nhắn của phòng bị xóa
       messages.forEach((message) => {
         deleteDoc(doc(db, "messages", message.id));

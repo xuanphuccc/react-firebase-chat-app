@@ -137,7 +137,6 @@ function ChatWindow({ roomId }) {
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
         if (i === 0) {
-          console.log("inner messages 0000: ", newMessages[i].uid);
           if (newMessages[i].uid === newMessages[i + 1].uid) {
             newMessages[i].type = "first-message";
           } else newMessages[i].type = "default";
@@ -168,7 +167,7 @@ function ChatWindow({ roomId }) {
         newMessages[0].type = "default";
         newMessages[1].type = "default";
       }
-    } else {
+    } else if (newMessages.length === 1) {
       newMessages[0].type = "default";
     }
     return newMessages;
@@ -244,7 +243,7 @@ function ChatWindow({ roomId }) {
               <InviteMemberModal />
 
               {/* Room Controls Modal */}
-              <RoomControlsModal>
+              <RoomControlsModal messages={messages}>
                 <i
                   onClick={handleRoomMenuVisible}
                   className={cx("header-user_icon")}
@@ -292,7 +291,10 @@ function ChatWindow({ roomId }) {
                   onClick={handleOnSubmit}
                   className={cx("message-form_btn", "btn", "rounded")}
                 >
-                  <FontAwesomeIcon icon={faPaperPlane} />
+                  <FontAwesomeIcon
+                    className={cx("form-btn-icon")}
+                    icon={faPaperPlane}
+                  />
                 </button>
               ) : (
                 <button
