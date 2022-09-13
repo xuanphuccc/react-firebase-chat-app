@@ -91,7 +91,6 @@ function ChatWindow({ roomId }) {
     // Clear input and focus
     setInputValue("");
     inputRef.current.focus();
-    // handleScroll();
   };
 
   const handleSendIcon = (value) => {
