@@ -8,11 +8,11 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const cx = classNames.bind(styles);
 
-function Message({ content, displayName, createAt, photoURL, userId }) {
+function Message({ content, displayName, createAt, photoURL, userId, type }) {
   const { uid } = useContext(AuthContext);
 
   // Kiểm tra tin nhắn là nhận hay gửi
-  const isReceivedMsg = userId === uid;
+  const isSentMsg = userId === uid;
 
   // Định dạng lại ngày tháng
   const formatMessageDate = (createAt) => {
@@ -34,52 +34,59 @@ function Message({ content, displayName, createAt, photoURL, userId }) {
       time.day = messageTime.getDay();
     }
 
-    let timeDayOfWeek = "Thứ hai";
-    switch (time.day) {
-      case 2:
-        timeDayOfWeek = "Thứ ba";
-        break;
-      case 3:
-        timeDayOfWeek = "Thứ tư";
-        break;
-      case 4:
-        timeDayOfWeek = "Thứ năm";
-        break;
-      case 5:
-        timeDayOfWeek = "Thứ sáu";
-        break;
-      case 6:
-        timeDayOfWeek = "Thứ bảy";
-        break;
-      case 0:
-        timeDayOfWeek = "CN";
-        break;
+    // let timeDayOfWeek = "Thứ hai";
+    // switch (time.day) {
+    //   case 2:
+    //     timeDayOfWeek = "Thứ ba";
+    //     break;
+    //   case 3:
+    //     timeDayOfWeek = "Thứ tư";
+    //     break;
+    //   case 4:
+    //     timeDayOfWeek = "Thứ năm";
+    //     break;
+    //   case 5:
+    //     timeDayOfWeek = "Thứ sáu";
+    //     break;
+    //   case 6:
+    //     timeDayOfWeek = "Thứ bảy";
+    //     break;
+    //   case 0:
+    //     timeDayOfWeek = "CN";
+    //     break;
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
 
-    let YearMonthDate = `${timeDayOfWeek}, ${time.date}/${time.month}/${time.year}`;
+    let YearMonthDate = `${time.date} Tháng ${time.month}, ${time.year}`;
     const currentTime = new Date();
     if (
       time.year === currentTime.getFullYear() &&
       time.month === currentTime.getMonth() + 1 &&
       time.date === currentTime.getDate()
     ) {
-      YearMonthDate = "Hôm nay,";
+      YearMonthDate = "";
     }
 
     const hoursMinutes = `${time.hours < 10 ? `0${time.hours}` : time.hours}:${
       time.minutes < 10 ? `0${time.minutes}` : time.minutes
     }`;
-    return `${YearMonthDate} ${hoursMinutes}`;
+    return `${hoursMinutes} ${YearMonthDate}`;
   };
 
   return (
-    <div className={cx("wrapper", { received: isReceivedMsg })}>
+    <div
+      className={cx("wrapper", {
+        sent: isSentMsg,
+        received: !isSentMsg,
+        [type]: type,
+      })}
+    >
       <img className={cx("user-img")} src={photoURL} alt="" />
       <Tippy
         placement="top"
+        delay={[400, 250]}
         content={
           <div>
             <p className={cx("time")}>{formatMessageDate(createAt)}</p>
@@ -88,7 +95,7 @@ function Message({ content, displayName, createAt, photoURL, userId }) {
       >
         <div className={cx("content")}>
           <h4 className={cx("user-name")}>{displayName}</h4>
-          <p className={cx("text")}>{content}</p>
+          <p className={cx("text", { [type]: type })}>{content}</p>
         </div>
       </Tippy>
     </div>

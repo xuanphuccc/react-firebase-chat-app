@@ -4,7 +4,7 @@
   margin: 16px 12px 0;
 }
 
-.wrapper.received {
+.wrapper.sent {
   .user-img {
     display: none;
   }
@@ -15,7 +15,81 @@
     background-color: var(--primary);
     color: #fff;
   }
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+// Xử lý tin nhắn liên tục của 1 người dùng
+// Gửi tin nhắn
+.wrapper.sent {
+  &.first-message {
+    .text {
+      border-radius: 20px 20px 6px 20px;
+    }
+  }
+
+  &.middle-message {
+    .text {
+      border-radius: 20px 6px 6px 20px;
+    }
+  }
+
+  &.last-message {
+    .text {
+      border-radius: 20px 6px 20px 20px;
+    }
+  }
+
+  &.middle-message,
+  &.last-message {
+    margin: 2px 12px 0;
+  }
+}
+
+// Nhận tin nhắn
+.wrapper.received {
+  &.first-message {
+    .user-img {
+      display: none;
+    }
+
+    .text {
+      border-radius: 20px 20px 20px 6px;
+    }
+  }
+
+  &.middle-message {
+    .user-img {
+      display: none;
+    }
+
+    .user-name {
+      display: none;
+    }
+
+    .text {
+      border-radius: 6px 20px 20px 6px;
+    }
+  }
+
+  &.last-message {
+    .user-name {
+      display: none;
+    }
+
+    .text {
+      border-radius: 6px 20px 20px 20px;
+    }
+  }
+
+  &.middle-message,
+  &.last-message {
+    margin: 2px 12px 0;
+  }
+
+  &.first-message,
+  &.middle-message {
+    margin-left: 40px;
+  }
 }
 
 .user-img {
@@ -26,11 +100,11 @@
 }
 
 .time {
-  min-width: 100px;
   min-height: 24px;
   background-color: rgba(0, 0, 0, 0.8);
+  font-size: 12px;
   color: #fff;
-  padding: 4px 8px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-weight: 200;
 }

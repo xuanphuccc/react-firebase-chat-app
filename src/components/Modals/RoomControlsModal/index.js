@@ -21,6 +21,7 @@ import {
   deleteDoc,
   arrayUnion,
 } from "firebase/firestore";
+
 import { db } from "../../../firebase/config";
 
 import BasicModal from "../BasicModal";
@@ -42,6 +43,7 @@ function RoomControlsModal({ children }) {
     isRoomMenuVisible,
     setIsRoomMenuVisible,
     handleRoomMenuVisible,
+    isMobile,
   } = useContext(AppContext);
 
   const { uid } = useContext(AuthContext);
@@ -68,7 +70,9 @@ function RoomControlsModal({ children }) {
       console.log("Leave Room!");
 
       // Chuyển về sidebar (mobile)
-      navigate("/room-list");
+      if (isMobile) {
+        navigate("/room-list");
+      } else navigate("/room/room-id");
     }
   };
 
@@ -98,7 +102,9 @@ function RoomControlsModal({ children }) {
       deleteDoc(doc(db, "rooms", selectedRoomId));
 
       // Chuyển về sidebar (mobile)
-      navigate("/room-list");
+      if (isMobile) {
+        navigate("/room-list");
+      } else navigate("/room/room-id");
     }
   };
 

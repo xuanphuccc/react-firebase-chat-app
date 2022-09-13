@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 
 // import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1q6CnSceA_lpePw1k4yc4vHywd7p2QDQ",
@@ -23,7 +23,9 @@ const auth = getAuth(app); // OK
 const db = getFirestore(app); // OK
 
 // Chuyển sang Firebase emulator trên localhost
-// connectAuthEmulator(auth, "http://localhost:9099");
-// connectFirestoreEmulator(db, "localhost", 8080);
+if (window.location.hostname === "localhost") {
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+}
 
 export { auth, db };

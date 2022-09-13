@@ -36,7 +36,7 @@ function ChatWindow({ roomId }) {
   } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
-  const [messageId, setMessageId] = useState("");
+  const [currentMessage, setCurrentMessage] = useState("");
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
 
@@ -64,7 +64,7 @@ function ChatWindow({ roomId }) {
         behavior: "instant",
       });
     }
-  }, [messageId, roomId]);
+  }, [currentMessage.id, roomId]);
 
   // useEffect(() => {
   //   if (LastMesListRef.current) {
@@ -74,7 +74,7 @@ function ChatWindow({ roomId }) {
   //       inline: "nearest",
   //     });
   //   }
-  // }, [messageId]);
+  // }, [currentMessage.id]);
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
@@ -115,6 +115,37 @@ function ChatWindow({ roomId }) {
 
   const messages = useFirestore("messages", messagesCondition);
 
+  // Xử lý các tin nhắn liền kề cùng 1 người gửi
+  const sideBySideMessages = useMemo(() => {
+    let newMessages = [...messages];
+    for (let i = 0; i < newMessages.length; i++) {
+      if (i === 0) {
+        if (newMessages[i].uid === newMessages[i + 1].uid) {
+          newMessages[i].type = "first-message";
+        } else newMessages[i].type = "default";
+      } else if (i === newMessages.length - 1) {
+        if (newMessages[i].uid === newMessages[i - 1].uid) {
+          newMessages[i].type = "last-message";
+        } else newMessages[i].type = "default";
+      } else {
+        if (
+          newMessages[i].uid === newMessages[i + 1].uid &&
+          newMessages[i].uid === newMessages[i - 1].uid
+        ) {
+          newMessages[i].type = "middle-message";
+        } else if (newMessages[i].uid === newMessages[i + 1].uid) {
+          newMessages[i].type = "first-message";
+        } else if (newMessages[i].uid === newMessages[i - 1].uid) {
+          newMessages[i].type = "last-message";
+        } else {
+          newMessages[i].type = "default";
+        }
+      }
+    }
+
+    return newMessages;
+  }, [messages]);
+
   // Lấy ra phòng được selected
   const selectedRoom = useMemo(
     () => rooms.find((room) => room.id === roomId),
@@ -125,7 +156,7 @@ function ChatWindow({ roomId }) {
   useEffect(() => {
     if (messages.length) {
       const messagesLength = messages.length;
-      setMessageId(messages[messagesLength - 1].id);
+      setCurrentMessage(messages[messagesLength - 1]);
     }
   }, [messages]);
 
@@ -133,7 +164,7 @@ function ChatWindow({ roomId }) {
     const audio = new Audio(messageSound);
     audio.volume = 0.5;
     audio.play();
-  }, [messageId]);
+  }, [currentMessage.id]);
 
   return (
     <>
@@ -199,7 +230,7 @@ function ChatWindow({ roomId }) {
           {/*=========== Message List ===========*/}
 
           <div ref={mesListRef} className={cx("message-list")}>
-            {messages.map((message) => (
+            {sideBySideMessages.map((message) => (
               <Message
                 key={message.id}
                 content={message.text}
@@ -207,6 +238,7 @@ function ChatWindow({ roomId }) {
                 createAt={message.createAt}
                 photoURL={message.photoURL}
                 userId={message.uid}
+                type={message.type}
               />
             ))}
 
@@ -225,6 +257,7 @@ function ChatWindow({ roomId }) {
               onChange={handleInputChange}
               onKeyUp={handleKeyUp}
             />
+
             <button
               onClick={handleOnSubmit}
               className={cx("message-form_btn", "btn", "rounded", "primary")}

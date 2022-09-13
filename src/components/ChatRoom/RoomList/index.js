@@ -42,7 +42,7 @@ function RoomList() {
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
-                <p className={cx("room-desc")}>Bạn: Xin chào cả nhà</p>
+                <p className={cx("room-desc")}>Bạn: Hello</p>
               </div>
             </li>
           </Link>
