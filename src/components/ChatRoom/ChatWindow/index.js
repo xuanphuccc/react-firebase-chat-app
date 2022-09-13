@@ -135,27 +135,29 @@ function ChatWindow({ roomId }) {
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {
     let newMessages = [...messages];
-    for (let i = 0; i < newMessages.length; i++) {
-      if (i === 0) {
-        if (newMessages[i].uid === newMessages[i + 1].uid) {
-          newMessages[i].type = "first-message";
-        } else newMessages[i].type = "default";
-      } else if (i === newMessages.length - 1) {
-        if (newMessages[i].uid === newMessages[i - 1].uid) {
-          newMessages[i].type = "last-message";
-        } else newMessages[i].type = "default";
-      } else {
-        if (
-          newMessages[i].uid === newMessages[i + 1].uid &&
-          newMessages[i].uid === newMessages[i - 1].uid
-        ) {
-          newMessages[i].type = "middle-message";
-        } else if (newMessages[i].uid === newMessages[i + 1].uid) {
-          newMessages[i].type = "first-message";
-        } else if (newMessages[i].uid === newMessages[i - 1].uid) {
-          newMessages[i].type = "last-message";
+    if (newMessages) {
+      for (let i = 0; i < newMessages.length; i++) {
+        if (i === 0) {
+          if (newMessages[i].uid === newMessages[i + 1].uid) {
+            newMessages[i].type = "first-message";
+          } else newMessages[i].type = "default";
+        } else if (i === newMessages.length - 1) {
+          if (newMessages[i].uid === newMessages[i - 1].uid) {
+            newMessages[i].type = "last-message";
+          } else newMessages[i].type = "default";
         } else {
-          newMessages[i].type = "default";
+          if (
+            newMessages[i].uid === newMessages[i + 1].uid &&
+            newMessages[i].uid === newMessages[i - 1].uid
+          ) {
+            newMessages[i].type = "middle-message";
+          } else if (newMessages[i].uid === newMessages[i + 1].uid) {
+            newMessages[i].type = "first-message";
+          } else if (newMessages[i].uid === newMessages[i - 1].uid) {
+            newMessages[i].type = "last-message";
+          } else {
+            newMessages[i].type = "default";
+          }
         }
       }
     }
