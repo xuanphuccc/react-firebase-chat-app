@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 function useFirestore(collectionName, condition) {
   const [documents, setDocuments] = useState([]);
 
+  console.log("CHẠY USE FIRE STORE!!", collectionName, condition);
+
   // Lấy dữ liệu người dùng mỗi khi thêm vào database
   // Realtime database
   useEffect(() => {
@@ -30,7 +32,7 @@ function useFirestore(collectionName, condition) {
       orderBy("createAt")
     );
 
-    // onSnapshot hoạt động giống useState
+    // onSnapshot
     // mỗi lần dữ liệu trong database được thay đổi thì nó
     // sẽ thực hiện cập nhật dữ liệu cho snapshot
     const unsubscribe = onSnapshot(
@@ -38,7 +40,7 @@ function useFirestore(collectionName, condition) {
       (snapshot) => {
         // Respond to data
         // ...
-
+        console.log("SNAPSHOT THAY ĐỔI");
         // Lặp qua snapshot để lấy mảng dữ liệu
         const documents = snapshot.docs.map((doc) => {
           let data = doc.data();

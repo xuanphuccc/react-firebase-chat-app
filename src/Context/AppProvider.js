@@ -11,6 +11,8 @@ const AppContext = createContext();
 // Có nhiệm vụ truyền context khi lấy được data
 // từ câu truy vấn đến realtime database
 function AppProvider({ children }) {
+  console.log("CHẠY APP CONTEXT");
+
   // Set trạng thái hiển thị cho modal Add Room
   const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
 
@@ -47,7 +49,7 @@ function AppProvider({ children }) {
   // 1 dữ liệu mới nên sẽ tạo nên vòng lặp vô hạn
   // nên cần phải cho vào useMemo
   const roomsCondition = useMemo(() => {
-    // Tìm trong trường members có chứa uid không
+    // Tìm tất cả rooms có trường members chứa uid không
     return {
       fielName: "members",
       operator: "array-contains",
@@ -85,19 +87,6 @@ function AppProvider({ children }) {
   }, [roomMembers.members]);
 
   const members = useFirestore("users", usersCondition);
-
-  // // Lấy message của phòng được selected
-  // const messagesCondition = useMemo(() => {
-  //   // Kiểm tra xem tin nhắn có roomId
-  //   // trùng với selectedRoomId không
-  //   return {
-  //     fielName: "roomId",
-  //     operator: "==",
-  //     compareValue: selectedRoomId,
-  //   };
-  // }, [selectedRoomId]);
-
-  // const messages = useFirestore("messages", messagesCondition);
 
   // Xử lý responsive
   const viewport = useViewport();

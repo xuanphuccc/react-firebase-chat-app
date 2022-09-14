@@ -44,6 +44,8 @@ function ChatWindow({ roomId }) {
   const mesListRef = useRef();
   const LastMesListRef = useRef();
 
+  console.log("CHẠY LẠI CHAT WINDOW");
+
   // Hàm xử lý mở modal Invite Member
   const handleInviteMemberModal = () => {
     setIsInviteMemberVisible(true);
@@ -103,11 +105,6 @@ function ChatWindow({ roomId }) {
         roomId: roomId,
       });
     }
-
-    // Clear input and focus
-    setInputValue("");
-    inputRef.current.focus();
-    // handleScroll();
   };
 
   // Xử lý sự kiện nhấn nút Enter vào input
@@ -120,8 +117,8 @@ function ChatWindow({ roomId }) {
   // HANDLE GET MESSAGES
   // Lấy message của phòng được selected
   const messagesCondition = useMemo(() => {
-    // Kiểm tra xem tin nhắn có roomId
-    // trùng với current roomId không
+    // Lấy các tin nhắn có roomId
+    // trùng với current roomId
     return {
       fielName: "roomId",
       operator: "==",
@@ -130,6 +127,9 @@ function ChatWindow({ roomId }) {
   }, [roomId]);
 
   const messages = useFirestore("messages", messagesCondition);
+  useEffect(() => {
+    console.log("Messages thay đổi!");
+  }, [messages]);
 
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {

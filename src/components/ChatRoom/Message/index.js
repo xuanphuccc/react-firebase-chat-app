@@ -59,20 +59,20 @@ function Message({ content, displayName, createAt, photoURL, userId, type }) {
     //     break;
     // }
 
-    let YearMonthDate = `${time.date} Tháng ${time.month}, ${time.year}`;
+    let yearMonthDate = `${time.date} Tháng ${time.month}, ${time.year}`;
     const currentTime = new Date();
     if (
       time.year === currentTime.getFullYear() &&
       time.month === currentTime.getMonth() + 1 &&
       time.date === currentTime.getDate()
     ) {
-      YearMonthDate = "";
+      yearMonthDate = "";
     }
 
     const hoursMinutes = `${time.hours < 10 ? `0${time.hours}` : time.hours}:${
       time.minutes < 10 ? `0${time.minutes}` : time.minutes
     }`;
-    return `${hoursMinutes} ${YearMonthDate}`;
+    return `${hoursMinutes} ${yearMonthDate}`;
   };
 
   return (
