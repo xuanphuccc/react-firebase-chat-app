@@ -3,13 +3,30 @@ import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Context/AuthProvider";
+
+import ReactionsControl from "../ReactionsControl";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
+import ReactionsIcon from "../ReactionsIcon";
 
 const cx = classNames.bind(styles);
 
-function Message({ content, displayName, createAt, photoURL, userId, type }) {
+function Message({
+  id,
+  content,
+  displayName,
+  createAt,
+  photoURL,
+  userId,
+  type,
+  reactions,
+}) {
   const { uid } = useContext(AuthContext);
+
+  const [isHasIcon, setIsHasIcon] = useState(false);
 
   // Kiểm tra tin nhắn là nhận hay gửi
   const isSentMsg = userId === uid;
@@ -75,29 +92,53 @@ function Message({ content, displayName, createAt, photoURL, userId, type }) {
     return `${hoursMinutes} ${yearMonthDate}`;
   };
 
+  useEffect(() => {
+    for (let type in reactions) {
+      if (reactions[type].length >= 1) {
+        setIsHasIcon(true);
+      }
+    }
+  }, [reactions]);
+
   return (
     <div
       className={cx("wrapper", {
         sent: isSentMsg,
         received: !isSentMsg,
         [type]: type,
+        isHasIcon: isHasIcon,
       })}
     >
       <img className={cx("user-img")} src={photoURL} alt="" />
-      <Tippy
-        placement="top"
-        delay={[400, 250]}
-        content={
-          <div>
-            <p className={cx("time")}>{formatMessageDate(createAt)}</p>
-          </div>
-        }
-      >
-        <div className={cx("content")}>
-          <h4 className={cx("user-name")}>{displayName}</h4>
-          <p className={cx("text", { [type]: type })}>{content}</p>
+
+      <div className={cx("content")}>
+        <h4 className={cx("user-name")}>{displayName}</h4>
+        <div className={cx("text-wrap")}>
+          <Tippy
+            placement="top"
+            delay={[400, 250]}
+            content={
+              <div>
+                <p className={cx("time")}>{formatMessageDate(createAt)}</p>
+              </div>
+            }
+          >
+            <div className={cx("text", { [type]: type })}>
+              {content}
+              {isHasIcon && <ReactionsIcon reactions={reactions} />}
+            </div>
+          </Tippy>
+          <Tippy
+            interactive="true"
+            trigger="click"
+            content={<ReactionsControl id={id} />}
+          >
+            <button className={cx("reaction-btn")}>
+              <FontAwesomeIcon icon={faFaceSmile} />
+            </button>
+          </Tippy>
         </div>
-      </Tippy>
+      </div>
     </div>
   );
 }

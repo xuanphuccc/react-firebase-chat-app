@@ -1,0 +1,32 @@
+.wrapper {
+  position: absolute;
+  top: 32px;
+  right: 12px;
+  z-index: 99;
+}
+
+.reaction-icons {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 2px 2px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+
+  + .icon {
+    margin-left: 1px;
+  }
+}
+
+.icons-count {
+  font-size: 12px;
+  font-weight: 300;
+  color: #888;
+  margin: 0 4px;
+}

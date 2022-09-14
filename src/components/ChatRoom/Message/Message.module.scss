@@ -43,6 +43,10 @@
   &.last-message {
     margin: 2px 12px 0;
   }
+
+  .text-wrap {
+    flex-direction: row-reverse;
+  }
 }
 
 // Nhận tin nhắn
@@ -122,7 +126,14 @@
   margin-bottom: 4px;
 }
 
+.text-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
 .text {
+  position: relative;
   display: inline-block;
   background-color: #e4e6eb;
   border-radius: 20px;
@@ -131,6 +142,36 @@
   color: #333;
   transform-origin: 0 50%;
   animation: popup 0.2s ease forwards;
+}
+
+.wrapper.isHasIcon {
+  .text {
+    margin-bottom: 20px;
+  }
+}
+
+.reaction-btn {
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: 16px;
+  margin: 0 4px;
+  padding: 6px;
+  border-radius: 20px;
+  color: #aaa;
+  background-color: transparent;
+  display: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e4e6eb;
+    color: #888;
+  }
+}
+
+.wrapper:hover .reaction-btn {
+  display: flex;
 }
 
 @keyframes popup {

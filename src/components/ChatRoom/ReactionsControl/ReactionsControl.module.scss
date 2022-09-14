@@ -1,0 +1,29 @@
+.wrapper {
+  background-color: transparent;
+  padding: 8px 14px;
+  background-color: #fff;
+  border-radius: 50px;
+  box-shadow: -4px 4px 18px rgba(0, 0, 0, 0.2);
+}
+
+.reactions {
+  display: flex;
+}
+
+.item {
+  width: 32px;
+  height: 32px;
+  transform: scale(1);
+  transition: transform 0.1s ease;
+
+  + .item {
+    margin-left: 6px;
+  }
+
+  &:hover {
+    transition: all 1 ease;
+
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}

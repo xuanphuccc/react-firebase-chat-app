@@ -193,6 +193,25 @@ function ChatWindow({ roomId }) {
     audio.play();
   }, [currentMessage.id]);
 
+  useEffect(() => {
+    if (messages) {
+      messages.forEach((message) => {
+        // const messageRef = doc(db, "messages", message.id);
+        // updateDoc(messageRef, {
+        //   reactions: {
+        //     heart: [],
+        //     haha: [],
+        //     wow: [],
+        //     angry: [],
+        //     sad: [],
+        //     like: [],
+        //   },
+        // });
+        // console.log("Message: ", message);
+      });
+    }
+  }, [messages]);
+
   return (
     <>
       {selectedRoom && (
@@ -260,12 +279,14 @@ function ChatWindow({ roomId }) {
             {sideBySideMessages.map((message) => (
               <Message
                 key={message.id}
+                id={message.id}
                 content={message.text}
                 displayName={message.displayName}
                 createAt={message.createAt}
                 photoURL={message.photoURL}
                 userId={message.uid}
                 type={message.type}
+                reactions={message.reactions}
               />
             ))}
 
