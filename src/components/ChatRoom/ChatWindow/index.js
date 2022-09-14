@@ -16,8 +16,6 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 import { addDocument } from "../../../firebase/service";
 import useFirestore from "../../../hooks/useFirestore";
-// import { doc, updateDoc } from "firebase/firestore";
-// import { db } from "../../../firebase/config";
 
 import Message from "../Message";
 import InviteMemberModal from "../../Modals/InviteMemberModal";
@@ -25,6 +23,7 @@ import RoomControlsModal from "../../Modals/RoomControlsModal";
 
 import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
+import hahaIcon from "../../../assets/images/minicon/haha.png";
 
 const cx = classNames.bind(styles);
 
@@ -195,25 +194,6 @@ function ChatWindow({ roomId }) {
     audio.play();
   }, [currentMessage.id]);
 
-  // useEffect(() => {
-  //   if (messages) {
-  //     messages.forEach((message) => {
-  //       const messageRef = doc(db, "messages", message.id);
-  //       updateDoc(messageRef, {
-  //         reactions: {
-  //           heart: [],
-  //           haha: [],
-  //           wow: [],
-  //           angry: [],
-  //           sad: [],
-  //           like: [],
-  //         },
-  //       });
-  //       // console.log("Message: ", message);
-  //     });
-  //   }
-  // }, [messages]);
-
   return (
     <>
       {selectedRoom && (
@@ -326,7 +306,7 @@ function ChatWindow({ roomId }) {
                   }}
                   className={cx("message-form_btn", "btn", "rounded")}
                 >
-                  😂
+                  <img className={cx("form-btn-image")} src={hahaIcon} alt="" />
                 </button>
               )}
             </div>

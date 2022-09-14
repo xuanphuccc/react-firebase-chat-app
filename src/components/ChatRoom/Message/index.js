@@ -51,31 +51,6 @@ function Message({
       time.day = messageTime.getDay();
     }
 
-    // let timeDayOfWeek = "Thứ hai";
-    // switch (time.day) {
-    //   case 2:
-    //     timeDayOfWeek = "Thứ ba";
-    //     break;
-    //   case 3:
-    //     timeDayOfWeek = "Thứ tư";
-    //     break;
-    //   case 4:
-    //     timeDayOfWeek = "Thứ năm";
-    //     break;
-    //   case 5:
-    //     timeDayOfWeek = "Thứ sáu";
-    //     break;
-    //   case 6:
-    //     timeDayOfWeek = "Thứ bảy";
-    //     break;
-    //   case 0:
-    //     timeDayOfWeek = "CN";
-    //     break;
-
-    //   default:
-    //     break;
-    // }
-
     let yearMonthDate = `${time.date} Tháng ${time.month}, ${time.year}`;
     const currentTime = new Date();
     if (
@@ -114,29 +89,30 @@ function Message({
       <div className={cx("content")}>
         <h4 className={cx("user-name")}>{displayName}</h4>
         <div className={cx("text-wrap")}>
-          <Tippy
-            placement="top"
-            delay={[400, 250]}
-            content={
-              <div>
-                <p className={cx("time")}>{formatMessageDate(createAt)}</p>
-              </div>
-            }
-          >
-            <div className={cx("text", { [type]: type })}>
-              {content}
-              {isHasIcon && <ReactionsIcon reactions={reactions} />}
-            </div>
-          </Tippy>
-          <Tippy
-            interactive="true"
-            trigger="click"
-            content={<ReactionsControl id={id} />}
-          >
-            <button className={cx("reaction-btn")}>
-              <FontAwesomeIcon icon={faFaceSmile} />
-            </button>
-          </Tippy>
+          <div className={cx("text", { [type]: type })}>
+            <Tippy
+              placement="top"
+              delay={[400, 250]}
+              content={
+                <div>
+                  <p className={cx("time")}>{formatMessageDate(createAt)}</p>
+                </div>
+              }
+            >
+              <p className={cx("text-inner")}>{content}</p>
+            </Tippy>
+            {isHasIcon && <ReactionsIcon reactions={reactions} />}
+
+            <Tippy
+              interactive="true"
+              trigger="click"
+              content={<ReactionsControl id={id} />}
+            >
+              <button className={cx("reaction-btn")}>
+                <FontAwesomeIcon icon={faFaceSmile} />
+              </button>
+            </Tippy>
+          </div>
         </div>
       </div>
     </div>
