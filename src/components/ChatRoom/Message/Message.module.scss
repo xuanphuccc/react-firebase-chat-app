@@ -99,6 +99,12 @@
   object-fit: cover;
 }
 
+.wrapper.isHasIcon {
+  .user-img {
+    margin-bottom: 20px;
+  }
+}
+
 .time {
   min-height: 24px;
   background-color: rgba(0, 0, 0, 0.8);
