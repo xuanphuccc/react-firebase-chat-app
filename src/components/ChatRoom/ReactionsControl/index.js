@@ -22,6 +22,24 @@ function ReactionsControl({ id, reactions }) {
 
   function handleReaction(type) {
     const messageRef = doc(db, "messages", id);
+
+    for (let reactionType in reactions) {
+      if (reactions[reactionType].includes(uid)) {
+        // Tìm vị trí UID trong mảng của reaction chứa UID
+        // rồi thực hiện xóa UID đó
+        let indexOfUid = reactions[reactionType].indexOf(uid);
+        reactions[reactionType].splice(indexOfUid);
+
+        updateDoc(messageRef, {
+          reactions: {
+            ...reactions,
+            [reactionType]: reactions[reactionType],
+          },
+        });
+      }
+    }
+
+    // Thêm UID vào 1 reaction mới
     updateDoc(messageRef, {
       reactions: {
         ...reactions,

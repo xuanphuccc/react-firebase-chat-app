@@ -23,55 +23,64 @@ function ReactionsIcon({ reactions }) {
   const [reactionsCount, setReactionsCount] = useState(0);
 
   useEffect(() => {
+    let totalReactionsCount = 0;
     for (let type in reactions) {
       //   console.log("REACTION TYPE: ", type, reactions[type]);
+      totalReactionsCount += reactions[type].length;
+
       switch (type) {
         case "heart":
           if (reactions[type].length >= 1) {
-            console.log("heart", reactions[type].length);
             setIsHeart(true);
-            setReactionsCount((prev) => prev + reactions[type].length);
+          } else {
+            setIsHeart(false);
           }
           break;
         case "haha":
           if (reactions[type].length >= 1) {
-            console.log("haha", reactions[type].length);
             setIsHaha(true);
-            setReactionsCount((prev) => prev + reactions[type].length);
+          } else {
+            setIsHaha(false);
           }
           break;
 
         case "wow":
           if (reactions[type].length >= 1) {
             setIsWow(true);
-            setReactionsCount((prev) => prev + reactions[type].length);
+          } else {
+            setIsWow(false);
           }
           break;
 
         case "sad":
           if (reactions[type].length >= 1) {
             setIsSad(true);
-            setReactionsCount((prev) => prev + reactions[type].length);
+          } else {
+            setIsSad(false);
           }
           break;
 
         case "angry":
           if (reactions[type].length >= 1) {
             setIsAngry(true);
-            setReactionsCount((prev) => prev + reactions[type].length);
+          } else {
+            setIsAngry(false);
           }
           break;
 
         case "like":
           if (reactions[type].length >= 1) {
             setIsLike(true);
-            setReactionsCount((prev) => prev + reactions[type].length);
+          } else {
+            setIsLike(false);
           }
           break;
 
         default:
       }
     }
+
+    setReactionsCount(totalReactionsCount);
   }, [reactions]);
 
   return (

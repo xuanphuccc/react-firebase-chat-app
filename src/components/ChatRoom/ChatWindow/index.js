@@ -45,8 +45,6 @@ function ChatWindow({ roomId }) {
   const mesListRef = useRef();
   const LastMesListRef = useRef();
 
-  console.log("CHẠY LẠI CHAT WINDOW");
-
   // Hàm xử lý mở modal Invite Member
   const handleInviteMemberModal = () => {
     setIsInviteMemberVisible(true);
@@ -144,9 +142,6 @@ function ChatWindow({ roomId }) {
   }, [roomId]);
 
   const messages = useFirestore("messages", messagesCondition);
-  useEffect(() => {
-    console.log("Messages thay đổi!");
-  }, [messages]);
 
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {

@@ -11,8 +11,6 @@ const AppContext = createContext();
 // Có nhiệm vụ truyền context khi lấy được data
 // từ câu truy vấn đến realtime database
 function AppProvider({ children }) {
-  console.log("CHẠY APP CONTEXT");
-
   // Set trạng thái hiển thị cho modal Add Room
   const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
 
