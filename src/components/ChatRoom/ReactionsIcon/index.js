@@ -9,8 +9,6 @@ import angry from "../../../assets/images/minicon/angry.png";
 import like from "../../../assets/images/minicon/like.png";
 import { useEffect, useState } from "react";
 
-// import { useState } from "react";
-
 const cx = classNames.bind(style);
 
 function ReactionsIcon({ reactions }) {

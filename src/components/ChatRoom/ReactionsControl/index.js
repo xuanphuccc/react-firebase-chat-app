@@ -28,7 +28,9 @@ function ReactionsControl({ id, reactions }) {
         // Tìm vị trí UID trong mảng của reaction chứa UID
         // rồi thực hiện xóa UID đó
         let indexOfUid = reactions[reactionType].indexOf(uid);
-        reactions[reactionType].splice(indexOfUid);
+        if (indexOfUid !== -1) {
+          reactions[reactionType].splice(indexOfUid);
+        }
 
         updateDoc(messageRef, {
           reactions: {
@@ -40,10 +42,11 @@ function ReactionsControl({ id, reactions }) {
     }
 
     // Thêm UID vào 1 reaction mới
+    reactions[type].push(uid);
     updateDoc(messageRef, {
       reactions: {
         ...reactions,
-        [type]: arrayUnion(uid),
+        [type]: reactions[type],
       },
     });
   }
