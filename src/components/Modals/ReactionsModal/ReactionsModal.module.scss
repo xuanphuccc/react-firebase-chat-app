@@ -1,6 +1,10 @@
 .reactions-modal {
-  min-width: 460px;
+  width: 460px;
   min-height: 160px;
+
+  &.isMobile {
+    width: 86vw;
+  }
 }
 
 // Header

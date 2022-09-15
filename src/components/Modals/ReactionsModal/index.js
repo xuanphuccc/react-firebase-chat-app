@@ -16,7 +16,7 @@ import Modal from "../Modal";
 const cx = classNames.bind(styles);
 
 function ReactionsModal({ reactions, isVisible, handleVisible }) {
-  const { members } = useContext(AppContext);
+  const { members, isMobile } = useContext(AppContext);
 
   const icons = useMemo(() => {
     return {
@@ -100,7 +100,7 @@ function ReactionsModal({ reactions, isVisible, handleVisible }) {
       okButton={false}
       onCancel={handleVisible}
     >
-      <div className={cx("reactions-modal")}>
+      <div className={cx("reactions-modal", { isMobile: isMobile })}>
         {/*====== Header ======*/}
         <div className={cx("header-wrap")}>
           <ul className={cx("header")}>
