@@ -11,19 +11,21 @@
 }
 
 .item {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   transform: scale(1);
   transition: transform 0.1s ease;
-
-  + .item {
-    margin-left: 6px;
-  }
+  padding: 4px;
+  border-radius: 12px;
 
   &:hover {
     transition: all 1 ease;
 
     cursor: pointer;
     transform: scale(1.1);
+  }
+
+  &.active {
+    background-color: #e4e6eb;
   }
 }

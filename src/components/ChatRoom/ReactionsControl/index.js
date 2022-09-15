@@ -17,12 +17,28 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const cx = classNames.bind(styles);
 
-function ReactionsControl({ id, reactions }) {
+function ReactionsControl({
+  id,
+  reactions,
+  activeIcon,
+  setActiveIcon,
+  setIsHasIcon,
+}) {
   const { uid } = useContext(AuthContext);
+
+  const listIcon = [
+    { iconType: "heart", iconSrc: heart },
+    { iconType: "haha", iconSrc: haha },
+    { iconType: "wow", iconSrc: wow },
+    { iconType: "sad", iconSrc: sad },
+    { iconType: "angry", iconSrc: angry },
+    { iconType: "like", iconSrc: like },
+  ];
 
   function handleReaction(type) {
     const messageRef = doc(db, "messages", id);
 
+    // Xóa icon người dùng hiện tại đã thả trước đó
     for (let reactionType in reactions) {
       if (reactions[reactionType].includes(uid)) {
         // Tìm vị trí UID trong mảng của reaction chứa UID
@@ -42,66 +58,38 @@ function ReactionsControl({ id, reactions }) {
     }
 
     // Thêm UID vào 1 reaction mới
-    reactions[type].push(uid);
-    updateDoc(messageRef, {
-      reactions: {
-        ...reactions,
-        [type]: reactions[type],
-      },
-    });
+    // Nếu trùng với icon đã active thì
+    // không thực hiện thêm
+    if (activeIcon !== type) {
+      reactions[type].push(uid);
+      updateDoc(messageRef, {
+        reactions: {
+          ...reactions,
+          [type]: reactions[type],
+        },
+      });
+    } else {
+      setIsHasIcon(false);
+      setActiveIcon("");
+    }
   }
 
   return (
     <div className={cx("wrapper")}>
       <div className={cx("reactions")}>
-        <img
-          onClick={() => {
-            handleReaction("heart");
-          }}
-          className={cx("item")}
-          src={heart}
-          alt=""
-        />
-        <img
-          onClick={() => {
-            handleReaction("haha");
-          }}
-          className={cx("item")}
-          src={haha}
-          alt=""
-        />
-        <img
-          onClick={() => {
-            handleReaction("wow");
-          }}
-          className={cx("item")}
-          src={wow}
-          alt=""
-        />
-        <img
-          onClick={() => {
-            handleReaction("sad");
-          }}
-          className={cx("item")}
-          src={sad}
-          alt=""
-        />
-        <img
-          onClick={() => {
-            handleReaction("angry");
-          }}
-          className={cx("item")}
-          src={angry}
-          alt=""
-        />
-        <img
-          onClick={() => {
-            handleReaction("like");
-          }}
-          className={cx("item")}
-          src={like}
-          alt=""
-        />
+        {listIcon.map((icon, index) => (
+          <img
+            key={index}
+            onClick={() => {
+              handleReaction(icon.iconType);
+            }}
+            className={cx("item", {
+              active: icon.iconType === activeIcon,
+            })}
+            src={icon.iconSrc}
+            alt=""
+          />
+        ))}
       </div>
     </div>
   );

@@ -90,7 +90,9 @@ function ReactionsIcon({ reactions }) {
         {isSad && <img className={cx("icon", "sad")} src={sad} alt="" />}
         {isAngry && <img className={cx("icon", "angry")} src={angry} alt="" />}
         {isLike && <img className={cx("icon", "like")} src={like} alt="" />}
-        <p className={cx("icons-count")}>{reactionsCount}</p>
+        {reactionsCount > 1 && (
+          <p className={cx("icons-count")}>{reactionsCount}</p>
+        )}
       </div>
     </div>
   );

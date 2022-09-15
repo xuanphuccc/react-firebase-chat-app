@@ -31,6 +31,9 @@ function Message({
   // Kiểm tra tin nhắn là nhận hay gửi
   const isSentMsg = userId === uid;
 
+  // Set active reaction icon
+  const [activeIcon, setActiveIcon] = useState("");
+
   // Định dạng lại ngày tháng
   const formatMessageDate = (createAt) => {
     const time = {
@@ -71,10 +74,13 @@ function Message({
     for (let type in reactions) {
       if (reactions[type].length >= 1) {
         setIsHasIcon(true);
-        break;
+        if (reactions[type].includes(uid)) {
+          setActiveIcon(type);
+          break;
+        }
       }
     }
-  }, [reactions]);
+  }, [reactions, uid]);
 
   return (
     <div
@@ -107,7 +113,15 @@ function Message({
             <Tippy
               interactive="true"
               trigger="click"
-              content={<ReactionsControl id={id} reactions={reactions} />}
+              content={
+                <ReactionsControl
+                  id={id}
+                  reactions={reactions}
+                  activeIcon={activeIcon}
+                  setIsHasIcon={setIsHasIcon}
+                  setActiveIcon={setActiveIcon}
+                />
+              }
             >
               <button className={cx("reaction-btn")}>
                 <FontAwesomeIcon icon={faFaceSmile} />
