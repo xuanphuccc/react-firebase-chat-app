@@ -71,6 +71,7 @@ function Message({
     for (let type in reactions) {
       if (reactions[type].length >= 1) {
         setIsHasIcon(true);
+        break;
       }
     }
   }, [reactions]);
@@ -106,7 +107,7 @@ function Message({
             <Tippy
               interactive="true"
               trigger="click"
-              content={<ReactionsControl id={id} />}
+              content={<ReactionsControl id={id} reactions={reactions} />}
             >
               <button className={cx("reaction-btn")}>
                 <FontAwesomeIcon icon={faFaceSmile} />

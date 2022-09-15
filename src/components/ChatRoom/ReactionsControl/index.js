@@ -17,13 +17,14 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const cx = classNames.bind(styles);
 
-function ReactionsControl({ id }) {
+function ReactionsControl({ id, reactions }) {
   const { uid } = useContext(AuthContext);
 
   function handleReaction(type) {
     const messageRef = doc(db, "messages", id);
     updateDoc(messageRef, {
       reactions: {
+        ...reactions,
         [type]: arrayUnion(uid),
       },
     });

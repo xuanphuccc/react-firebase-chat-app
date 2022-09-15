@@ -88,6 +88,14 @@ function ChatWindow({ roomId }) {
         photoURL,
         displayName,
         roomId: roomId,
+        reactions: {
+          heart: [],
+          haha: [],
+          wow: [],
+          sad: [],
+          angry: [],
+          like: [],
+        },
       });
     }
 
@@ -104,6 +112,14 @@ function ChatWindow({ roomId }) {
         photoURL,
         displayName,
         roomId: roomId,
+        reactions: {
+          heart: [],
+          haha: [],
+          wow: [],
+          sad: [],
+          angry: [],
+          like: [],
+        },
       });
     }
   };
