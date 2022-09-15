@@ -4,6 +4,9 @@ import styles from "./Modal.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
+import { useContext } from "react";
+import { AppContext } from "../../../Context/AppProvider";
+
 const cx = classNames.bind(styles);
 
 function Modal({
@@ -14,6 +17,8 @@ function Modal({
   onCancel,
   children,
 }) {
+  const { isMobile } = useContext(AppContext);
+
   return (
     <div
       className={cx("wrapper", {
@@ -22,7 +27,7 @@ function Modal({
       })}
     >
       <div onClick={onCancel} className={cx("overlay")}></div>
-      <div className={cx("modal")}>
+      <div className={cx("modal", { isMobile: isMobile })}>
         <div className={cx("header")}>
           <h4 className={cx("title")}>{title}</h4>
         </div>

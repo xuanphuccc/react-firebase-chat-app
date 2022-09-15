@@ -3,11 +3,14 @@
   min-height: 160px;
 
   &.isMobile {
-    width: 86vw;
+    width: 100%;
   }
 }
 
 // Header
+// .header-wrap {
+// }
+
 .header {
   display: flex;
   align-items: center;

@@ -49,6 +49,10 @@
   padding: 24px;
   z-index: 999;
   animation: showModal 0.4s ease forwards;
+
+  &.isMobile {
+    width: 96vw;
+  }
 }
 
 @keyframes showModal {
