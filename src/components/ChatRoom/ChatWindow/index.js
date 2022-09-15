@@ -45,6 +45,12 @@ function ChatWindow({ roomId }) {
   const mesListRef = useRef();
   const LastMesListRef = useRef();
 
+  // Set selected room ID khi vào hoặc load lại phòng
+  useEffect(() => {
+    setSelectedRoomId(roomId);
+    console.log("selected room id: ", roomId);
+  }, [roomId, setSelectedRoomId]);
+
   // Hàm xử lý mở modal Invite Member
   const handleInviteMemberModal = () => {
     setIsInviteMemberVisible(true);
