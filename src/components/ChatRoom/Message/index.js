@@ -11,6 +11,7 @@ import ReactionsControl from "../ReactionsControl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 import ReactionsIcon from "../ReactionsIcon";
+import ReactionsModal from "../../Modals/ReactionsModal";
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +34,9 @@ function Message({
 
   // Set active reaction icon
   const [activeIcon, setActiveIcon] = useState("");
+
+  // Set trạng thái hiển thị của ReactionsModal
+  const [isVisibleReactionsModal, setIsVisibleReactionsModal] = useState(false);
 
   // Định dạng lại ngày tháng
   const formatMessageDate = (createAt) => {
@@ -70,6 +74,7 @@ function Message({
     return `${hoursMinutes} ${yearMonthDate}`;
   };
 
+  // Set hiển thị icon và set active icon
   useEffect(() => {
     for (let type in reactions) {
       if (reactions[type].length >= 1) {
@@ -81,6 +86,11 @@ function Message({
       }
     }
   }, [reactions, uid]);
+
+  // Xử lý đóng mở modal ReactionsModal
+  const handleToggleReactionsModal = () => {
+    setIsVisibleReactionsModal(!isVisibleReactionsModal);
+  };
 
   return (
     <div
@@ -108,7 +118,9 @@ function Message({
             >
               <p className={cx("text-inner")}>{content}</p>
             </Tippy>
-            {isHasIcon && <ReactionsIcon reactions={reactions} />}
+            <div onClick={handleToggleReactionsModal}>
+              {isHasIcon && <ReactionsIcon reactions={reactions} />}
+            </div>
 
             <Tippy
               interactive="true"
@@ -130,6 +142,12 @@ function Message({
           </div>
         </div>
       </div>
+
+      <ReactionsModal
+        isVisible={isVisibleReactionsModal}
+        handleVisible={handleToggleReactionsModal}
+        reactions={reactions}
+      />
     </div>
   );
 }

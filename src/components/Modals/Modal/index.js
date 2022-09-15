@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 function Modal({
   title = "This is modal",
   visible = false,
+  okButton = true,
   onOk,
   onCancel,
   children,
@@ -27,9 +28,14 @@ function Modal({
         </div>
         <div className={cx("children")}>{children}</div>
         <div className={cx("controls")}>
-          <button onClick={onOk} className={cx("ok-btn", "btn primary", "max")}>
-            OK
-          </button>
+          {okButton && (
+            <button
+              onClick={onOk}
+              className={cx("ok-btn", "btn primary", "max")}
+            >
+              OK
+            </button>
+          )}
           <i onClick={onCancel} className={cx("cancel-btn")}>
             <FontAwesomeIcon icon={faCircleXmark} />
           </i>

@@ -266,7 +266,7 @@ function RoomControlsModal({ children, messages }) {
         }
       >
         {children}
-      </BasicModal>{" "}
+      </BasicModal>
     </div>
   );
 }

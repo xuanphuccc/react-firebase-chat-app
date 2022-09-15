@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 function BasicModal({
   isVisible,
+  placement = "bottom",
   children,
   modal,
   handleVisible,
@@ -16,9 +17,9 @@ function BasicModal({
 }) {
   return (
     <Tippy
-      animation="shift-way"
       visible={isVisible}
       interactive="true"
+      placement={placement}
       content={
         <div className={cx("wrapper")}>
           <i onClick={handleVisible} className={cx("cancel-btn")}>
