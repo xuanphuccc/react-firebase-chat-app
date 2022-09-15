@@ -8,7 +8,7 @@ import sad from "../../../assets/images/minicon/sad.png";
 import angry from "../../../assets/images/minicon/angry.png";
 import like from "../../../assets/images/minicon/like.png";
 
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
 import { useContext } from "react";
