@@ -43,6 +43,9 @@ function InviteMemberModal() {
 
     console.log("userSelect: ", selectedUsers);
 
+    // Xóa selected users cũ
+    setSelectedUsers([]);
+
     // Đóng modal và xóa input
     setIsInviteMemberVisible(false);
     setInputValue("");
