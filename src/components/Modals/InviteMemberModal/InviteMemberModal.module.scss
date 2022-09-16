@@ -20,3 +20,41 @@
   border-radius: 8px;
   caret-color: var(--primary);
 }
+
+.users-list {
+  margin-top: 12px;
+  max-height: 220px;
+  list-style: none;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 6px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.user-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.choose-user {
+  width: 18px;
+  height: 18px;
+}

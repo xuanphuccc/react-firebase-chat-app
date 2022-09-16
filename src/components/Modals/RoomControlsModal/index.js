@@ -166,7 +166,7 @@ function RoomControlsModal({ children, messages }) {
             {/* Controls participants */}
             <div className={cx("participants-wrapper")}>
               {members.map((member) => (
-                <div key={member.id}>
+                <div key={member.uid}>
                   <Tippy
                     placement="bottom"
                     content={

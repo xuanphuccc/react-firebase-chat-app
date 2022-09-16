@@ -129,7 +129,6 @@ function ReactionsModal({ reactions, isVisible, handleVisible }) {
       width: allReactionRef.current.clientWidth,
       left: allReactionRef.current.offsetLeft,
     });
-    console.log("allReactionRef: ", allReactionRef.current.clientWidth);
   }, [isVisible]);
 
   return (

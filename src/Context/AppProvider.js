@@ -3,6 +3,7 @@ import { AuthContext } from "./AuthProvider";
 import useFirestore from "../hooks/useFirestore";
 
 import useViewport from "../hooks/useViewport";
+import useGetAllFirestore from "../hooks/useGetAllFirestore";
 
 const AppContext = createContext();
 
@@ -66,25 +67,40 @@ function AppProvider({ children }) {
   // Kiểm tra xem đã được chọn phòng chưa
   // nếu chưa phải gán cho 1 object chứa members rỗng
   // nếu không sẽ bị lỗi undefined.members
-  let roomMembers = selectedRoom;
-  if (!roomMembers) {
-    roomMembers = {
-      members: "",
-    };
-  }
 
-  // Lấy danh sách users trong phòng chat
-  const usersCondition = useMemo(() => {
-    // Tìm các users có uid có nằm trong mảng members của selectedRoom
-    return {
-      fielName: "uid",
-      operator: "in",
-      compareValue: roomMembers.members,
-      // Trường hợp selectedRoom chưa có thì lỗi
-    };
-  }, [roomMembers.members]);
+  const selectedRoomMembers = useMemo(() => {
+    let roomMembers = selectedRoom;
+    if (!roomMembers) {
+      roomMembers = {
+        members: "",
+      };
+    }
+    return roomMembers;
+  }, [selectedRoom]);
 
-  const members = useFirestore("users", usersCondition);
+  // // Lấy danh sách users trong phòng chat
+  // const membersCondition = useMemo(() => {
+  //   // Tìm các users có uid có nằm trong mảng members của selectedRoom
+  //   return {
+  //     fielName: "uid",
+  //     operator: "in",
+  //     compareValue: roomMembers.members,
+  //     // Trường hợp selectedRoom chưa có thì lỗi
+  //   };
+  // }, [roomMembers.members]);
+
+  // const members = useFirestore("users", membersCondition);
+
+  // Lấy TẤT CẢ user
+  const users = useGetAllFirestore("users");
+
+  const members = useMemo(() => {
+    if (users.length >= 1 && selectedRoomMembers) {
+      return users.filter((user) => {
+        return selectedRoomMembers.members.includes(user.uid);
+      });
+    }
+  }, [users, selectedRoomMembers]);
 
   // Xử lý responsive
   const viewport = useViewport();
@@ -106,6 +122,7 @@ function AppProvider({ children }) {
       value={{
         rooms,
         members,
+        users,
         // messages,
         isAddRoomVisible,
         setIsAddRoomVisible,
