@@ -7,9 +7,9 @@
   }
 }
 
-// Header
-// .header-wrap {
-// }
+.header-wrap {
+  position: relative;
+}
 
 .header {
   display: flex;
@@ -19,6 +19,7 @@
 }
 
 .header-item {
+  position: relative;
   display: flex;
   align-items: center;
   height: 60px;
@@ -49,14 +50,15 @@
   color: #333;
 }
 
-.line-wrap {
-  height: 2px;
-}
-
 .line {
-  width: 94px;
-  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  height: 4px;
   background-color: var(--primary);
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 // Content
