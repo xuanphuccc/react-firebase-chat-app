@@ -141,7 +141,6 @@
   border-radius: 20px;
   font-size: 16px;
   color: #333;
-  transform-origin: 0 50%;
   animation: popup 0.2s ease forwards;
 }
 
@@ -157,10 +156,10 @@
 }
 
 .message-photo {
-  // padding: 8px;
-  border-radius: 20px;
-  max-width: 200px;
-  max-height: 200px;
+  min-width: 30px;
+  min-height: 30px;
+  max-width: 220px;
+  max-height: 220px;
   object-fit: cover;
 }
 
