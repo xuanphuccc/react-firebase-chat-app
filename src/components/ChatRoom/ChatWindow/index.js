@@ -22,8 +22,8 @@ import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import RoomOptions from "../RoomOptions";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase/config";
+// import { doc, updateDoc } from "firebase/firestore";
+// import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
@@ -213,14 +213,14 @@ function ChatWindow({ roomId }) {
   }, [currentMessage.id]);
 
   // Cập nhật định dạng
-  useEffect(() => {
-    messages.forEach((message) => {
-      let messageRef = doc(db, "messages", message.id);
-      updateDoc(messageRef, {
-        messagePhotoURL: "",
-      });
-    });
-  }, [messages]);
+  // useEffect(() => {
+  //   messages.forEach((message) => {
+  //     let messageRef = doc(db, "messages", message.id);
+  //     updateDoc(messageRef, {
+  //       messagePhotoURL: "",
+  //     });
+  //   });
+  // }, [messages]);
 
   return (
     <>
