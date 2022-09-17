@@ -22,6 +22,8 @@ import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import RoomOptions from "../RoomOptions";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
@@ -77,11 +79,18 @@ function ChatWindow({ roomId }) {
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
+    let messagePhotoURL = "";
+    if (inputValue.includes("&photo:")) {
+      messagePhotoURL = inputValue.slice(7, inputValue.length);
+    }
+    console.log("messagePhotoURL: ", messagePhotoURL);
+
     if (inputValue) {
       addDocument("messages", {
         text: inputValue,
         uid,
         photoURL,
+        messagePhotoURL,
         displayName,
         roomId: roomId,
         reactions: {
@@ -203,6 +212,16 @@ function ChatWindow({ roomId }) {
     audio.play();
   }, [currentMessage.id]);
 
+  // Cập nhật định dạng
+  useEffect(() => {
+    messages.forEach((message) => {
+      let messageRef = doc(db, "messages", message.id);
+      updateDoc(messageRef, {
+        messagePhotoURL: "",
+      });
+    });
+  }, [messages]);
+
   return (
     <>
       {selectedRoom && (
@@ -268,6 +287,7 @@ function ChatWindow({ roomId }) {
                   userId={message.uid}
                   type={message.type}
                   reactions={message.reactions}
+                  messagePhotoURL={message.messagePhotoURL}
                 />
               ))}
 

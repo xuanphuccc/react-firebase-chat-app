@@ -69,7 +69,7 @@ function ReactionsControl({
         },
       });
     } else {
-      setIsHasIcon(false);
+      // setIsHasIcon(false);
       setActiveIcon("");
     }
   }

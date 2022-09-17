@@ -24,6 +24,7 @@ function Message({
   userId,
   type,
   reactions,
+  messagePhotoURL,
 }) {
   const { uid } = useContext(AuthContext);
 
@@ -116,7 +117,15 @@ function Message({
                 </div>
               }
             >
-              <p className={cx("text-inner")}>{content}</p>
+              {messagePhotoURL ? (
+                <img
+                  className={cx("message-photo")}
+                  src={messagePhotoURL}
+                  alt=""
+                />
+              ) : (
+                <p className={cx("text-inner")}>{content}</p>
+              )}
             </Tippy>
             <div onClick={handleToggleReactionsModal}>
               {isHasIcon && <ReactionsIcon reactions={reactions} />}

@@ -156,6 +156,14 @@
   border-radius: 20px;
 }
 
+.message-photo {
+  // padding: 8px;
+  border-radius: 20px;
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+}
+
 .reaction-btn {
   position: absolute;
   right: -34px;
