@@ -14,6 +14,7 @@ function BasicModal({
   modal,
   handleVisible,
   title = "This is title",
+  hasHeader = true,
 }) {
   return (
     <Tippy
@@ -22,10 +23,14 @@ function BasicModal({
       placement={placement}
       content={
         <div className={cx("wrapper")}>
-          <i onClick={handleVisible} className={cx("cancel-btn")}>
-            <FontAwesomeIcon icon={faCircleXmark} />
-          </i>
-          <h4 className={cx("title")}>{title}</h4>
+          {hasHeader && (
+            <>
+              <i onClick={handleVisible} className={cx("cancel-btn")}>
+                <FontAwesomeIcon icon={faCircleXmark} />
+              </i>
+              <h4 className={cx("title")}>{title}</h4>
+            </>
+          )}
           {modal}
         </div>
       }

@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCirclePlus,
   faPaperPlane,
   faEllipsisVertical,
   faAngleLeft,
@@ -18,12 +17,11 @@ import { addDocument } from "../../../firebase/service";
 import useFirestore from "../../../hooks/useFirestore";
 
 import Message from "../Message";
-import InviteMemberModal from "../../Modals/InviteMemberModal";
-import RoomControlsModal from "../../Modals/RoomControlsModal";
 
 import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
+import RoomOptions from "../RoomOptions";
 
 const cx = classNames.bind(styles);
 
@@ -31,9 +29,9 @@ function ChatWindow({ roomId }) {
   const {
     rooms,
     setSelectedRoomId,
-    setIsInviteMemberVisible,
     isMobile,
     handleRoomMenuVisible,
+    isRoomMenuVisible,
   } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
@@ -49,11 +47,6 @@ function ChatWindow({ roomId }) {
   useEffect(() => {
     setSelectedRoomId(roomId);
   }, [roomId, setSelectedRoomId]);
-
-  // Hàm xử lý mở modal Invite Member
-  const handleInviteMemberModal = () => {
-    setIsInviteMemberVisible(true);
-  };
 
   // ------ HANDLE SEND MESSAGE ------
   // Hàm xử lý input và gửi dữ liệu
@@ -213,120 +206,120 @@ function ChatWindow({ roomId }) {
   return (
     <>
       {selectedRoom && (
-        <div className={cx("chat-window", { fixed: isMobile })}>
-          {/*=========== Header ===========*/}
-          <div className={cx("chat-window_header")}>
-            {/* Room Name And Image */}
-            <div className={cx("chat-window_header-info")}>
-              {isMobile ? (
-                <Link to={"/room-list"}>
-                  <button
-                    onClick={() => {
-                      // Bỏ active room
-                      setSelectedRoomId("");
-                    }}
-                    className={cx("back-btn")}
-                  >
-                    <FontAwesomeIcon icon={faAngleLeft} />
-                  </button>
-                </Link>
-              ) : (
-                false
-              )}
+        <div className={cx("chat-window-wrapper")}>
+          <div className={cx("chat-window", { fixed: isMobile })}>
+            {/*=========== Header ===========*/}
+            <div className={cx("chat-window_header")}>
+              {/* Room Name And Image */}
+              <div className={cx("chat-window_header-info")}>
+                {isMobile ? (
+                  <Link to={"/room-list"}>
+                    <button
+                      onClick={() => {
+                        // Bỏ active room
+                        setSelectedRoomId("");
+                      }}
+                      className={cx("back-btn")}
+                    >
+                      <FontAwesomeIcon icon={faAngleLeft} />
+                    </button>
+                  </Link>
+                ) : (
+                  false
+                )}
 
-              <img
-                src={selectedRoom.photoURL || placeHolderImg}
-                alt=""
-                className={cx("chat-window_header-img")}
-              />
-              <div className={cx("chat-window_header-name-wrap")}>
-                <h4 className={cx("chat-window_header-name")}>
-                  {selectedRoom.name}
-                </h4>
-                <p className={cx("chat-desc")}>Đang hoạt động</p>
+                <img
+                  src={selectedRoom.photoURL || placeHolderImg}
+                  alt=""
+                  className={cx("chat-window_header-img")}
+                />
+                <div className={cx("chat-window_header-name-wrap")}>
+                  <h4 className={cx("chat-window_header-name")}>
+                    {selectedRoom.name}
+                  </h4>
+                  <p className={cx("chat-desc")}>Đang hoạt động</p>
+                </div>
               </div>
-            </div>
 
-            {/* Invite Members And Room Controls */}
-            <div className={cx("chat-window_header-users")}>
-              <i
-                onClick={handleInviteMemberModal}
-                className={cx("header-user_icon", "icon-small")}
-              >
-                <FontAwesomeIcon icon={faCirclePlus} />
-              </i>
+              {/* Invite Members And Room Controls */}
+              <div className={cx("chat-window_header-users")}>
+                {/* Room Controls Modal */}
 
-              {/* Invite Members Modal */}
-              <InviteMemberModal />
-
-              {/* Room Controls Modal */}
-              <RoomControlsModal messages={messages}>
                 <i
                   onClick={handleRoomMenuVisible}
                   className={cx("header-user_icon")}
                 >
                   <FontAwesomeIcon icon={faEllipsisVertical} />
                 </i>
-              </RoomControlsModal>
+              </div>
             </div>
-          </div>
 
-          {/*=========== Message List ===========*/}
+            {/*=========== Message List ===========*/}
 
-          <div ref={mesListRef} className={cx("message-list")}>
-            {sideBySideMessages.map((message) => (
-              <Message
-                key={message.id}
-                id={message.id}
-                content={message.text}
-                displayName={message.displayName}
-                createAt={message.createAt}
-                photoURL={message.photoURL}
-                userId={message.uid}
-                type={message.type}
-                reactions={message.reactions}
+            <div ref={mesListRef} className={cx("message-list")}>
+              {sideBySideMessages.map((message) => (
+                <Message
+                  key={message.id}
+                  id={message.id}
+                  content={message.text}
+                  displayName={message.displayName}
+                  createAt={message.createAt}
+                  photoURL={message.photoURL}
+                  userId={message.uid}
+                  type={message.type}
+                  reactions={message.reactions}
+                />
+              ))}
+
+              <span ref={LastMesListRef}></span>
+            </div>
+
+            {/*=========== Message Form ===========*/}
+            <div className={cx("message-form")}>
+              <input
+                className={cx("message-form_input")}
+                type="text"
+                placeholder="Aa"
+                spellCheck="false"
+                ref={inputRef}
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyUp={handleKeyUp}
               />
-            ))}
 
-            <span ref={LastMesListRef}></span>
-          </div>
-
-          {/*=========== Message Form ===========*/}
-          <div className={cx("message-form")}>
-            <input
-              className={cx("message-form_input")}
-              type="text"
-              placeholder="Aa"
-              spellCheck="false"
-              ref={inputRef}
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyUp={handleKeyUp}
-            />
-
-            <div className={cx("button-wrap")}>
-              {inputValue.trim() ? (
-                <button
-                  onClick={handleOnSubmit}
-                  className={cx("message-form_btn", "btn", "rounded")}
-                >
-                  <FontAwesomeIcon
-                    className={cx("form-btn-icon")}
-                    icon={faPaperPlane}
-                  />
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    handleSendIcon("😂");
-                  }}
-                  className={cx("message-form_btn", "btn", "rounded")}
-                >
-                  <img className={cx("form-btn-image")} src={hahaIcon} alt="" />
-                </button>
-              )}
+              <div className={cx("button-wrap")}>
+                {inputValue.trim() ? (
+                  <button
+                    onClick={handleOnSubmit}
+                    className={cx("message-form_btn", "btn", "rounded")}
+                  >
+                    <FontAwesomeIcon
+                      className={cx("form-btn-icon")}
+                      icon={faPaperPlane}
+                    />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      handleSendIcon("😂");
+                    }}
+                    className={cx("message-form_btn", "btn", "rounded")}
+                  >
+                    <img
+                      className={cx("form-btn-image")}
+                      src={hahaIcon}
+                      alt=""
+                    />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
+          {isRoomMenuVisible && (
+            <div className={cx("room-option", { open: isRoomMenuVisible })}>
+              <RoomOptions messages={messages} />
+            </div>
+          )}
         </div>
       )}
     </>

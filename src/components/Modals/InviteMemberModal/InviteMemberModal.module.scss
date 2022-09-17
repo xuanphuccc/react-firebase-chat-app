@@ -32,7 +32,12 @@
 .user-item {
   display: flex;
   align-items: center;
-  padding: 8px 6px;
+  padding: 8px;
+
+  &:hover {
+    background-color: #f3f3f5;
+    border-radius: 8px;
+  }
 }
 
 .user-info {
@@ -57,4 +62,7 @@
 .choose-user {
   width: 18px;
   height: 18px;
+  border: none;
+  outline: none;
+  background-color: #ddd;
 }

@@ -41,8 +41,6 @@ function InviteMemberModal() {
       });
     }
 
-    console.log("userSelect: ", selectedUsers);
-
     // Xóa selected users cũ
     setSelectedUsers([]);
 

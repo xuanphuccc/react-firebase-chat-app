@@ -1,0 +1,227 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+.room-info-wrap {
+  min-height: 200px;
+}
+
+.room-img-wrap {
+  padding: 16px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.room-name {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.room-desc {
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  color: var(--text-gray);
+}
+
+.quick-options {
+  padding: 20px 12px 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.quick-item {
+  padding: 6px 16px;
+}
+
+.quick-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--light-gray);
+}
+
+.quick-name {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--text-black);
+}
+
+// Room Options
+.options-types {
+  list-style: none;
+  padding-top: 20px;
+}
+
+.type-item {
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.type-name {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.type-icon {
+  font-size: 16px;
+}
+
+.type-wrap {
+  list-style: none;
+  cursor: default;
+}
+
+.obtion-item {
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
+}
+
+// User Obtion
+.user-obtion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-black);
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
+}
+
+.user-desc {
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 4px;
+  color: var(--text-gray);
+}
+
+.user-obtion-icon {
+  font-size: 18px;
+  padding: 6px 10px;
+  border-radius: 99px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--gray);
+  }
+}
+
+.add-member {
+  display: flex;
+  align-items: center;
+}
+
+.add-members-btn {
+  width: 36px;
+  height: 36px;
+  background-color: var(--gray);
+  border-radius: 99px;
+}
+
+.add-members-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-black);
+  margin-left: 8px;
+}
+
+// Member Option Menu
+.member-menu {
+  min-width: 300px;
+  list-style: none;
+  padding: 4px 0;
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  border-radius: 8px;
+}
+
+.member-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 8px;
+  margin: 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
+}
+
+.member-menu-icon {
+  margin-right: 12px;
+  font-size: 16px;
+}
+
+// Privacy Obtions
+.privacy-list {
+  margin-bottom: 20px;
+}
+
+.privacy-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.privacy-icon {
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 99px;
+  background-color: var(--gray);
+}
+
+.privacy-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 8px;
+}

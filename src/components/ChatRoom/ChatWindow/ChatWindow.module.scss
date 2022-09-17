@@ -1,9 +1,20 @@
 /* ----------------- Chat window ----------------- */
-.chat-window {
+.chat-window-wrapper {
   width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+.chat-window {
+  // width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+.room-option {
+  width: 36%;
 }
 
 /* Header */
