@@ -79,15 +79,17 @@ function ChatWindow({ roomId }) {
 
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
+    let sendInput = inputValue;
     let messagePhotoURL = "";
     if (inputValue.includes("&photo:")) {
       messagePhotoURL = inputValue.slice(7, inputValue.length);
+      sendInput = "Không gửi được ảnh";
     }
     console.log("messagePhotoURL: ", messagePhotoURL);
 
     if (inputValue) {
       addDocument("messages", {
-        text: inputValue,
+        text: sendInput,
         uid,
         photoURL,
         messagePhotoURL,
