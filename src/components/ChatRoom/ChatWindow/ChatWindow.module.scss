@@ -13,9 +13,18 @@
   height: 100vh;
 }
 
-.room-option {
-  width: 36%;
-}
+// .room-option {
+//   animation: slideToLeft 0.2s ease forwards;
+// }
+
+// @keyframes slideToLeft {
+//   from {
+//     width: 0px;
+//   }
+//   to {
+//     width: 36%;
+//   }
+// }
 
 /* Header */
 .chat-window_header {
@@ -80,21 +89,23 @@
 .chat-window_header-users {
   display: flex;
   align-items: center;
-  margin-right: 16px;
+  margin-right: 8px;
 }
 
-.header-user_icon {
+.header-menu_icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--primary);
   font-size: 20px;
-  padding: 6px 12px;
   margin: 0 4px;
+  border-radius: 99px;
   cursor: pointer;
-  &.icon-small {
-    padding: 6px;
-  }
 }
-.header-user_icon:hover {
-  color: rgba(220, 37, 74, 0.9);
+.header-menu_icon:hover {
+  background-color: var(--light-gray);
 }
 
 /*-------------- Message --------------*/

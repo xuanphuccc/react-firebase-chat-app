@@ -1,8 +1,52 @@
 .wrapper {
-  width: 100%;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
   white-space: nowrap;
+  border-left: 1px solid rgba(22, 24, 35, 0.12);
+  animation: slideToLeft 0.2s ease forwards;
+  background-color: #fff;
+}
+
+@keyframes slideToLeft {
+  from {
+    width: 0px;
+  }
+  to {
+    width: 280px;
+  }
+}
+
+.wrapper.isMobile {
+  position: fixed;
+  right: 0;
+  z-index: 99;
+  animation: slideFullToLeft 0.2s ease forwards;
+}
+
+@keyframes slideFullToLeft {
+  from {
+    width: 0px;
+  }
+  to {
+    width: 100vw;
+  }
+}
+
+.mobile-back-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  color: var(--primary);
+  border-radius: 99px;
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
 }
 
 .room-info-wrap {
@@ -121,11 +165,13 @@
 }
 
 .user-name {
+  min-height: 38px;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-black);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   padding-left: 8px;
 }
 
@@ -175,6 +221,7 @@
   background-color: #fff;
   box-shadow: var(--box-shadow);
   border-radius: 8px;
+  user-select: none;
 }
 
 .member-menu-item {

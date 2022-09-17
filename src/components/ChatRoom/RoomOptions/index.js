@@ -1,6 +1,7 @@
 import {
   faArrowRightFromBracket,
   faBellSlash,
+  faChevronLeft,
   faChevronRight,
   faCommentSlash,
   faEllipsis,
@@ -87,19 +88,7 @@ function RoomOptions({ messages }) {
     }
   };
 
-  // ------ HANDLE ADMINS CONTROLS ------
-  // Check selectedRoom có tồn tại hay không
-  useEffect(() => {
-    let roomAdmin = selectedRoom;
-    if (!roomAdmin) {
-      roomAdmin = {
-        admins: [],
-      };
-    }
-
-    setAdmins(roomAdmin.admins);
-  }, [selectedRoom, visibleAdmin]);
-
+  // ------ HANDLE DELETE ROOM ------
   // Xử lý xóa phòng hiện tại
   // và toàn bộ tin nhắn của phòng
   // DONE
@@ -119,6 +108,19 @@ function RoomOptions({ messages }) {
       } else navigate("/room/room-id");
     }
   };
+
+  // ------ HANDLE ADMINS CONTROLS ------
+  // Check selectedRoom có tồn tại hay không
+  useEffect(() => {
+    let roomAdmin = selectedRoom;
+    if (!roomAdmin) {
+      roomAdmin = {
+        admins: [],
+      };
+    }
+
+    setAdmins(roomAdmin.admins);
+  }, [selectedRoom, visibleAdmin]);
 
   // Xử lý thêm admin
   const handleAddAdmin = (userId) => {
@@ -160,8 +162,29 @@ function RoomOptions({ messages }) {
     }
   };
 
+  // ------ HANDLE REMOVE MEMBER ------
+  const handleRemoveMember = (userId) => {
+    // Nếu người xóa là admin và không phải xóa chính mình
+    if (admins.includes(uid) && userId !== uid) {
+      const roomRef = doc(db, "rooms", selectedRoomId);
+      updateDoc(roomRef, {
+        members: arrayRemove(userId),
+      });
+    }
+  };
+
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("wrapper", { isMobile: isMobile })}>
+      {isMobile && (
+        <button
+          onClick={() => {
+            setIsRoomMenuVisible(false);
+          }}
+          className={cx("mobile-back-btn")}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
+      )}
       <div className={cx("room-info-wrap")}>
         <div className={cx("room-img-wrap")}>
           <img
@@ -204,7 +227,7 @@ function RoomOptions({ messages }) {
         {/*====== Member Options ======*/}
         <li className={cx("type-item")}>
           <h4 className={cx("type-name")}>
-            Thành viên đoạn chat 66
+            Thành viên đoạn chat &#40;{members.length}&#41;
             <span className={cx("type-icon")}>
               <FontAwesomeIcon icon={faChevronRight} />
             </span>
@@ -256,7 +279,12 @@ function RoomOptions({ messages }) {
                           Chỉ định làm quản trị viên
                         </li>
                       )}
-                      <li className={cx("member-menu-item")}>
+                      <li
+                        onClick={() => {
+                          handleRemoveMember(member.uid);
+                        }}
+                        className={cx("member-menu-item")}
+                      >
                         <span className={cx("member-menu-icon")}>
                           <FontAwesomeIcon icon={faCommentSlash} />
                         </span>

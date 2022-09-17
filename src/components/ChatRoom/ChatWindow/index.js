@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPaperPlane,
-  faEllipsisVertical,
   faAngleLeft,
+  faEllipsisH,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
@@ -247,9 +247,9 @@ function ChatWindow({ roomId }) {
 
                 <i
                   onClick={handleRoomMenuVisible}
-                  className={cx("header-user_icon")}
+                  className={cx("header-menu_icon")}
                 >
-                  <FontAwesomeIcon icon={faEllipsisVertical} />
+                  <FontAwesomeIcon icon={faEllipsisH} />
                 </i>
               </div>
             </div>
@@ -316,7 +316,7 @@ function ChatWindow({ roomId }) {
             </div>
           </div>
           {isRoomMenuVisible && (
-            <div className={cx("room-option", { open: isRoomMenuVisible })}>
+            <div className={cx("room-option")}>
               <RoomOptions messages={messages} />
             </div>
           )}
