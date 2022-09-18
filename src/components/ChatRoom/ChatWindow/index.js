@@ -25,8 +25,8 @@ import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import RoomOptions from "../RoomOptions";
 import { getDownloadURL } from "firebase/storage";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase/config";
+// import { doc, updateDoc } from "firebase/firestore";
+// import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
