@@ -34,6 +34,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../../../firebase/config";
+import { deleteFile } from "../../../firebase/service";
 
 const cx = classNames.bind(styles);
 
@@ -97,10 +98,14 @@ function RoomOptions({ messages }) {
       // Xóa toàn bộ tin nhắn của phòng bị xóa
       messages.forEach((message) => {
         deleteDoc(doc(db, "messages", message.id));
+        // Xóa ảnh tin nhắn tham chiếu
+        deleteFile(message.fullPath);
       });
 
       // Xóa phòng hiện tại
       deleteDoc(doc(db, "rooms", selectedRoomId));
+      // Xóa avatar
+      deleteFile(selectedRoom.fullPath);
 
       // Chuyển về sidebar (mobile)
       if (isMobile) {
