@@ -175,22 +175,26 @@
   object-fit: cover;
 }
 
-.reaction-btn {
+// Message Controls
+.message-controls {
   position: absolute;
-  right: -34px;
   top: 50%;
   transform: translateY(-50%);
+  display: none;
+}
+
+.reaction-btn {
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 26px;
   height: 26px;
   font-size: 16px;
-  margin: 0 4px;
+  margin: 0 2px;
   padding: 6px;
   border-radius: 20px;
   color: #aaa;
   background-color: transparent;
-  display: none;
   cursor: pointer;
 
   &:hover {
@@ -200,13 +204,43 @@
 }
 
 .wrapper.sent {
-  .reaction-btn {
-    left: -34px;
+  .message-controls {
+    left: -64px;
+    flex-direction: row-reverse;
   }
 }
 
-.wrapper:hover .reaction-btn {
+.wrapper.received {
+  .message-controls {
+    right: -64px;
+  }
+}
+
+.wrapper:hover .message-controls {
   display: flex;
+}
+
+// Unsent Control
+.unsent-control {
+  padding: 4px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+}
+
+.unsent-btn {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 8px;
+  min-width: 140px;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.1s ease;
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
 }
 
 @keyframes popup {

@@ -2,14 +2,17 @@ import classNames from "classnames/bind";
 import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../../../Context/AuthProvider";
 
-import ReactionsControl from "../ReactionsControl";
+import { db } from "../../../firebase/config";
+import { updateDoc, doc } from "firebase/firestore";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
+import ReactionsControl from "../ReactionsControl";
 import ReactionsIcon from "../ReactionsIcon";
 import ReactionsModal from "../../Modals/ReactionsModal";
 
@@ -105,6 +108,14 @@ function Message({
     }
   }, [reactions, uid]);
 
+  // Xử lý thu hồi tin nhắn
+  const handleUnsentMessage = () => {
+    let messageRef = doc(db, "messages", id);
+    updateDoc(messageRef, {
+      text: `@unsentmsg ${content}`,
+    });
+  };
+
   // Xử lý đóng mở modal ReactionsModal
   const handleToggleReactionsModal = () => {
     setIsVisibleReactionsModal(!isVisibleReactionsModal);
@@ -149,23 +160,44 @@ function Message({
               {isHasIcon && <ReactionsIcon reactions={reactions} />}
             </div>
 
-            <Tippy
-              interactive="true"
-              trigger="click"
-              content={
-                <ReactionsControl
-                  id={id}
-                  reactions={reactions}
-                  activeIcon={activeIcon}
-                  setIsHasIcon={setIsHasIcon}
-                  setActiveIcon={setActiveIcon}
-                />
-              }
-            >
-              <button className={cx("reaction-btn")}>
-                <FontAwesomeIcon icon={faFaceSmile} />
-              </button>
-            </Tippy>
+            <div className={cx("message-controls")}>
+              <Tippy
+                interactive="true"
+                trigger="click"
+                content={
+                  <ReactionsControl
+                    id={id}
+                    reactions={reactions}
+                    activeIcon={activeIcon}
+                    setIsHasIcon={setIsHasIcon}
+                    setActiveIcon={setActiveIcon}
+                  />
+                }
+              >
+                <button className={cx("reaction-btn")}>
+                  <FontAwesomeIcon icon={faFaceSmile} />
+                </button>
+              </Tippy>
+
+              <Tippy
+                interactive="true"
+                trigger="click"
+                content={
+                  <div className={cx("unsent-control")}>
+                    <button
+                      onClick={handleUnsentMessage}
+                      className={cx("unsent-btn")}
+                    >
+                      Gỡ tin nhắn
+                    </button>
+                  </div>
+                }
+              >
+                <button className={cx("reaction-btn")}>
+                  <FontAwesomeIcon icon={faEllipsisV} />
+                </button>
+              </Tippy>
+            </div>
           </div>
         </div>
       </div>
