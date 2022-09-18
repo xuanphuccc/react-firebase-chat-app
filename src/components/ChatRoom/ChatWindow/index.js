@@ -7,6 +7,8 @@ import {
   faPaperPlane,
   faAngleLeft,
   faEllipsisH,
+  faImage,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
@@ -39,11 +41,13 @@ function ChatWindow({ roomId }) {
 
   const [inputValue, setInputValue] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
+  const [previewImageInput, setPreviewImageInput] = useState();
   const [currentMessage, setCurrentMessage] = useState("");
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
 
   const inputRef = useRef();
+  const imageInputRef = useRef();
   const mesListRef = useRef();
   const LastMesListRef = useRef();
 
@@ -113,8 +117,9 @@ function ChatWindow({ roomId }) {
     setInputValue(e.target.value);
   };
 
-  const handleFileInput = (e) => {
+  const handleImageInput = (e) => {
     setImageUpload(e.target.files[0]);
+    setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
   };
 
   const sendMessage = (messText, messPhoto) => {
@@ -152,9 +157,8 @@ function ChatWindow({ roomId }) {
     }
 
     // Clear input and focus
-    setImageUpload(null);
+    handleClearPreview();
     setInputValue("");
-    inputRef.current.focus();
   };
 
   // Gửi riêng icon
@@ -169,6 +173,15 @@ function ChatWindow({ roomId }) {
     if (e.key === "Enter") {
       handleOnSubmit();
     }
+  };
+
+  // Xóa preview
+  const handleClearPreview = () => {
+    setImageUpload(null);
+    setPreviewImageInput("");
+    //clear input
+    imageInputRef.current.value = "";
+    inputRef.current.focus();
   };
 
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
@@ -297,17 +310,55 @@ function ChatWindow({ roomId }) {
 
             {/*=========== Message Form ===========*/}
             <div className={cx("message-form")}>
-              <input onChange={handleFileInput} type="file" name="" id="" />
-              <input
-                className={cx("message-form_input")}
-                type="text"
-                placeholder="Aa"
-                spellCheck="false"
-                ref={inputRef}
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyUp={handleKeyUp}
-              />
+              <div className={cx("media-wrapper")}>
+                <input
+                  ref={imageInputRef}
+                  className={cx("media_input-image")}
+                  onChange={handleImageInput}
+                  type="file"
+                  accept="image/*"
+                  name=""
+                  id=""
+                />
+                <button
+                  onClick={() => {
+                    imageInputRef.current.click();
+                  }}
+                  className={cx("media-btn")}
+                >
+                  <FontAwesomeIcon icon={faImage} />
+                </button>
+              </div>
+
+              <div className={cx("message-form_input-wrap")}>
+                {previewImageInput && (
+                  <div className={cx("media-preview")}>
+                    <div className={cx("media-preview-img-wrap")}>
+                      <img
+                        className={cx("media-preview-img")}
+                        src={previewImageInput}
+                        alt=""
+                      />
+                      <button
+                        onClick={handleClearPreview}
+                        className={cx("remove-preview-img-btn")}
+                      >
+                        <FontAwesomeIcon icon={faXmark} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+                <input
+                  className={cx("message-form_input")}
+                  type="text"
+                  placeholder="Aa"
+                  spellCheck="false"
+                  ref={inputRef}
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyUp={handleKeyUp}
+                />
+              </div>
 
               <div className={cx("button-wrap")}>
                 {inputValue.trim() || imageUpload ? (
