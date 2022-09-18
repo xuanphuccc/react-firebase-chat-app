@@ -15,9 +15,6 @@ function AppProvider({ children }) {
   // Set trạng thái hiển thị cho modal Add Room
   const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
 
-  // Set trạng thái hiển thị cho modal Join Room
-  const [isJoinRoomVisible, setIsJoinRoomVisible] = useState(false);
-
   // Set trạng thái hiển thị cho modal Invite Members
   const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
 
@@ -78,19 +75,6 @@ function AppProvider({ children }) {
     return roomMembers;
   }, [selectedRoom]);
 
-  // // Lấy danh sách users trong phòng chat
-  // const membersCondition = useMemo(() => {
-  //   // Tìm các users có uid có nằm trong mảng members của selectedRoom
-  //   return {
-  //     fielName: "uid",
-  //     operator: "in",
-  //     compareValue: roomMembers.members,
-  //     // Trường hợp selectedRoom chưa có thì lỗi
-  //   };
-  // }, [roomMembers.members]);
-
-  // const members = useFirestore("users", membersCondition);
-
   // Lấy TẤT CẢ user
   const users = useGetAllFirestore("users");
 
@@ -123,11 +107,8 @@ function AppProvider({ children }) {
         rooms,
         members,
         users,
-        // messages,
         isAddRoomVisible,
         setIsAddRoomVisible,
-        isJoinRoomVisible,
-        setIsJoinRoomVisible,
         selectedRoomId,
         setSelectedRoomId,
         selectedRoom,

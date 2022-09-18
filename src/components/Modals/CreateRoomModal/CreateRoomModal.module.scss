@@ -24,3 +24,54 @@
   border-radius: 8px;
   caret-color: var(--primary);
 }
+
+// Avatar Preview
+.avatar-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-image {
+  display: none;
+}
+
+.avatar-preview-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.avatar-preview-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--medium-gray);
+}
+
+.avatar-preview-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  background-color: transparent;
+  transition: all 0.1s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.avatar-preview-title {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 8px;
+}

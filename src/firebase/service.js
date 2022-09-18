@@ -2,7 +2,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "./config";
 
 import { storage } from "./config";
-import { ref, uploadBytes } from "firebase/storage";
+import { deleteObject, ref, uploadBytes } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 
 function addDocument(collectionName, data) {
@@ -32,4 +32,17 @@ function uploadFile(fileUpload, folder) {
   return uploadBytes(imageRef, fileUpload);
 }
 
-export { addDocument, uploadFile };
+function deleteFile(fullPath) {
+  const desertRef = ref(storage, fullPath);
+
+  // Delete the file
+  deleteObject(desertRef)
+    .then(() => {
+      // File deleted successfully
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+export { addDocument, uploadFile, deleteFile };

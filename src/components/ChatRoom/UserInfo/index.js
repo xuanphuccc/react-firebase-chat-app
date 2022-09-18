@@ -16,7 +16,6 @@ import { AppContext } from "../../../Context/AppProvider";
 import userPlacehoderImg from "../../../assets/images/user.png";
 import BasicModal from "../../Modals/BasicModal";
 import CreateRoomModal from "../../Modals/CreateRoomModal";
-import JoinRoomModal from "../../Modals/JoinRoomModal";
 
 const cx = classNames.bind(styles);
 
@@ -26,35 +25,19 @@ function UserInfo() {
   const { displayName, photoURL, uid } = user;
 
   // Set trạng thái của Modal Add Room và Join Room
-  const { setIsAddRoomVisible, setIsJoinRoomVisible, isMobile } =
-    useContext(AppContext);
+  const { setIsAddRoomVisible, isMobile } = useContext(AppContext);
 
   // Trạng thái hiển thị của menu user
   const [isVisible, setIsVisible] = useState(false);
-
-  // Trạng thái hiển thị của menu Add Room
-  const [isAddRoomMenuVisible, setIsAddRoomMenuVisible] = useState(false);
 
   // Đóng mở menu User
   const handleMenuVisible = () => {
     setIsVisible(!isVisible);
   };
 
-  // Đóng mở menu Add Room
-  const handleAddRoomMenuVisible = () => {
-    setIsAddRoomMenuVisible(!isAddRoomMenuVisible);
-  };
-
   // Mở modal khi click vào tạo phòng
   const handleAddRoom = () => {
     setIsAddRoomVisible(true);
-    handleAddRoomMenuVisible();
-  };
-
-  // Mở modal khi click vào tham gia phòng
-  const handleJoinRoom = () => {
-    setIsJoinRoomVisible(true);
-    handleAddRoomMenuVisible();
   };
 
   // Xử lý Sign Out
@@ -101,36 +84,14 @@ function UserInfo() {
         </div>
       </BasicModal>
 
-      <BasicModal
-        isVisible={isAddRoomMenuVisible}
-        handleVisible={handleAddRoomMenuVisible}
-        title="Phòng mới"
-        modal={
-          <div className={cx("add-room")}>
-            <button
-              onClick={handleAddRoom}
-              className={cx("add-room-btn", "btn", "border")}
-            >
-              + Tạo phòng
-            </button>
-            <button
-              onClick={handleJoinRoom}
-              className={cx("add-room-btn", "btn", "border")}
-            >
-              + Tham gia
-            </button>
-          </div>
-        }
-      >
-        <div className={cx("new-room-wrap")}>
-          <i onClick={handleAddRoomMenuVisible} className={cx("new-room-icon")}>
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </i>
-        </div>
-      </BasicModal>
+      <div className={cx("new-room-wrap")}>
+        <i onClick={handleAddRoom} className={cx("new-room-icon")}>
+          <FontAwesomeIcon icon={faPenToSquare} />
+        </i>
+      </div>
 
+      {/* Create Room Modal */}
       <CreateRoomModal />
-      <JoinRoomModal />
     </div>
   );
 }

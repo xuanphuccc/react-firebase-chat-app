@@ -25,8 +25,8 @@ import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import RoomOptions from "../RoomOptions";
 import { getDownloadURL } from "firebase/storage";
-// import { doc, updateDoc } from "firebase/firestore";
-// import { db } from "../../../firebase/config";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
@@ -123,12 +123,13 @@ function ChatWindow({ roomId }) {
     inputRef.current.focus();
   };
 
-  const sendMessage = (messText, messPhoto) => {
+  const sendMessage = (messText, messPhoto, fullPath = "") => {
     addDocument("messages", {
       text: messText,
       uid,
       photoURL,
       messagePhotoURL: messPhoto,
+      fullPath,
       displayName,
       roomId: roomId,
       reactions: {
@@ -152,9 +153,13 @@ function ChatWindow({ roomId }) {
           // Nếu có input value thì gửi cả ảnh và tin nhắn
           const trimInput = inputValue;
           if (trimInput.trim()) {
+            // Gửi tin nhắn
             sendMessage(inputValue, "");
           }
-          sendMessage("Photo", url);
+
+          const fullPath = snapshot.metadata.fullPath;
+          //Gửi ảnh
+          sendMessage("Photo", url, fullPath);
         });
       });
     } else if (inputValue) {
@@ -233,14 +238,14 @@ function ChatWindow({ roomId }) {
   }, [messages]);
 
   // Cập nhật định dạng
-  // useEffect(() => {
-  //   messages.forEach((message) => {
-  //     let messageRef = doc(db, "messages", message.id);
-  //     updateDoc(messageRef, {
-  //       messagePhotoURL: "",
-  //     });
-  //   });
-  // }, [messages]);
+  useEffect(() => {
+    messages.forEach((message) => {
+      let messageRef = doc(db, "messages", message.id);
+      updateDoc(messageRef, {
+        fullPath: "",
+      });
+    });
+  }, [messages]);
 
   return (
     <>
@@ -282,8 +287,6 @@ function ChatWindow({ roomId }) {
 
               {/* Invite Members And Room Controls */}
               <div className={cx("chat-window_header-users")}>
-                {/* Room Controls Modal */}
-
                 <i
                   onClick={handleRoomMenuVisible}
                   className={cx("header-menu_icon")}
