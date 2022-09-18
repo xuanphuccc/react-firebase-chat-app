@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./CreateRoomModal.module.scss";
 import userPlaceHolderImg from "../../../assets/images/user.png";
 
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 
 import Modal from "../Modal";
 import { AppContext } from "../../../Context/AppProvider";
@@ -22,6 +22,7 @@ function CreateRoomModal() {
   const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AppContext);
   const currentUser = useContext(AuthContext);
   const inputImageRef = useRef();
+  const inputNameRef = useRef();
 
   // Handle Image input
   const handleImageInput = (e) => {
@@ -30,6 +31,7 @@ function CreateRoomModal() {
   };
 
   const handleOk = () => {
+    let isValid = false;
     if (uploadPhoto && name !== "") {
       const downloadUrl = uploadFile(uploadPhoto, `images/rooms_avatar/`);
       downloadUrl.then((snapshot) => {
@@ -47,6 +49,7 @@ function CreateRoomModal() {
           addDocument("rooms", data);
         });
       });
+      isValid = true;
     }
     // add new room without avatar to firestore
     else if (name !== "") {
@@ -59,15 +62,18 @@ function CreateRoomModal() {
         admins: [currentUser.uid],
       };
       addDocument("rooms", data);
+      isValid = true;
     }
 
     // Đóng modal và xóa input
-    setIsAddRoomVisible(false);
-    setName("");
-    setDescription("");
-    setUploadPhoto(null);
-    setPreviewPhotoURL("");
-    inputImageRef.current.value = "";
+    if (isValid) {
+      setIsAddRoomVisible(false);
+      setName("");
+      setDescription("");
+      setUploadPhoto(null);
+      setPreviewPhotoURL("");
+      inputImageRef.current.value = "";
+    }
   };
 
   const handleCancel = () => {
@@ -79,11 +85,17 @@ function CreateRoomModal() {
     inputImageRef.current.value = "";
   };
 
+  // Submit form on press enter
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && previewPhotoURL) {
       handleOk();
     }
   };
+
+  // Focus input on open
+  useEffect(() => {
+    inputNameRef.current.focus();
+  }, [isAddRoomVisible]);
 
   return (
     <Modal
@@ -98,6 +110,7 @@ function CreateRoomModal() {
             Tên phòng *
           </label>
           <input
+            ref={inputNameRef}
             className={cx("input-box")}
             type="text"
             placeholder="Nhập tên phòng"

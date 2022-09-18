@@ -99,13 +99,17 @@ function RoomOptions({ messages }) {
       messages.forEach((message) => {
         deleteDoc(doc(db, "messages", message.id));
         // Xóa ảnh tin nhắn tham chiếu
-        deleteFile(message.fullPath);
+        if (message.fullPath !== "") {
+          deleteFile(message.fullPath);
+        }
       });
 
       // Xóa phòng hiện tại
       deleteDoc(doc(db, "rooms", selectedRoomId));
       // Xóa avatar
-      deleteFile(selectedRoom.fullPath);
+      if (selectedRoom.fullPath !== "") {
+        deleteFile(selectedRoom.fullPath);
+      }
 
       // Chuyển về sidebar (mobile)
       if (isMobile) {

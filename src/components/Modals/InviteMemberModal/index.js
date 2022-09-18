@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./InviteMemberModal.module.scss";
 
-import { useState, useContext, useEffect, useMemo } from "react";
+import { useState, useContext, useEffect, useMemo, useRef } from "react";
 
 import { AppContext } from "../../../Context/AppProvider";
 // import { AuthContext } from "../../Context/AuthProvider";
@@ -16,6 +16,7 @@ function InviteMemberModal() {
   const [inputValue, setInputValue] = useState("");
   const [searchUsers, setSearchUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const inputRef = useRef();
 
   const {
     isInviteMemberVisible,
@@ -95,6 +96,11 @@ function InviteMemberModal() {
     });
   };
 
+  // Focus input on open
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [isInviteMemberVisible]);
+
   return (
     <Modal
       title="Mời thêm thành viên"
@@ -108,6 +114,7 @@ function InviteMemberModal() {
             Tên
           </label>
           <input
+            ref={inputRef}
             className={cx("input-box")}
             type="text"
             placeholder="Nhập tên bạn bè"
