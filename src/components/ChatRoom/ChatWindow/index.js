@@ -13,7 +13,7 @@ import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 
-import { addDocument } from "../../../firebase/service";
+import { addDocument, uploadFile } from "../../../firebase/service";
 import useFirestore from "../../../hooks/useFirestore";
 
 import Message from "../Message";
@@ -22,6 +22,7 @@ import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import RoomOptions from "../RoomOptions";
+import { getDownloadURL } from "firebase/storage";
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -37,6 +38,7 @@ function ChatWindow({ roomId }) {
   } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
+  const [imageUpload, setImageUpload] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
 
   const { uid, displayName, photoURL } = useContext(AuthContext);
@@ -50,11 +52,39 @@ function ChatWindow({ roomId }) {
     setSelectedRoomId(roomId);
   }, [roomId, setSelectedRoomId]);
 
-  // ------ HANDLE SEND MESSAGE ------
-  // Hàm xử lý input và gửi dữ liệu
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  // HANDLE GET MESSAGES
+  // Lấy message của phòng được selected
+  const messagesCondition = useMemo(() => {
+    // Lấy các tin nhắn có roomId
+    // trùng với current roomId
+    return {
+      fielName: "roomId",
+      operator: "==",
+      compareValue: roomId,
+    };
+  }, [roomId]);
+
+  const messages = useFirestore("messages", messagesCondition);
+
+  // Lấy ra phòng được selected
+  const selectedRoom = useMemo(
+    () => rooms.find((room) => room.id === roomId),
+    [rooms, roomId]
+  );
+
+  // Phát âm báo mỗi lần có tin nhắn mới
+  useEffect(() => {
+    if (messages.length) {
+      const messagesLength = messages.length;
+      setCurrentMessage(messages[messagesLength - 1]);
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    const audio = new Audio(messageSound);
+    audio.volume = 0.5;
+    audio.play();
+  }, [currentMessage.id]);
 
   // Xử lý scroll tin nhắn lên mỗi khi có tin nhắn mới
   useEffect(() => {
@@ -77,57 +107,60 @@ function ChatWindow({ roomId }) {
   //   }
   // }, [currentMessage.id]);
 
+  // ------ HANDLE SEND MESSAGE ------
+  // Hàm xử lý input và gửi dữ liệu
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleFileInput = (e) => {
+    setImageUpload(e.target.files[0]);
+  };
+
+  const sendMessage = (messText, messPhoto) => {
+    addDocument("messages", {
+      text: messText,
+      uid,
+      photoURL,
+      messagePhotoURL: messPhoto,
+      displayName,
+      roomId: roomId,
+      reactions: {
+        heart: [],
+        haha: [],
+        wow: [],
+        sad: [],
+        angry: [],
+        like: [],
+      },
+    });
+  };
+
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
-    let sendInput = inputValue;
-    let messagePhotoURL = "";
-    if (inputValue.includes("&photo:")) {
-      messagePhotoURL = inputValue.slice(7, inputValue.length);
-      sendInput = "Không gửi được ảnh";
-    }
-    console.log("messagePhotoURL: ", messagePhotoURL);
-
-    if (inputValue) {
-      addDocument("messages", {
-        text: sendInput,
-        uid,
-        photoURL,
-        messagePhotoURL,
-        displayName,
-        roomId: roomId,
-        reactions: {
-          heart: [],
-          haha: [],
-          wow: [],
-          sad: [],
-          angry: [],
-          like: [],
-        },
+    if (imageUpload) {
+      // Nếu đã chọn ảnh thì gửi lên URL
+      const downloadUrl = uploadFile(imageUpload, `images/chat_room/${roomId}`);
+      downloadUrl.then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          sendMessage("Photo", url);
+        });
       });
+    } else if (inputValue) {
+      // Nếu chưa chọn ảnh thì gửi inputValue
+      sendMessage(inputValue, "");
     }
 
     // Clear input and focus
+    setImageUpload(null);
     setInputValue("");
     inputRef.current.focus();
   };
 
+  // Gửi riêng icon
   const handleSendIcon = (value) => {
     if (value) {
-      addDocument("messages", {
-        text: value,
-        uid,
-        photoURL,
-        displayName,
-        roomId: roomId,
-        reactions: {
-          heart: [],
-          haha: [],
-          wow: [],
-          sad: [],
-          angry: [],
-          like: [],
-        },
-      });
+      sendMessage(value, "");
     }
   };
 
@@ -137,20 +170,6 @@ function ChatWindow({ roomId }) {
       handleOnSubmit();
     }
   };
-
-  // HANDLE GET MESSAGES
-  // Lấy message của phòng được selected
-  const messagesCondition = useMemo(() => {
-    // Lấy các tin nhắn có roomId
-    // trùng với current roomId
-    return {
-      fielName: "roomId",
-      operator: "==",
-      compareValue: roomId,
-    };
-  }, [roomId]);
-
-  const messages = useFirestore("messages", messagesCondition);
 
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {
@@ -193,26 +212,6 @@ function ChatWindow({ roomId }) {
     }
     return newMessages;
   }, [messages]);
-
-  // Lấy ra phòng được selected
-  const selectedRoom = useMemo(
-    () => rooms.find((room) => room.id === roomId),
-    [rooms, roomId]
-  );
-
-  // Phát âm báo mỗi lần có tin nhắn mới
-  useEffect(() => {
-    if (messages.length) {
-      const messagesLength = messages.length;
-      setCurrentMessage(messages[messagesLength - 1]);
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    const audio = new Audio(messageSound);
-    audio.volume = 0.5;
-    audio.play();
-  }, [currentMessage.id]);
 
   // Cập nhật định dạng
   // useEffect(() => {
@@ -298,6 +297,7 @@ function ChatWindow({ roomId }) {
 
             {/*=========== Message Form ===========*/}
             <div className={cx("message-form")}>
+              <input onChange={handleFileInput} type="file" name="" id="" />
               <input
                 className={cx("message-form_input")}
                 type="text"
@@ -310,7 +310,7 @@ function ChatWindow({ roomId }) {
               />
 
               <div className={cx("button-wrap")}>
-                {inputValue.trim() ? (
+                {inputValue.trim() || imageUpload ? (
                   <button
                     onClick={handleOnSubmit}
                     className={cx("message-form_btn", "btn", "rounded")}

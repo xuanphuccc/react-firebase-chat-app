@@ -107,48 +107,48 @@ function Message({
       <div className={cx("content")}>
         <h4 className={cx("user-name")}>{displayName}</h4>
         <div className={cx("text-wrap")}>
-          {messagePhotoURL ? (
-            <img
-              className={cx("message-photo", "text")}
-              src={messagePhotoURL}
-              alt=""
-            />
-          ) : (
-            <div className={cx("text", { [type]: type })}>
-              <Tippy
-                placement="top"
-                delay={[400, 250]}
-                content={
-                  <div>
-                    <p className={cx("time")}>{formatMessageDate(createAt)}</p>
-                  </div>
-                }
-              >
+          <div className={cx("text", { [type]: type })}>
+            <Tippy
+              placement="top"
+              delay={[400, 250]}
+              content={
+                <div>
+                  <p className={cx("time")}>{formatMessageDate(createAt)}</p>
+                </div>
+              }
+            >
+              {messagePhotoURL ? (
+                <img
+                  className={cx("message-photo", "text-inner")}
+                  src={messagePhotoURL}
+                  alt=""
+                />
+              ) : (
                 <p className={cx("text-inner")}>{content}</p>
-              </Tippy>
-              <div onClick={handleToggleReactionsModal}>
-                {isHasIcon && <ReactionsIcon reactions={reactions} />}
-              </div>
-
-              <Tippy
-                interactive="true"
-                trigger="click"
-                content={
-                  <ReactionsControl
-                    id={id}
-                    reactions={reactions}
-                    activeIcon={activeIcon}
-                    setIsHasIcon={setIsHasIcon}
-                    setActiveIcon={setActiveIcon}
-                  />
-                }
-              >
-                <button className={cx("reaction-btn")}>
-                  <FontAwesomeIcon icon={faFaceSmile} />
-                </button>
-              </Tippy>
+              )}
+            </Tippy>
+            <div onClick={handleToggleReactionsModal}>
+              {isHasIcon && <ReactionsIcon reactions={reactions} />}
             </div>
-          )}
+
+            <Tippy
+              interactive="true"
+              trigger="click"
+              content={
+                <ReactionsControl
+                  id={id}
+                  reactions={reactions}
+                  activeIcon={activeIcon}
+                  setIsHasIcon={setIsHasIcon}
+                  setActiveIcon={setActiveIcon}
+                />
+              }
+            >
+              <button className={cx("reaction-btn")}>
+                <FontAwesomeIcon icon={faFaceSmile} />
+              </button>
+            </Tippy>
+          </div>
         </div>
       </div>
 

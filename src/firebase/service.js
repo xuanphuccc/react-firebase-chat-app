@@ -1,6 +1,10 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "./config";
 
+import { storage } from "./config";
+import { ref, uploadBytes } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+
 function addDocument(collectionName, data) {
   addDoc(collection(db, collectionName), {
     ...data,
@@ -8,4 +12,24 @@ function addDocument(collectionName, data) {
   });
 }
 
-export { addDocument };
+function uploadFile(fileUpload, folder) {
+  if (!fileUpload || folder.length === 0) return;
+  const imageRef = ref(
+    storage,
+    `${folder}/${fileUpload.lastModified}_${fileUpload.size}_${uuidv4()}_${
+      fileUpload.name
+    }`
+  );
+
+  // uploadBytes(imageRef, fileUpload).then((snapshot) => {
+  //   console.log("Image Uploaded!");
+  //   // getDownloadURL(snapshot.ref).then((url) => {
+  //   //   console.log("URL: ", url);
+  //   // });
+  //   return getDownloadURL(snapshot.ref);
+  // });
+
+  return uploadBytes(imageRef, fileUpload);
+}
+
+export { addDocument, uploadFile };
