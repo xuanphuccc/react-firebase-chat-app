@@ -238,14 +238,14 @@ function ChatWindow({ roomId }) {
   }, [messages]);
 
   // Cập nhật định dạng
-  useEffect(() => {
-    messages.forEach((message) => {
-      let messageRef = doc(db, "messages", message.id);
-      updateDoc(messageRef, {
-        fullPath: "",
-      });
-    });
-  }, [messages]);
+  // useEffect(() => {
+  //   messages.forEach((message) => {
+  //     let messageRef = doc(db, "messages", message.id);
+  //     updateDoc(messageRef, {
+  //       fullPath: "",
+  //     });
+  //   });
+  // }, [messages]);
 
   return (
     <>
