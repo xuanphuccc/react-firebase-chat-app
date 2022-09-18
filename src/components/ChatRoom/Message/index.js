@@ -110,10 +110,12 @@ function Message({
 
   // Xử lý thu hồi tin nhắn
   const handleUnsentMessage = () => {
-    let messageRef = doc(db, "messages", id);
-    updateDoc(messageRef, {
-      text: `@unsentmsg ${content}`,
-    });
+    if (userId === uid) {
+      let messageRef = doc(db, "messages", id);
+      updateDoc(messageRef, {
+        text: `@unsentmsg ${content}`,
+      });
+    }
   };
 
   // Xử lý đóng mở modal ReactionsModal
@@ -160,7 +162,11 @@ function Message({
               {isHasIcon && <ReactionsIcon reactions={reactions} />}
             </div>
 
-            <div className={cx("message-controls")}>
+            <div
+              className={cx("message-controls", {
+                onlyReaction: userId !== uid,
+              })}
+            >
               <Tippy
                 interactive="true"
                 trigger="click"
@@ -179,24 +185,26 @@ function Message({
                 </button>
               </Tippy>
 
-              <Tippy
-                interactive="true"
-                trigger="click"
-                content={
-                  <div className={cx("unsent-control")}>
-                    <button
-                      onClick={handleUnsentMessage}
-                      className={cx("unsent-btn")}
-                    >
-                      Gỡ tin nhắn
-                    </button>
-                  </div>
-                }
-              >
-                <button className={cx("reaction-btn")}>
-                  <FontAwesomeIcon icon={faEllipsisV} />
-                </button>
-              </Tippy>
+              {userId === uid && (
+                <Tippy
+                  interactive="true"
+                  trigger="click"
+                  content={
+                    <div className={cx("unsent-control")}>
+                      <button
+                        onClick={handleUnsentMessage}
+                        className={cx("unsent-btn")}
+                      >
+                        Gỡ tin nhắn
+                      </button>
+                    </div>
+                  }
+                >
+                  <button className={cx("reaction-btn")}>
+                    <FontAwesomeIcon icon={faEllipsisV} />
+                  </button>
+                </Tippy>
+              )}
             </div>
           </div>
         </div>
