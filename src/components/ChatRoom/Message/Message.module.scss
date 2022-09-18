@@ -134,7 +134,7 @@
 
 .text {
   position: relative;
-  display: inline-block;
+  display: flex;
 }
 
 .wrapper.isHasIcon {
@@ -152,6 +152,10 @@
   animation: popup 0.2s ease forwards;
   // Với tin nhắn gửi là 100%
   transform-origin: 0%;
+}
+
+.text-inner.message-photo {
+  padding: 0;
 }
 
 .message-photo {
