@@ -120,6 +120,7 @@ function ChatWindow({ roomId }) {
   const handleImageInput = (e) => {
     setImageUpload(e.target.files[0]);
     setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
+    inputRef.current.focus();
   };
 
   const sendMessage = (messText, messPhoto) => {
@@ -144,10 +145,15 @@ function ChatWindow({ roomId }) {
   // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
   const handleOnSubmit = () => {
     if (imageUpload) {
-      // Nếu đã chọn ảnh thì gửi lên URL
+      // Nếu đã chọn ảnh thì gửi lên URL hình ảnh
       const downloadUrl = uploadFile(imageUpload, `images/chat_room/${roomId}`);
       downloadUrl.then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
+          // Nếu có input value thì gửi cả ảnh và tin nhắn
+          const trimInput = inputValue;
+          if (trimInput.trim()) {
+            sendMessage(inputValue, "");
+          }
           sendMessage("Photo", url);
         });
       });

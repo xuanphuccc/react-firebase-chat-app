@@ -154,6 +154,15 @@
   transform-origin: 0%;
 }
 
+.unsent-message {
+  background-color: transparent;
+  color: var(--medium-gray);
+  padding: 10px 16px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 20px;
+  animation: popup 0.2s ease forwards;
+}
+
 .text-inner.message-photo {
   padding: 0;
 }

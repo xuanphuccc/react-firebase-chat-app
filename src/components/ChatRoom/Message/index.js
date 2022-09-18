@@ -3,7 +3,7 @@ import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../../../Context/AuthProvider";
 
 import ReactionsControl from "../ReactionsControl";
@@ -75,6 +75,23 @@ function Message({
     return `${hoursMinutes} ${yearMonthDate}`;
   };
 
+  // Xử lý tin nhắn hình ảnh, không có hình ảnh và bị gỡ
+  const renderMessageContent = useMemo(() => {
+    if (content.includes("@unsentmsg")) {
+      return <p className={cx("unsent-message")}>Tin nhắn đã bị thu hồi</p>;
+    } else if (messagePhotoURL) {
+      return (
+        <img
+          className={cx("message-photo", "text-inner")}
+          src={messagePhotoURL}
+          alt=""
+        />
+      );
+    } else {
+      return <p className={cx("text-inner")}>{content}</p>;
+    }
+  }, [content, messagePhotoURL]);
+
   // Set hiển thị icon và set active icon
   useEffect(() => {
     for (let type in reactions) {
@@ -117,7 +134,7 @@ function Message({
                 </div>
               }
             >
-              {messagePhotoURL ? (
+              {/* {messagePhotoURL ? (
                 <img
                   className={cx("message-photo", "text-inner")}
                   src={messagePhotoURL}
@@ -125,7 +142,8 @@ function Message({
                 />
               ) : (
                 <p className={cx("text-inner")}>{content}</p>
-              )}
+              )} */}
+              {renderMessageContent}
             </Tippy>
             <div onClick={handleToggleReactionsModal}>
               {isHasIcon && <ReactionsIcon reactions={reactions} />}
