@@ -8,6 +8,7 @@ import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../../../Context/AuthProvider";
+import { AppContext } from "../../../Context/AppProvider";
 
 import { db } from "../../../firebase/config";
 import { updateDoc, doc } from "firebase/firestore";
@@ -30,6 +31,7 @@ function Message({
   messagePhotoURL,
 }) {
   const { uid } = useContext(AuthContext);
+  const { members } = useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
 
@@ -41,6 +43,15 @@ function Message({
 
   // Set trạng thái hiển thị của ReactionsModal
   const [isVisibleReactionsModal, setIsVisibleReactionsModal] = useState(false);
+
+  // Lấy ra user của tin nhắn
+  const userInfo = useMemo(() => {
+    let infor = "";
+    if (members) {
+      infor = members.find((member) => member.uid === userId);
+    }
+    return infor;
+  }, [members, userId]);
 
   // Định dạng lại ngày tháng
   const formatMessageDate = (createAt) => {
@@ -132,10 +143,10 @@ function Message({
         isHasIcon: isHasIcon,
       })}
     >
-      <img className={cx("user-img")} src={photoURL} alt="" />
+      <img className={cx("user-img")} src={userInfo.photoURL} alt="" />
 
       <div className={cx("content")}>
-        <h4 className={cx("user-name")}>{displayName}</h4>
+        <h4 className={cx("user-name")}>{userInfo.displayName}</h4>
         <div className={cx("text-wrap")}>
           <div className={cx("text", { [type]: type })}>
             <Tippy
@@ -147,15 +158,6 @@ function Message({
                 </div>
               }
             >
-              {/* {messagePhotoURL ? (
-                <img
-                  className={cx("message-photo", "text-inner")}
-                  src={messagePhotoURL}
-                  alt=""
-                />
-              ) : (
-                <p className={cx("text-inner")}>{content}</p>
-              )} */}
               {renderMessageContent}
             </Tippy>
             <div onClick={handleToggleReactionsModal}>

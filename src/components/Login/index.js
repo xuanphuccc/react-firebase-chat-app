@@ -35,11 +35,11 @@ function Login() {
         if (_tokenResponse.isNewUser) {
           console.log("New User!");
 
-          // Custom method để ghi dữ liệu vào database
           addDocument("users", {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
+            fullPath: "",
             uid: user.uid,
             providerId: _tokenResponse.providerId,
           });
@@ -78,6 +78,7 @@ function Login() {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
+            fullPath: "",
             uid: user.uid,
             providerId: _tokenResponse.providerId,
           });
