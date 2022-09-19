@@ -5,7 +5,7 @@ import { useState, useContext, useEffect, useMemo, useRef } from "react";
 
 import { AppContext } from "../../../Context/AppProvider";
 // import { AuthContext } from "../../Context/AuthProvider";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
 import Modal from "../Modal";
@@ -34,11 +34,29 @@ function InviteMemberModal() {
 
   // Khi click OK
   const handleOk = () => {
-    const roomRef = doc(db, "rooms", selectedRoomId);
-
     if (selectedUsers.length >= 1) {
+      // set nick name cho những users được thêm
+      const usersNickname = selectedUsers.map((id) => {
+        let validUser = users.find((user) => user.uid === id);
+        if (validUser) {
+          return {
+            uid: validUser.uid,
+            nickname: validUser.displayName,
+          };
+        } else
+          return {
+            uid: "",
+            nickname: "",
+          };
+      });
+
+      console.log("usersNickname", usersNickname);
+
+      const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
-        members: [...originMemberId, ...selectedUsers],
+        // members: [...originMemberId, ...selectedUsers],
+        members: arrayUnion(...selectedUsers),
+        roomNicknames: arrayUnion(...usersNickname),
       });
     }
 
@@ -58,7 +76,7 @@ function InviteMemberModal() {
 
   // Tìm users khi nhập tên tìm kiếm
   useEffect(() => {
-    if (users.length >= 1 && inputValue !== "") {
+    if (users.length >= 1 && inputValue !== "" && originMemberId) {
       let usersSearch = users.filter((member) => {
         let memberDisplayName = member.displayName.toLowerCase();
         let input = inputValue.toLowerCase();

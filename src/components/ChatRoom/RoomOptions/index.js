@@ -73,9 +73,15 @@ function RoomOptions({ messages }) {
       console.log("You are the only admin!!!");
       setIsOnlyAdmin(true);
     } else {
+      // xóa nick name
+      const newRoomNicknames = selectedRoom.roomNicknames.filter(
+        (nickname) => nickname.uid !== uid
+      );
+
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         members: arrayRemove(uid),
+        roomNicknames: newRoomNicknames,
       });
 
       // Nếu là admin và không là admin duy nhất
@@ -179,14 +185,18 @@ function RoomOptions({ messages }) {
   const handleRemoveMember = (userId) => {
     // Nếu người xóa là admin và không phải xóa chính mình
     if (admins.includes(uid) && userId !== uid) {
+      // xóa nick name
+      const newRoomNicknames = selectedRoom.roomNicknames.filter(
+        (nickname) => nickname.uid !== userId
+      );
+
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         members: arrayRemove(userId),
+        roomNicknames: newRoomNicknames,
       });
     }
   };
-
-  // ------ HANDLE REMOVE MEMBER ------
 
   return (
     <div className={cx("wrapper", { isMobile: isMobile })}>

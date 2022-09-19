@@ -44,6 +44,9 @@ function CreateRoomModal() {
             fullPath: snapshot.metadata.fullPath,
             members: [currentUser.uid],
             admins: [currentUser.uid],
+            roomNicknames: [
+              { nickname: currentUser.displayName, uid: currentUser.uid },
+            ],
           };
 
           addDocument("rooms", data);
@@ -52,18 +55,21 @@ function CreateRoomModal() {
       isValid = true;
     }
     // add new room without avatar to firestore
-    else if (name !== "") {
-      const data = {
-        name,
-        description,
-        photoURL: "",
-        fullPath: "",
-        members: [currentUser.uid],
-        admins: [currentUser.uid],
-      };
-      addDocument("rooms", data);
-      isValid = true;
-    }
+    // else if (name !== "") {
+    //   const data = {
+    //     name,
+    //     description,
+    //     photoURL: "",
+    //     fullPath: "",
+    //     members: [currentUser.uid],
+    //     admins: [currentUser.uid],
+    //     roomNicknames: [
+    //       { nickname: currentUser.displayName, uid: currentUser.uid },
+    //     ],
+    //   };
+    //   addDocument("rooms", data);
+    //   isValid = true;
+    // }
 
     // Đóng modal và xóa input
     if (isValid) {
