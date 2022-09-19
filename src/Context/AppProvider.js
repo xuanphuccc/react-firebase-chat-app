@@ -1,18 +1,9 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./AuthProvider";
 import useFirestore from "../hooks/useFirestore";
 
 import useViewport from "../hooks/useViewport";
 import useGetAllFirestore from "../hooks/useGetAllFirestore";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
 
 const AppContext = createContext();
 
@@ -93,22 +84,6 @@ function AppProvider({ children }) {
       });
     }
   }, [users, selectedRoomMembers]);
-
-  const count = useRef(0);
-  useEffect(() => {
-    if (count.current === 1) return;
-    console.log("run run", users);
-    if (users.length) {
-      users.forEach((user) => {
-        console.log("user: ", user);
-        let userRef = doc(db, "users", user.id);
-        updateDoc(userRef, {
-          fullPath: "",
-        });
-      });
-      count.current = 1;
-    }
-  }, [users]);
 
   // Xử lý responsive
   const viewport = useViewport();
