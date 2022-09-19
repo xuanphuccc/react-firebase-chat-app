@@ -1,12 +1,12 @@
 .wrapper {
   padding: 16px;
-  max-height: 80vh;
-  overflow-y: auto;
-  white-space: wrap;
 }
 
 .users-list {
   list-style: none;
+  max-height: 80vh;
+  overflow-y: auto;
+  white-space: wrap;
 }
 
 .user-item {
