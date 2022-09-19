@@ -32,6 +32,10 @@
   background: #888; 
 }
 
+html {
+  font-size: 62.5%;
+}
+
 body {
   font-family: "Be Vietnam Pro", sans-serif;
   overflow-y: hidden;

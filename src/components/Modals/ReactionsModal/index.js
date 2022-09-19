@@ -155,7 +155,7 @@ function ReactionsModal({ reactions, isVisible, handleVisible }) {
               }}
               className={cx("header-item", "all-reaction-item")}
             >
-              Tất cả {usersReaction.length}
+              Tất cả {usersReaction["allReactions"].length}
             </li>
             {reactionTypeCount}
           </ul>

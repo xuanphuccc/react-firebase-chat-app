@@ -17,14 +17,16 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 import { addDocument, uploadFile } from "../../../firebase/service";
 import useFirestore from "../../../hooks/useFirestore";
+import { getDownloadURL } from "firebase/storage";
 
 import Message from "../Message";
+import RoomOptions from "../RoomOptions";
 
 import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
-import RoomOptions from "../RoomOptions";
-import { getDownloadURL } from "firebase/storage";
+import StickerIcon from "../../../assets/images/icons/StickerIcon.js";
+import GifIcon from "../../../assets/images/icons/GifIcon.js";
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -336,6 +338,22 @@ function ChatWindow({ roomId }) {
                   className={cx("media-btn")}
                 >
                   <FontAwesomeIcon icon={faImage} />
+                </button>
+                <button
+                  onClick={() => {
+                    imageInputRef.current.click();
+                  }}
+                  className={cx("media-btn")}
+                >
+                  <StickerIcon />
+                </button>
+                <button
+                  onClick={() => {
+                    imageInputRef.current.click();
+                  }}
+                  className={cx("media-btn")}
+                >
+                  <GifIcon />
                 </button>
               </div>
 

@@ -42,7 +42,7 @@
   border: none;
   background-color: transparent;
   outline: none;
-  font-size: 24px;
+  font-size: 2.4rem;
   color: var(--primary);
   padding: 10px;
   cursor: pointer;
@@ -62,12 +62,12 @@
 }
 
 .chat-window_header-name {
-  font-size: 15px;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
 .chat-desc {
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #65676b;
   font-weight: 300;
 }
@@ -85,7 +85,7 @@
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  font-size: 20px;
+  font-size: 2rem;
   margin: 0 4px;
   border-radius: 99px;
   cursor: pointer;
@@ -143,7 +143,7 @@
   flex: 1;
   border: none;
   outline: none;
-  font-size: 16px;
+  font-size: 1.6rem;
   padding: 9px 12px;
   caret-color: var(--primary);
   background-color: transparent;
@@ -166,7 +166,7 @@
 }
 
 .form-btn-icon {
-  font-size: 24px;
+  font-size: 2.4rem;
 }
 
 .form-btn-image {
@@ -177,6 +177,8 @@
 
 // Media Input
 .media-wrapper {
+  display: flex;
+  align-items: center;
   margin-right: 8px;
 }
 
@@ -185,10 +187,13 @@
 }
 
 .media-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   width: 38px;
   height: 38px;
   border-radius: 99px;
-  font-size: 20px;
+  font-size: 2rem;
   color: var(--primary);
   background-color: transparent;
   cursor: pointer;
@@ -228,7 +233,7 @@
   height: 24px;
   background-color: #fff;
   color: var(--text-black);
-  font-size: 16px;
+  font-size: 1.6rem;
   border-radius: 40px;
   border: 1px solid var(--gray);
   cursor: pointer;

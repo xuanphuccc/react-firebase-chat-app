@@ -10,6 +10,7 @@ import {
   faShield,
   faShieldHalved,
   faTrash,
+  faImages,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
@@ -42,6 +43,9 @@ function RoomOptions({ messages }) {
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
   const [isOnlyAdmin, setIsOnlyAdmin] = useState(false);
+  const [isOpenMembersOptions, setIsOpenMembersOptions] = useState(false);
+  const [isOpenMediaOptions, setIsOpenMediaOptions] = useState(false);
+  const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
 
   const navigate = useNavigate();
 
@@ -182,6 +186,8 @@ function RoomOptions({ messages }) {
     }
   };
 
+  // ------ HANDLE REMOVE MEMBER ------
+
   return (
     <div className={cx("wrapper", { isMobile: isMobile })}>
       {isMobile && (
@@ -235,16 +241,25 @@ function RoomOptions({ messages }) {
 
         {/*====== Member Options ======*/}
         <li className={cx("type-item")}>
-          <h4 className={cx("type-name")}>
+          <h4
+            onClick={() => {
+              setIsOpenMembersOptions(!isOpenMembersOptions);
+            }}
+            className={cx("type-name")}
+          >
             Thành viên đoạn chat &#40;{members.length}&#41;
             <span className={cx("type-icon")}>
               <FontAwesomeIcon icon={faChevronRight} />
             </span>
           </h4>
 
-          <ul className={cx("type-wrap")}>
+          <ul
+            className={cx("type-wrap", {
+              open: isOpenMembersOptions,
+            })}
+          >
             {members.map((member) => (
-              <li key={member.uid} className={cx("obtion-item", "user-obtion")}>
+              <li key={member.uid} className={cx("option-item", "user-option")}>
                 <div className={cx("user-info")}>
                   <img
                     className={cx("user-img")}
@@ -302,7 +317,7 @@ function RoomOptions({ messages }) {
                     </ul>
                   }
                 >
-                  <span className={cx("user-obtion-icon")}>
+                  <span className={cx("user-option-icon")}>
                     <FontAwesomeIcon icon={faEllipsis} />
                   </span>
                 </Tippy>
@@ -310,14 +325,11 @@ function RoomOptions({ messages }) {
             ))}
 
             {/* Add Members */}
-            <li
-              onClick={handleInviteMemberModal}
-              className={cx("obtion-item", "add-member")}
-            >
-              <button className={cx("add-members-btn")}>
+            <li onClick={handleInviteMemberModal} className={cx("option-item")}>
+              <span className={cx("option-icon", "add-members-btn")}>
                 <FontAwesomeIcon icon={faPlus} />
-              </button>
-              <h4 className={cx("add-members-title")}>Thêm người</h4>
+              </span>
+              <h4 className={cx("option-name")}>Thêm người</h4>
             </li>
             <InviteMemberModal />
           </ul>
@@ -325,43 +337,58 @@ function RoomOptions({ messages }) {
 
         {/*====== File Options ======*/}
         <li className={cx("type-item")}>
-          <h4 className={cx("type-name")}>
+          <h4
+            onClick={() => {
+              setIsOpenMediaOptions(!isOpenMediaOptions);
+            }}
+            className={cx("type-name")}
+          >
             File phương tiện
             <span className={cx("type-icon")}>
               <FontAwesomeIcon icon={faChevronRight} />
             </span>
           </h4>
 
-          <ul className={cx("type-wrap")}></ul>
+          <ul className={cx("type-wrap", { open: isOpenMediaOptions })}>
+            <li className={cx("option-item")}>
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faImages} />
+              </span>
+              <h5 className={cx("option-name")}>File phương tiện</h5>
+            </li>
+          </ul>
         </li>
 
         {/*====== Privacy Options ======*/}
         <li className={cx("type-item")}>
-          <h4 className={cx("type-name")}>
+          <h4
+            onClick={() => {
+              setIsOpenPrivacyOptions(!isOpenPrivacyOptions);
+            }}
+            className={cx("type-name")}
+          >
             Quyền riêng tư và hỗ trợ
             <span className={cx("type-icon")}>
               <FontAwesomeIcon icon={faChevronRight} />
             </span>
           </h4>
 
-          <ul className={cx("type-wrap", "privacy-list")}>
-            <li
-              onClick={handleLeaveRoom}
-              className={cx("obtion-item", "privacy-option")}
-            >
-              <span className={cx("privacy-icon")}>
+          <ul
+            className={cx("type-wrap", "privacy-list", {
+              open: isOpenPrivacyOptions,
+            })}
+          >
+            <li onClick={handleLeaveRoom} className={cx("option-item")}>
+              <span className={cx("option-icon")}>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} />
               </span>
-              <h5 className={cx("privacy-name")}>Rời khỏi nhóm</h5>
+              <h5 className={cx("option-name")}>Rời khỏi nhóm</h5>
             </li>
-            <li
-              onClick={handleDeleteRoom}
-              className={cx("obtion-item", "privacy-option")}
-            >
-              <span className={cx("privacy-icon")}>
+            <li onClick={handleDeleteRoom} className={cx("option-item")}>
+              <span className={cx("option-icon")}>
                 <FontAwesomeIcon icon={faTrash} />
               </span>
-              <h5 className={cx("privacy-name")}>Xóa nhóm</h5>
+              <h5 className={cx("option-name")}>Xóa nhóm</h5>
             </li>
           </ul>
         </li>

@@ -35,7 +35,7 @@
 }
 
 .user-name {
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: 500;
 }
 
@@ -54,12 +54,12 @@
 }
 
 .invite-title {
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
 .invite-code {
-  font-size: 12px;
+  font-size: 1.2rem;
   color: var(--primary);
   margin-top: 4px;
 }
@@ -73,7 +73,7 @@
   background-color: transparent;
   border: none;
   color: var(--primary);
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 600;
   font-family: "Be Vietnam Pro", sans-serif;
   cursor: pointer;
@@ -89,10 +89,9 @@
 }
 
 /* New room*/
-.new-room-wrap {
-}
+
 .new-room-icon {
-  font-size: 20px;
+  font-size: 2rem;
   color: var(--primary);
   padding: 8px;
   display: inline-block;
