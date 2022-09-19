@@ -11,7 +11,12 @@ function useGetAllFirestore(collectionName) {
       collection(db, collectionName),
       (snapshot) => {
         const documents = snapshot.docs.map((doc) => {
-          return doc.data();
+          let docData = doc.data();
+          let docId = doc.id;
+          return {
+            ...docData,
+            id: docId,
+          };
         });
 
         setDocuments(documents);

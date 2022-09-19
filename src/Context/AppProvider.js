@@ -1,9 +1,18 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { AuthContext } from "./AuthProvider";
 import useFirestore from "../hooks/useFirestore";
 
 import useViewport from "../hooks/useViewport";
 import useGetAllFirestore from "../hooks/useGetAllFirestore";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 const AppContext = createContext();
 
@@ -56,10 +65,9 @@ function AppProvider({ children }) {
   const rooms = useFirestore("rooms", roomsCondition);
 
   // Lấy ra phòng được selected
-  const selectedRoom = useMemo(
-    () => rooms.find((room) => room.id === selectedRoomId),
-    [rooms, selectedRoomId]
-  );
+  const selectedRoom = useMemo(() => {
+    return rooms.find((room) => room.id === selectedRoomId);
+  }, [rooms, selectedRoomId]);
 
   // Kiểm tra xem đã được chọn phòng chưa
   // nếu chưa phải gán cho 1 object chứa members rỗng
@@ -85,6 +93,39 @@ function AppProvider({ children }) {
       });
     }
   }, [users, selectedRoomMembers]);
+
+  // Cập nhật lại members của room để thêm biệt danh
+  const allRooms = useGetAllFirestore("rooms");
+  const closeRef = useRef(0);
+  // console.log("All rooms: ", allRooms);
+  useEffect(() => {
+    if (closeRef.current === 1) return;
+    console.log("run run run", {
+      allRooms: allRooms.length,
+      current: closeRef.current,
+      users: users.length,
+    });
+    if (allRooms.length && closeRef.current !== 1 && users.length) {
+      allRooms.forEach((room) => {
+        let newArray = room.members.map((uid) => {
+          let oldmember = users.find((member) => member.uid === uid);
+          console.log("Room:", oldmember);
+          if (oldmember) {
+            return {
+              uid,
+              nickname: oldmember.displayName,
+            };
+          } else return "";
+        });
+
+        let roomsRef = doc(db, "rooms", room.id);
+        updateDoc(roomsRef, {
+          roomNicknames: newArray,
+        });
+      });
+      closeRef.current = 1;
+    }
+  }, [allRooms, users]);
 
   // Xử lý responsive
   const viewport = useViewport();

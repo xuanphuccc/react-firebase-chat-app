@@ -61,10 +61,11 @@
 }
 
 .room-img {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 50%;
+  user-select: none;
 }
 
 .room-name {
