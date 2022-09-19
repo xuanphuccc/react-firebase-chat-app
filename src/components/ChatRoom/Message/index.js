@@ -31,7 +31,7 @@ function Message({
   messagePhotoURL,
 }) {
   const { uid } = useContext(AuthContext);
-  const { members } = useContext(AppContext);
+  const { members, selectedRoom } = useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
 
@@ -46,12 +46,20 @@ function Message({
 
   // Lấy ra user của tin nhắn
   const memberInfor = useMemo(() => {
-    let infor = "";
+    let result = {};
     if (members) {
-      infor = members.find((member) => member.uid === userId);
+      const infor = members.find((member) => member.uid === userId);
+      const nickname = selectedRoom.roomNicknames.find(
+        (nickname) => nickname.uid === userId
+      );
+      result = {
+        ...infor,
+        ...nickname,
+      };
     }
-    return infor;
-  }, [members, userId]);
+
+    return result;
+  }, [members, userId, selectedRoom]);
 
   // Định dạng lại ngày tháng
   const formatMessageDate = (createAt) => {
@@ -153,7 +161,7 @@ function Message({
       <div className={cx("content")}>
         <h4 className={cx("user-name")}>
           {/*Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng tên mặc định */}
-          {memberInfor ? memberInfor.displayName : displayName}
+          {memberInfor ? memberInfor.nickname : displayName}
         </h4>
         <div className={cx("text-wrap")}>
           <div className={cx("text", { [type]: type })}>

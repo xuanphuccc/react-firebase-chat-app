@@ -18,6 +18,9 @@ function AppProvider({ children }) {
   // Set trạng thái hiển thị cho modal Invite Members
   const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
 
+  // Set trạng thái hiển thị cho modal Custom Nickname
+  const [isOpenCustomNickname, setIsOpenCustomNickname] = useState(false);
+
   // Phòng đang được chọn để hiển thị chat
   const [selectedRoomId, setSelectedRoomId] = useState("");
 
@@ -118,6 +121,8 @@ function AppProvider({ children }) {
         isRoomMenuVisible,
         setIsRoomMenuVisible,
         handleRoomMenuVisible,
+        isOpenCustomNickname,
+        setIsOpenCustomNickname,
       }}
     >
       {children}

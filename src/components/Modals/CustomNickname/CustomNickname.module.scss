@@ -1,0 +1,75 @@
+.wrapper {
+  padding: 16px;
+}
+
+.users-list {
+  list-style: none;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
+}
+
+.user-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.user-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 99px;
+  object-fit: cover;
+  border: 1px solid var(--gray);
+}
+
+.user-name {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.custom-nickname-title {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-top: 4px;
+  color: var(--text-black);
+}
+
+.nickname-input {
+  flex: 1;
+  margin-left: 8px;
+  padding: 8px 12px;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid var(--primary);
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.icon-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.8rem;
+  border-radius: 50px;
+
+  &:hover {
+    background-color: var(--gray);
+  }
+}

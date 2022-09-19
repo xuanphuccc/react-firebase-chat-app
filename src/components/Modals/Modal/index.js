@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./Modal.module.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext } from "react";
 import { AppContext } from "../../../Context/AppProvider";
@@ -34,15 +34,17 @@ function Modal({
         <div className={cx("children")}>{children}</div>
         <div className={cx("controls")}>
           {okButton && (
-            <button
-              onClick={onOk}
-              className={cx("ok-btn", "btn primary", "max")}
-            >
-              OK
-            </button>
+            <div className={cx("ok-btn-wrap")}>
+              <button
+                onClick={onOk}
+                className={cx("ok-btn", "btn primary", "max")}
+              >
+                OK
+              </button>
+            </div>
           )}
           <i onClick={onCancel} className={cx("cancel-btn")}>
-            <FontAwesomeIcon icon={faCircleXmark} />
+            <FontAwesomeIcon icon={faXmark} />
           </i>
         </div>
       </div>

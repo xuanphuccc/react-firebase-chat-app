@@ -27,6 +27,7 @@ import placeHolderImg from "../../../assets/images/user.png";
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import StickerIcon from "../../../assets/images/icons/StickerIcon.js";
 import GifIcon from "../../../assets/images/icons/GifIcon.js";
+import CustomNickname from "../../Modals/CustomNickname";
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -420,6 +421,8 @@ function ChatWindow({ roomId }) {
               <RoomOptions messages={messages} />
             </div>
           )}
+
+          <CustomNickname />
         </div>
       )}
     </>

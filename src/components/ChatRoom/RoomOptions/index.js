@@ -11,6 +11,7 @@ import {
   faShieldHalved,
   faTrash,
   faImages,
+  faSignature,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
@@ -46,6 +47,7 @@ function RoomOptions({ messages }) {
   const [isOpenMembersOptions, setIsOpenMembersOptions] = useState(false);
   const [isOpenMediaOptions, setIsOpenMediaOptions] = useState(false);
   const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
+  const [isOpenCustomRoom, setIsOpenCustomRoom] = useState(false);
 
   const navigate = useNavigate();
 
@@ -56,6 +58,7 @@ function RoomOptions({ messages }) {
     setIsRoomMenuVisible,
     setIsInviteMemberVisible,
     isMobile,
+    setIsOpenCustomNickname,
   } = useContext(AppContext);
 
   const { uid } = useContext(AuthContext);
@@ -239,14 +242,31 @@ function RoomOptions({ messages }) {
       {/* Room Options */}
       <ul className={cx("options-types")}>
         <li className={cx("type-item")}>
-          <h4 className={cx("type-name")}>
+          <h4
+            onClick={() => {
+              setIsOpenCustomRoom(!isOpenCustomRoom);
+            }}
+            className={cx("type-name")}
+          >
             Tùy chỉnh đoạn chat
             <span className={cx("type-icon")}>
               <FontAwesomeIcon icon={faChevronRight} />
             </span>
           </h4>
 
-          <ul className={cx("type-wrap")}></ul>
+          <ul className={cx("type-wrap", { open: isOpenCustomRoom })}>
+            <li
+              onClick={() => {
+                setIsOpenCustomNickname(true);
+              }}
+              className={cx("option-item")}
+            >
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faSignature} />
+              </span>
+              <h5 className={cx("option-name")}>Chỉnh sửa biệt danh</h5>
+            </li>
+          </ul>
         </li>
 
         {/*====== Member Options ======*/}
