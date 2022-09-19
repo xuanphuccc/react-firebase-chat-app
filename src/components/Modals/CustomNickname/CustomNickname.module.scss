@@ -1,5 +1,8 @@
 .wrapper {
   padding: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+  white-space: wrap;
 }
 
 .users-list {
