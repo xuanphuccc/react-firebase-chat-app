@@ -94,38 +94,21 @@ function AppProvider({ children }) {
     }
   }, [users, selectedRoomMembers]);
 
-  // Cập nhật lại members của room để thêm biệt danh
-  const allRooms = useGetAllFirestore("rooms");
-  const closeRef = useRef(0);
-  // console.log("All rooms: ", allRooms);
+  const count = useRef(0);
   useEffect(() => {
-    if (closeRef.current === 1) return;
-    console.log("run run run", {
-      allRooms: allRooms.length,
-      current: closeRef.current,
-      users: users.length,
-    });
-    if (allRooms.length && closeRef.current !== 1 && users.length) {
-      allRooms.forEach((room) => {
-        let newArray = room.members.map((uid) => {
-          let oldmember = users.find((member) => member.uid === uid);
-          console.log("Room:", oldmember);
-          if (oldmember) {
-            return {
-              uid,
-              nickname: oldmember.displayName,
-            };
-          } else return "";
-        });
-
-        let roomsRef = doc(db, "rooms", room.id);
-        updateDoc(roomsRef, {
-          roomNicknames: newArray,
+    if (count.current === 1) return;
+    console.log("run run", users);
+    if (users.length) {
+      users.forEach((user) => {
+        console.log("user: ", user);
+        let userRef = doc(db, "users", user.id);
+        updateDoc(userRef, {
+          fullPath: "",
         });
       });
-      closeRef.current = 1;
+      count.current = 1;
     }
-  }, [allRooms, users]);
+  }, [users]);
 
   // Xử lý responsive
   const viewport = useViewport();
