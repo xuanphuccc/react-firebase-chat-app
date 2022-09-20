@@ -1,6 +1,5 @@
 .reactions-modal {
-  width: 460px;
-  min-height: 160px;
+  padding: 16px;
 
   &.isMobile {
     width: 100%;
@@ -65,6 +64,9 @@
 .content {
   overflow-y: auto;
   overflow-x: hidden;
+  white-space: wrap;
+  min-height: 180px;
+  max-height: 68vh;
 }
 
 .users-list {

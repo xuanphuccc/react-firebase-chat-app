@@ -7,6 +7,7 @@ import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 
 import { useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Context/AuthProvider";
 import { AppContext } from "../../../Context/AppProvider";
 
@@ -31,7 +32,7 @@ function Message({
   messagePhotoURL,
 }) {
   const { uid } = useContext(AuthContext);
-  const { members, selectedRoom } = useContext(AppContext);
+  const { members, selectedRoom, setSelectedPhoto } = useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
 
@@ -43,6 +44,9 @@ function Message({
 
   // Set trạng thái hiển thị của ReactionsModal
   const [isVisibleReactionsModal, setIsVisibleReactionsModal] = useState(false);
+
+  // Navigate
+  const navigate = useNavigate();
 
   // Lấy ra user của tin nhắn
   const memberInfor = useMemo(() => {
@@ -97,6 +101,14 @@ function Message({
     return `${hoursMinutes} ${yearMonthDate}`;
   };
 
+  // Mở Chat media khi click vào ảnh
+  const handleOpenChatMedia = useMemo(() => {
+    return (url) => {
+      setSelectedPhoto(url);
+      navigate("/chat-media");
+    };
+  }, [navigate, setSelectedPhoto]);
+
   // Xử lý tin nhắn hình ảnh, không có hình ảnh và bị gỡ
   const renderMessageContent = useMemo(() => {
     if (content.includes("@unsentmsg")) {
@@ -104,6 +116,9 @@ function Message({
     } else if (messagePhotoURL) {
       return (
         <img
+          onClick={() => {
+            handleOpenChatMedia(messagePhotoURL);
+          }}
           className={cx("message-photo", "text-inner")}
           src={messagePhotoURL}
           alt=""
@@ -112,7 +127,7 @@ function Message({
     } else {
       return <p className={cx("text-inner")}>{content}</p>;
     }
-  }, [content, messagePhotoURL]);
+  }, [content, messagePhotoURL, handleOpenChatMedia]);
 
   // Set hiển thị icon và set active icon
   useEffect(() => {
@@ -123,6 +138,8 @@ function Message({
           setActiveIcon(type);
           break;
         }
+      } else {
+        setIsHasIcon(false);
       }
     }
   }, [reactions, uid]);

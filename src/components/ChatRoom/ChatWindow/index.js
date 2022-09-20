@@ -40,6 +40,7 @@ function ChatWindow({ roomId }) {
     isMobile,
     handleRoomMenuVisible,
     isRoomMenuVisible,
+    setSelectedRoomMessages,
   } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
@@ -72,6 +73,11 @@ function ChatWindow({ roomId }) {
   }, [roomId]);
 
   const messages = useFirestore("messages", messagesCondition);
+
+  //
+  useEffect(() => {
+    setSelectedRoomMessages(messages);
+  }, [messages, setSelectedRoomMessages]);
 
   // Lấy ra phòng được selected
   const selectedRoom = useMemo(

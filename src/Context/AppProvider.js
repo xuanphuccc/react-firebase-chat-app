@@ -24,6 +24,9 @@ function AppProvider({ children }) {
   // Phòng đang được chọn để hiển thị chat
   const [selectedRoomId, setSelectedRoomId] = useState("");
 
+  // Ảnh tin nhắn đang được chọn
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
   // Set trạng thái hiển thị của Room Menu
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
   // Hàm xử lý mở modal Room Menu
@@ -31,8 +34,11 @@ function AppProvider({ children }) {
     setIsRoomMenuVisible(!isRoomMenuVisible);
   };
 
-  // Lấy ra uid của user hiện tại
+  // Lấy ra uid của user hiện tại khi đăng nhập
   const { uid } = useContext(AuthContext);
+
+  // Lấy messages từ selected room
+  const [selectedRoomMessages, setSelectedRoomMessages] = useState(null);
 
   // Lấy danh sách các phòng có user hiện tại
   /**room:
@@ -66,7 +72,6 @@ function AppProvider({ children }) {
   // Kiểm tra xem đã được chọn phòng chưa
   // nếu chưa phải gán cho 1 object chứa members rỗng
   // nếu không sẽ bị lỗi undefined.members
-
   const selectedRoomMembers = useMemo(() => {
     let roomMembers = selectedRoom;
     if (!roomMembers) {
@@ -88,6 +93,13 @@ function AppProvider({ children }) {
     }
   }, [users, selectedRoomMembers]);
 
+  // Lấy người dùng hiện tại từ users
+  const currentUser = useMemo(() => {
+    if (users.length >= 1) {
+      return users.find((user) => user.uid === uid);
+    }
+  }, [users, uid]);
+
   // Xử lý responsive
   const viewport = useViewport();
   const [isMobile, setIsMobile] = useState(false);
@@ -106,6 +118,7 @@ function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        currentUser,
         rooms,
         members,
         users,
@@ -123,6 +136,10 @@ function AppProvider({ children }) {
         handleRoomMenuVisible,
         isOpenCustomNickname,
         setIsOpenCustomNickname,
+        selectedPhoto,
+        setSelectedPhoto,
+        selectedRoomMessages,
+        setSelectedRoomMessages,
       }}
     >
       {children}

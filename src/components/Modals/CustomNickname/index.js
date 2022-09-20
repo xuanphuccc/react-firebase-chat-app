@@ -101,10 +101,10 @@ function CustomNickname() {
         <ul className={cx("users-list")}>
           {renderUsers.map((user) => (
             <li
+              key={user.id}
               onClick={() => {
                 setShowInput(user.uid);
               }}
-              key={user.id}
               className={cx("user-item")}
             >
               <div className={cx("user-wrap")}>

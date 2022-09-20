@@ -8,6 +8,7 @@ import ChatRoom from "./components/ChatRoom";
 import Sidebar from "./components/ChatRoom/Sidebar";
 import ChatWindow from "./components/ChatRoom/ChatWindow";
 import EmptyRoom from "./components/ChatRoom/EmptyRoom";
+import ChatMedia from "./components/ChatRoom/ChatMedia";
 import "./App.css";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="*" element={<EmptyRoom />} />
       </Route>
       <Route path="/room-list" element={<Sidebar />} />
+      <Route path="/chat-media" element={<ChatMedia />} />
       <Route path="*" element={<EmptyRoom />} />
     </Routes>
   );
