@@ -90,6 +90,7 @@ function CustomNickname() {
       visible={isOpenCustomNickname}
       onCancel={() => {
         setIsOpenCustomNickname(false);
+        setInputValue("");
       }}
       title="Biệt danh"
     >
@@ -103,6 +104,7 @@ function CustomNickname() {
               }}
               onBlur={() => {
                 setShowInput("");
+                setInputValue("");
               }}
               className={cx("user-item")}
             >

@@ -62,9 +62,15 @@
   border-radius: 999px;
   border: 1px solid var(--gray);
   object-fit: cover;
+  // transition: opacity 0.2s ease;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
 }
 
 .user-name {
+  flex: 1;
   display: flex;
   flex-direction: column;
   font-size: 1.4rem;
@@ -77,4 +83,39 @@
   font-weight: 400;
   color: var(--dark-gray);
   margin-top: 6px;
+}
+
+.user-name-input-wrap {
+  flex: 1;
+  display: flex;
+  margin-left: 8px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+}
+
+.user-name-input-container {
+  flex: 1;
+  padding: 4px 16px 10px;
+}
+
+.user-name-input-tile {
+  font-size: 1.2rem;
+  color: var(--primary);
+
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.user-name-input {
+  width: 100%;
+  font-size: 1.6rem;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.name-input-count {
+  font-size: 1.2rem;
+  color: var(--dark-gray);
+  padding: 12px 12px 0 0;
 }
