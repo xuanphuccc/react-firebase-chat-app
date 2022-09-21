@@ -17,14 +17,13 @@ const firebaseConfig = {
   measurementId: "G-6G3DSF9VJD",
 };
 
-const app = initializeApp(firebaseConfig); //OK
-// const analytics = getAnalytics(app); // OK
+const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
 
-const auth = getAuth(app); // OK
-const db = getFirestore(app); // OK
-const storage = getStorage(app); // OK
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-// Chuyển sang Firebase emulator trên localhost
 if (window.location.hostname === "localhost") {
   connectAuthEmulator(auth, "http://localhost:9099");
   connectFirestoreEmulator(db, "localhost", 8080);

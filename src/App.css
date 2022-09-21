@@ -62,25 +62,25 @@ a {
 .btn {
   min-width: 100px;
   padding: 9px 12px;
-  font-size: 16px;
-  border: 1px solid rgba(22, 24, 35, 0.12);
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 1px solid var(--medium-gray);
   border-radius: 8px;
   cursor: pointer;
   outline: none;
   text-decoration: none;
-  background-color: transparent;
+  background-color: var(--light-gray);
   user-select: none;
-  background-color: #fff;
   font-family: "Be Vietnam Pro", sans-serif;
+  transition: all 0.2s ease;
 }
 .btn:hover {
-  background-color: #f3f3f5;
+  background-color: var(--gray);
 }
 
 .btn.primary {
   border-color: transparent;
   background-color: var(--primary);
-  font-weight: 700;
   color: #fff;
 }
 .btn.primary:hover {
@@ -90,7 +90,7 @@ a {
 
 .btn.border {
   border-color: var(--primary);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--primary);
 }
 .btn.border:hover {

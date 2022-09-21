@@ -51,10 +51,6 @@ function CustomNickname() {
     return result;
   }, [selectedRoom, members]);
 
-  useEffect(() => {
-    setShowInput("");
-  }, [isOpenCustomNickname]);
-
   // Handle change nickname
   const handleOnSubmit = (userId) => {
     if (inputValue.trim()) {
@@ -104,6 +100,9 @@ function CustomNickname() {
               key={user.id}
               onClick={() => {
                 setShowInput(user.uid);
+              }}
+              onBlur={() => {
+                setShowInput("");
               }}
               className={cx("user-item")}
             >

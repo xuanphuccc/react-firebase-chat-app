@@ -10,6 +10,8 @@ import { db } from "../../../firebase/config";
 
 import Modal from "../Modal";
 import { AuthContext } from "../../../Context/AuthProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(styles);
 
 function InviteMemberModal() {
@@ -103,7 +105,7 @@ function InviteMemberModal() {
     }
   }, [inputValue, users, originMemberId, uid]);
 
-  // handle checked users
+  // handle selected users
   const handleCheckedUsers = (id) => {
     setSelectedUsers((prev) => {
       if (prev.includes(id)) {
@@ -121,21 +123,22 @@ function InviteMemberModal() {
 
   return (
     <Modal
-      title="Mời thêm thành viên"
+      title="Thêm người"
       visible={isInviteMemberVisible}
       onOk={handleOk}
+      OkTitle="Thêm người"
       onCancel={handleCancel}
     >
       <div className={cx("wrapper")}>
         <div className={cx("input-wrap")}>
-          <label className={cx("input-label")} htmlFor="">
-            Tên
-          </label>
+          <span className={cx("input-search-icon")}>
+            <FontAwesomeIcon icon={faSearch} />
+          </span>
           <input
             ref={inputRef}
             className={cx("input-box")}
             type="text"
-            placeholder="Nhập tên bạn bè"
+            placeholder="Tìm kiếm"
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
@@ -144,27 +147,36 @@ function InviteMemberModal() {
         </div>
 
         <ul className={cx("users-list")}>
-          {searchUsers.map((searchUser) => (
-            <li key={searchUser.uid} className={cx("user-item")}>
-              <div className={cx("user-info")}>
-                <img
-                  className={cx("user-img")}
-                  src={searchUser.photoURL}
-                  alt=""
-                />
-                <h4 className={cx("user-name")}>{searchUser.displayName}</h4>
-              </div>
-              <input
-                className={cx("choose-user")}
-                type="checkbox"
-                name=""
-                id=""
-                onChange={() => {
+          {searchUsers.length > 0 ? (
+            searchUsers.map((searchUser) => (
+              <li
+                key={searchUser.uid}
+                onClick={() => {
                   handleCheckedUsers(searchUser.uid);
                 }}
-              />
-            </li>
-          ))}
+                className={cx("user-item")}
+              >
+                <div className={cx("user-info")}>
+                  <img
+                    className={cx("user-img")}
+                    src={searchUser.photoURL}
+                    alt=""
+                  />
+                  <h4 className={cx("user-name")}>{searchUser.displayName}</h4>
+                </div>
+                <input
+                  className={cx("choose-user")}
+                  type="checkbox"
+                  name=""
+                  id=""
+                  checked={selectedUsers.includes(searchUser.uid)}
+                  onChange={() => {}}
+                />
+              </li>
+            ))
+          ) : (
+            <p className={cx("empty-user")}>Chưa chọn người dùng nào</p>
+          )}
         </ul>
       </div>
     </Modal>

@@ -14,6 +14,7 @@ function Modal({
   visible = false,
   okButton = true,
   onOk,
+  OkTitle = "OK",
   onCancel,
   children,
 }) {
@@ -39,7 +40,7 @@ function Modal({
                 onClick={onOk}
                 className={cx("ok-btn", "btn primary", "max")}
               >
-                OK
+                {OkTitle}
               </button>
             </div>
           )}

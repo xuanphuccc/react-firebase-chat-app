@@ -54,8 +54,12 @@ function ChatMedia() {
   }, [selectedRoomMessages]);
 
   useEffect(() => {
-    const index = roomPhotos.indexOf(selectedPhoto);
-    slider1Ref.current.slickGoTo(index);
+    if (selectedPhoto) {
+      const index = roomPhotos.indexOf(selectedPhoto);
+      slider1Ref.current.slickGoTo(index);
+    } else {
+      slider1Ref.current.slickGoTo(roomPhotos.length);
+    }
   }, [roomPhotos, selectedPhoto]);
 
   // Setting

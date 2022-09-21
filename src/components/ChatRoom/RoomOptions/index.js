@@ -12,6 +12,8 @@ import {
   faTrash,
   faImages,
   faSignature,
+  faImage,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
@@ -21,7 +23,7 @@ import styles from "./RoomOptions.module.scss";
 import userPlaceHolderImg from "../../../assets/images/user.png";
 
 import { useNavigate } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 
@@ -36,7 +38,8 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../../../firebase/config";
-import { deleteFile } from "../../../firebase/service";
+import { deleteFile, uploadFile } from "../../../firebase/service";
+import { getDownloadURL } from "firebase/storage";
 
 const cx = classNames.bind(styles);
 
@@ -49,6 +52,8 @@ function RoomOptions({ messages }) {
   const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
   const [isOpenCustomRoom, setIsOpenCustomRoom] = useState(false);
 
+  const inputImageRef = useRef();
+
   const navigate = useNavigate();
 
   const {
@@ -59,6 +64,7 @@ function RoomOptions({ messages }) {
     setIsInviteMemberVisible,
     isMobile,
     setIsOpenCustomNickname,
+    setIsOpenChangeRoomName,
   } = useContext(AppContext);
 
   const { uid } = useContext(AuthContext);
@@ -201,6 +207,36 @@ function RoomOptions({ messages }) {
     }
   };
 
+  // Handle update room image
+  const handleChangeRoomImage = (e) => {
+    let isValid = false;
+    const uploadPhoto = e.target.files[0];
+
+    if (selectedRoom.fullPath !== "") {
+      deleteFile(selectedRoom.fullPath);
+    }
+
+    if (uploadPhoto) {
+      const downloadUrl = uploadFile(uploadPhoto, `images/rooms_avatar/`);
+      downloadUrl.then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          // Update room image
+          const roomRef = doc(db, "rooms", selectedRoomId);
+          updateDoc(roomRef, {
+            photoURL: url,
+            fullPath: snapshot.metadata.fullPath,
+          });
+        });
+      });
+      isValid = true;
+    }
+
+    // Đóng modal và xóa input
+    if (isValid) {
+      inputImageRef.current.value = "";
+    }
+  };
+
   return (
     <div className={cx("wrapper", { isMobile: isMobile })}>
       {isMobile && (
@@ -255,6 +291,42 @@ function RoomOptions({ messages }) {
           </h4>
 
           <ul className={cx("type-wrap", { open: isOpenCustomRoom })}>
+            {/* Change Room name */}
+            <li
+              onClick={() => {
+                setIsOpenChangeRoomName(true);
+              }}
+              className={cx("option-item")}
+            >
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faPen} />
+              </span>
+              <h5 className={cx("option-name")}>Đổi tên đoạn chat</h5>
+            </li>
+
+            {/* Change Room Image */}
+            <li
+              onClick={() => {
+                inputImageRef.current.click();
+              }}
+              className={cx("option-item")}
+            >
+              <input
+                ref={inputImageRef}
+                style={{ display: "none" }}
+                type="file"
+                onChange={handleChangeRoomImage}
+                accept="image/*"
+                name=""
+                id=""
+              />
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faImage} />
+              </span>
+              <h5 className={cx("option-name")}>Thay đổi ảnh</h5>
+            </li>
+
+            {/* Custom Nickname */}
             <li
               onClick={() => {
                 setIsOpenCustomNickname(true);
@@ -380,7 +452,12 @@ function RoomOptions({ messages }) {
           </h4>
 
           <ul className={cx("type-wrap", { open: isOpenMediaOptions })}>
-            <li className={cx("option-item")}>
+            <li
+              onClick={() => {
+                navigate("/chat-media");
+              }}
+              className={cx("option-item")}
+            >
               <span className={cx("option-icon")}>
                 <FontAwesomeIcon icon={faImages} />
               </span>

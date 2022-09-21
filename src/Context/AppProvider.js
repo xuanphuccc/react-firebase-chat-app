@@ -21,6 +21,9 @@ function AppProvider({ children }) {
   // Set trạng thái hiển thị cho modal Custom Nickname
   const [isOpenCustomNickname, setIsOpenCustomNickname] = useState(false);
 
+  // Set trạng thái hiển thị cho modal Custom Nickname
+  const [isOpenChangeRoomName, setIsOpenChangeRoomName] = useState(false);
+
   // Phòng đang được chọn để hiển thị chat
   const [selectedRoomId, setSelectedRoomId] = useState("");
 
@@ -140,6 +143,8 @@ function AppProvider({ children }) {
         setSelectedPhoto,
         selectedRoomMessages,
         setSelectedRoomMessages,
+        isOpenChangeRoomName,
+        setIsOpenChangeRoomName,
       }}
     >
       {children}

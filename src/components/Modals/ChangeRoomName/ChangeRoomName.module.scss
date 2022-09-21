@@ -1,0 +1,72 @@
+.wrapper {
+  padding: 16px;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: var(--text-gray);
+}
+
+// Input
+.input-wrap {
+  display: flex;
+  margin-top: 16px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 8px;
+  cursor: text;
+
+  &:focus-within {
+    border-color: var(--primary) !important;
+
+    .input-label {
+      color: var(--primary);
+    }
+  }
+
+  &:hover {
+    border-color: var(--dark-gray);
+  }
+}
+
+.input-container {
+  flex: 1;
+  padding: 0 16px 10px;
+}
+
+.input-label {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--text-gray);
+  padding: 12px 0 4px;
+  cursor: text;
+}
+
+.input {
+  width: 100%;
+  font-size: 1.6rem;
+  outline: none;
+  border: none;
+  caret-color: var(--primary);
+}
+
+.character-count {
+  font-size: 1.2rem;
+  color: var(--text-gray);
+  font-weight: 400;
+  padding: 12px 16px 0 0;
+}
+
+// Controls
+.controls {
+  margin-top: 16px;
+  display: flex;
+}
+
+.cancel-btn {
+  flex: 1;
+}
+
+.ok-btn {
+  flex: 1;
+  margin-left: 8px;
+}
