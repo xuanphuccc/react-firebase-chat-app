@@ -93,6 +93,8 @@ function UserOption({ visible = false, setVisible }) {
     if (currentUser) {
       setNameInputValue(currentUser.displayName);
     }
+
+    // Focus when click
     if (nameInputRef.current) {
       nameInputRef.current.focus();
     }
@@ -122,6 +124,9 @@ function UserOption({ visible = false, setVisible }) {
               <input
                 ref={inputImageRef}
                 onChange={handleChangeUserAvatar}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
                 accept="image/*"
                 type="file"
                 style={{ display: "none" }}
