@@ -33,6 +33,7 @@ function ChangeRoomName() {
 
       setIsOpenChangeRoomName(false);
     }
+    setIsOpenChangeRoomName(false);
   };
 
   // Set input initial value
