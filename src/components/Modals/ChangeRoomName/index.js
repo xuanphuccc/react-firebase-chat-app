@@ -25,11 +25,13 @@ function ChangeRoomName() {
 
   // Change room name
   const handleChangeRoomName = () => {
-    if (inputValue.trim()) {
+    if (inputValue.trim() && inputValue.trim() !== selectedRoom.name) {
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         name: inputValue.trim(),
       });
+
+      setIsOpenChangeRoomName(false);
     }
   };
 
