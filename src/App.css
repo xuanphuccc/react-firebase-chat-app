@@ -59,6 +59,10 @@ a {
   text-decoration: none;
 }
 
+input {
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
 .btn {
   min-width: 100px;
   padding: 9px 12px;

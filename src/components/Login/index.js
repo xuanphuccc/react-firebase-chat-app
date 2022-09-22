@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { addDocument } from "../../firebase/service";
@@ -60,6 +61,14 @@ function Login() {
         const credential = FacebookAuthProvider.credentialFromError(error);
         // ...
         console.error({ errorCode, errorMessage, email, credential });
+
+        signOut(auth)
+          .then(() => {
+            console.log("Sign out successful");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
   };
 

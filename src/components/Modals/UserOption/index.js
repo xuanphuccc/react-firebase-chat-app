@@ -1,6 +1,8 @@
 import {
   faArrowRightFromBracket,
+  faCheck,
   faCircle,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
@@ -68,14 +70,16 @@ function UserOption({ visible = false, setVisible }) {
   };
 
   const handleChangeUserName = () => {
-    if (nameInputValue.trim()) {
+    if (nameInputValue.trim() && nameInputValue !== currentUser.displayName) {
       const userRef = doc(db, "users", currentUser.id);
       updateDoc(userRef, {
         displayName: nameInputValue.trim(),
       });
 
       setNameInputValue("");
+      setIsShowInput(false);
     }
+    setIsShowInput(false);
   };
 
   const handleOnKeyDown = (e) => {
@@ -85,15 +89,21 @@ function UserOption({ visible = false, setVisible }) {
   };
 
   useEffect(() => {
+    // Before change user name
+    if (currentUser) {
+      setNameInputValue(currentUser.displayName);
+    }
     if (nameInputRef.current) {
       nameInputRef.current.focus();
     }
-  }, [isShowInput]);
+  }, [isShowInput, currentUser]);
 
   return (
     <Modal
       onCancel={() => {
         setVisible(false);
+        setIsShowInput(false);
+        setNameInputValue("");
       }}
       title="Tùy chọn"
       okButton={false}
@@ -106,9 +116,6 @@ function UserOption({ visible = false, setVisible }) {
             <li
               onClick={() => {
                 setIsShowInput(true);
-              }}
-              onBlur={() => {
-                setIsShowInput(false);
               }}
               className={cx("option-item")}
             >
@@ -130,6 +137,7 @@ function UserOption({ visible = false, setVisible }) {
                     }}
                     className={cx("user-img")}
                     src={currentUser.photoURL}
+                    title="Chọn ảnh đại diện"
                     alt=""
                   />
                   {isShowInput ? (
@@ -141,7 +149,6 @@ function UserOption({ visible = false, setVisible }) {
                         <input
                           ref={nameInputRef}
                           onChange={(e) => {
-                            console.log(nameInputValue);
                             setNameInputValue(e.target.value);
                           }}
                           onKeyDown={handleOnKeyDown}
@@ -160,11 +167,27 @@ function UserOption({ visible = false, setVisible }) {
                     <h3 className={cx("user-name")}>
                       {currentUser.displayName}
                       <span className={cx("user-name-label")}>
-                        Sửa thông tin của bạn
+                        Sửa tên và ảnh đại diện
                       </span>
                     </h3>
                   )}
                 </>
+              )}
+
+              {isShowInput ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChangeUserName();
+                  }}
+                  className={cx("submit-btn", "option-icon")}
+                >
+                  <FontAwesomeIcon icon={faCheck} />
+                </button>
+              ) : (
+                <button className={cx("submit-btn", "option-icon")}>
+                  <FontAwesomeIcon icon={faPen} />
+                </button>
               )}
             </li>
           </ul>
