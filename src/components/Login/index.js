@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import googleIcon from "../../assets/images/brands/google.png";
+import facebookIcon from "../../assets/images/brands/facebook.png";
 
 import {
   GoogleAuthProvider,
@@ -15,6 +15,8 @@ import { addDocument } from "../../firebase/service";
 
 import { useContext } from "react";
 import { AppContext } from "../../Context/AppProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const cx = classNames.bind(styles);
 
@@ -115,25 +117,26 @@ function Login() {
       <div className={cx("overlay")}></div>
       <div className={cx("login", { isDesktop })}>
         <div className={cx("content")}>
-          <h2 className={cx("title")}>Wellcome!</h2>
+          <h1 className={cx("title")}>Đăng nhập</h1>
           <div className={cx("controls")}>
-            <button
-              className={cx("login-btn", "btn", "primary")}
-              onClick={handleGoogleLogin}
-            >
-              <i className={cx("btn-icon")}>
-                <FontAwesomeIcon icon={faGoogle} />
-              </i>
-              <span className={cx("btn-content")}>Đăng nhập với Google</span>
+            <button className={cx("login-btn")}>
+              <span className={cx("btn-icon")}>
+                <FontAwesomeIcon icon={faUser} />
+              </span>
+              <span className={cx("btn-content")}>
+                Sử dụng email / số điện thoại
+              </span>
+              <span></span>
             </button>
-            <button
-              className={cx("login-btn", "btn", "primary")}
-              onClick={handleFblogin}
-            >
-              <i className={cx("btn-icon")}>
-                <FontAwesomeIcon icon={faFacebook} />
-              </i>
+            <button className={cx("login-btn")} onClick={handleGoogleLogin}>
+              <img className={cx("btn-icon")} src={googleIcon} alt="" />
+              <span className={cx("btn-content")}>Đăng nhập với Google</span>
+              <span></span>
+            </button>
+            <button className={cx("login-btn")} onClick={handleFblogin}>
+              <img className={cx("btn-icon")} src={facebookIcon} alt="" />
               <span className={cx("btn-content")}>Đăng nhập với Facebook</span>
+              <span></span>
             </button>
           </div>
         </div>

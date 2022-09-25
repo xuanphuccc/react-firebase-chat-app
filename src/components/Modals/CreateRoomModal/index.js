@@ -37,6 +37,7 @@ function CreateRoomModal() {
         const data = {
           name,
           description: "",
+          isAcceptLink: false,
           photoURL: url,
           fullPath: fullPath,
           members: [currentUser.uid],

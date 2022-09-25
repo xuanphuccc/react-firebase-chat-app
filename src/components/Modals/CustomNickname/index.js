@@ -53,7 +53,11 @@ function CustomNickname() {
 
   // Handle change nickname
   const handleOnSubmit = (userId) => {
-    if (inputValue.trim()) {
+    const prevNickname = selectedRoom.roomNicknames.find(
+      (nickname) => nickname.uid === userId
+    );
+
+    if (inputValue.trim() && prevNickname.nickname !== inputValue.trim()) {
       const newRoomNicknames = selectedRoom.roomNicknames.filter(
         (nickname) => nickname.uid !== userId
       );
@@ -63,11 +67,14 @@ function CustomNickname() {
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         roomNicknames: newRoomNicknames,
-      });
-
-      setInputValue("");
-      setShowInput("");
+      })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
     }
+    setInputValue("");
+    setShowInput("");
   };
 
   // Xử lý focus input khi bấm sửa
@@ -99,12 +106,13 @@ function CustomNickname() {
           {renderUsers.map((user) => (
             <li
               key={user.id}
+              tabIndex="0"
               onClick={() => {
                 setShowInput(user.uid);
               }}
               onBlur={() => {
-                setShowInput("");
-                setInputValue("");
+                // setShowInput("");
+                // setInputValue("");
               }}
               className={cx("user-item")}
             >

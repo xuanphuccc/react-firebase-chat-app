@@ -9,6 +9,7 @@ import Sidebar from "./components/ChatRoom/Sidebar";
 import ChatWindow from "./components/ChatRoom/ChatWindow";
 import EmptyRoom from "./components/ChatRoom/EmptyRoom";
 import ChatMedia from "./components/ChatRoom/ChatMedia";
+import InviteByLink from "./components/InviteByLink";
 import "./App.css";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       </Route>
       <Route path="/room-list" element={<Sidebar />} />
       <Route path="/chat-media" element={<ChatMedia />} />
+      <Route path="/add-room/:roomid" element={<InviteByLink />} />
       <Route path="*" element={<EmptyRoom />} />
     </Routes>
   );
