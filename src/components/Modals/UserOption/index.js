@@ -1,20 +1,22 @@
+import classNames from "classnames/bind";
+import styles from "./UserOption.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
   faCheck,
   faCircle,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames/bind";
+
+import { useContext, useEffect, useRef, useState } from "react";
+
 import { signOut } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL } from "firebase/storage";
-import { useContext, useEffect, useRef, useState } from "react";
-import { AppContext } from "../../../Context/AppProvider";
-import { auth, db } from "../../../firebase/config";
 import { uploadFile } from "../../../firebase/service";
+import { auth, db } from "../../../firebase/config";
+
+import { AppContext } from "../../../Context/AppProvider";
 import Modal from "../Modal";
-import styles from "./UserOption.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -41,25 +43,24 @@ function UserOption({ visible = false, setVisible }) {
     let isValid = false;
     const uploadPhoto = e.target.files[0];
 
-    // if (currentUser.fullPath !== "") {
-    //   deleteFile(currentUser.fullPath);
-    // }
-
     if (uploadPhoto) {
-      const downloadUrl = uploadFile(
+      // if (currentUser.fullPath !== "") {
+      //   deleteFile(currentUser.fullPath);
+      // }
+
+      uploadFile(
         uploadPhoto,
-        `images/users-avatar/${currentUser.uid}`
-      );
-      downloadUrl.then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
+        `images/users-avatar/${currentUser.uid}`,
+        (url, fullPath) => {
           // Update current user image
           const userRef = doc(db, "users", currentUser.id);
           updateDoc(userRef, {
             photoURL: url,
-            fullPath: snapshot.metadata.fullPath,
+            fullPath: fullPath,
           });
-        });
-      });
+        }
+      );
+
       isValid = true;
     }
 
@@ -115,12 +116,7 @@ function UserOption({ visible = false, setVisible }) {
         <div className={cx("section", "no-boder")}>
           <h2 className={cx("section-name")}>Tài khoản</h2>
           <ul className={cx("option-list")}>
-            <li
-              onClick={() => {
-                setIsShowInput(true);
-              }}
-              className={cx("option-item")}
-            >
+            <li className={cx("option-item")}>
               <input
                 ref={inputImageRef}
                 onChange={handleChangeUserAvatar}
@@ -146,7 +142,12 @@ function UserOption({ visible = false, setVisible }) {
                     alt=""
                   />
                   {isShowInput ? (
-                    <div className={cx("user-name-input-wrap")}>
+                    <div
+                      onClick={() => {
+                        nameInputRef.current.focus();
+                      }}
+                      className={cx("user-name-input-wrap")}
+                    >
                       <div className={cx("user-name-input-container")}>
                         <p className={cx("user-name-input-tile")}>
                           Nhập tên mới
@@ -169,7 +170,12 @@ function UserOption({ visible = false, setVisible }) {
                       </span>
                     </div>
                   ) : (
-                    <h3 className={cx("user-name")}>
+                    <h3
+                      onClick={() => {
+                        setIsShowInput(true);
+                      }}
+                      className={cx("user-name")}
+                    >
                       {currentUser.displayName}
                       <span className={cx("user-name-label")}>
                         Sửa tên và ảnh đại diện
@@ -190,7 +196,12 @@ function UserOption({ visible = false, setVisible }) {
                   <FontAwesomeIcon icon={faCheck} />
                 </button>
               ) : (
-                <button className={cx("submit-btn", "option-icon")}>
+                <button
+                  onClick={() => {
+                    setIsShowInput(true);
+                  }}
+                  className={cx("submit-btn", "option-icon")}
+                >
                   <FontAwesomeIcon icon={faPen} />
                 </button>
               )}

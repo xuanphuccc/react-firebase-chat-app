@@ -1,22 +1,20 @@
 import classNames from "classnames/bind";
 import styles from "./CreateRoomModal.module.scss";
-import userPlaceHolderImg from "../../../assets/images/user.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 import { useState, useContext, useRef, useEffect } from "react";
 
-import Modal from "../Modal";
-import { AppContext } from "../../../Context/AppProvider";
 import { addDocument, uploadFile } from "../../../firebase/service";
+
+import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
-import { getDownloadURL } from "firebase/storage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import Modal from "../Modal";
 
 const cx = classNames.bind(styles);
 
 function CreateRoomModal() {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
   const [uploadPhoto, setUploadPhoto] = useState(null);
   const [previewPhotoURL, setPreviewPhotoURL] = useState("");
   const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AppContext);
@@ -32,26 +30,25 @@ function CreateRoomModal() {
 
   const handleOk = () => {
     let isValid = false;
-    if (uploadPhoto && name !== "") {
-      const downloadUrl = uploadFile(uploadPhoto, `images/rooms_avatar/`);
-      downloadUrl.then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          // add new room to firestore
-          const data = {
-            name,
-            description,
-            photoURL: url,
-            fullPath: snapshot.metadata.fullPath,
-            members: [currentUser.uid],
-            admins: [currentUser.uid],
-            roomNicknames: [
-              { nickname: currentUser.displayName, uid: currentUser.uid },
-            ],
-          };
 
-          addDocument("rooms", data);
-        });
+    // add new room with avatar to firestore
+    if (uploadPhoto && name !== "") {
+      uploadFile(uploadPhoto, `images/rooms_avatar/`, (url, fullPath) => {
+        const data = {
+          name,
+          description: "",
+          photoURL: url,
+          fullPath: fullPath,
+          members: [currentUser.uid],
+          admins: [currentUser.uid],
+          roomNicknames: [
+            { nickname: currentUser.displayName, uid: currentUser.uid },
+          ],
+        };
+
+        addDocument("rooms", data);
       });
+
       isValid = true;
     }
     // add new room without avatar to firestore
@@ -75,7 +72,6 @@ function CreateRoomModal() {
     if (isValid) {
       setIsAddRoomVisible(false);
       setName("");
-      setDescription("");
       setUploadPhoto(null);
       setPreviewPhotoURL("");
       inputImageRef.current.value = "";
@@ -84,7 +80,6 @@ function CreateRoomModal() {
 
   const handleCancel = () => {
     setName("");
-    setDescription("");
     setUploadPhoto(null);
     setIsAddRoomVisible(false);
     setPreviewPhotoURL("");
@@ -108,57 +103,31 @@ function CreateRoomModal() {
       title="Tạo phòng"
       visible={isAddRoomVisible}
       onOk={handleOk}
+      OkTitle="Tạo phòng"
       onCancel={handleCancel}
     >
       <div className={cx("add-room-modal")}>
-        <div className={cx("input-wrap")}>
-          <label className={cx("input-label")} htmlFor="">
-            Tên phòng *
-          </label>
-          <input
-            ref={inputNameRef}
-            className={cx("input-box")}
-            type="text"
-            placeholder="Nhập tên phòng"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            value={name}
-          />
-        </div>
-        <div className={cx("input-wrap")}>
-          <label className={cx("input-label")} htmlFor="">
-            Mô tả
-          </label>
-          <input
-            className={cx("input-box")}
-            type="text"
-            placeholder="Nhập mô tả"
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            value={description}
-          />
-        </div>
-        <div className={cx("input-wrap", "avatar-container")}>
-          <input
-            ref={inputImageRef}
-            onChange={handleImageInput}
-            className={cx("input-image")}
-            accept="image/*"
-            type="file"
-            name=""
-            id=""
-          />
-
-          <div className={cx("avatar-preview-wrap")}>
-            <img
-              className={cx("avatar-preview-img")}
-              src={previewPhotoURL || userPlaceHolderImg}
-              alt=""
+        <p className={cx("input-title")}>Chọn tên và ảnh đại diện</p>
+        <div className={cx("room-infor")}>
+          <div className={cx("avatar-preview")}>
+            <input
+              ref={inputImageRef}
+              onChange={handleImageInput}
+              className={cx("input-image")}
+              accept="image/*"
+              type="file"
+              name=""
+              id=""
             />
+            <div className={cx("avatar-preview-img-container")}>
+              {previewPhotoURL && (
+                <img
+                  className={cx("avatar-preview-img")}
+                  src={previewPhotoURL}
+                  alt=""
+                />
+              )}
+            </div>
 
             <button
               onClick={() => {
@@ -169,7 +138,31 @@ function CreateRoomModal() {
               {!previewPhotoURL && <FontAwesomeIcon icon={faCamera} />}
             </button>
           </div>
-          <p className={cx("avatar-preview-title")}>Chọn ảnh đại diện</p>
+
+          <div
+            onClick={() => {
+              inputNameRef.current.focus();
+            }}
+            className={cx("input-wrap")}
+          >
+            <div className={cx("input-container")}>
+              <label className={cx("input-label")} htmlFor="">
+                Tên phòng chat
+              </label>
+              <input
+                ref={inputNameRef}
+                className={cx("input-box")}
+                type="text"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                onKeyDown={handleKeyDown}
+                value={name.length <= 100 ? name : ""}
+              />
+            </div>
+
+            <p className={cx("input-count")}>{name.length}/100</p>
+          </div>
         </div>
       </div>
     </Modal>

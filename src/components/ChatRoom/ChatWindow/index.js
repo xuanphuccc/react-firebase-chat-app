@@ -17,7 +17,6 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 import { addDocument, uploadFile } from "../../../firebase/service";
 import useFirestore from "../../../hooks/useFirestore";
-import { getDownloadURL } from "firebase/storage";
 
 import Message from "../Message";
 import RoomOptions from "../RoomOptions";
@@ -157,20 +156,15 @@ function ChatWindow({ roomId }) {
   const handleOnSubmit = () => {
     if (imageUpload) {
       // Nếu đã chọn ảnh thì gửi lên URL hình ảnh
-      const downloadUrl = uploadFile(imageUpload, `images/chat_room/${roomId}`);
-      downloadUrl.then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          // Nếu có input value thì gửi cả ảnh và tin nhắn
-          const trimInput = inputValue;
-          if (trimInput.trim()) {
-            // Gửi tin nhắn
-            sendMessage(inputValue, "");
-          }
+      uploadFile(imageUpload, `images/chat_room/${roomId}`, (url, fullPath) => {
+        // Nếu có input value thì gửi cả ảnh và tin nhắn
+        if (inputValue.trim()) {
+          // Gửi tin nhắn
+          sendMessage(inputValue, "");
+        }
 
-          const fullPath = snapshot.metadata.fullPath;
-          //Gửi ảnh
-          sendMessage("Photo", url, fullPath);
-        });
+        //Gửi ảnh
+        sendMessage("Photo", url, fullPath);
       });
     } else if (inputValue) {
       // Nếu chưa chọn ảnh thì gửi inputValue

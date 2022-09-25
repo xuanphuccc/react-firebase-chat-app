@@ -39,7 +39,6 @@ import {
 
 import { db } from "../../../firebase/config";
 import { deleteFile, uploadFile } from "../../../firebase/service";
-import { getDownloadURL } from "firebase/storage";
 
 const cx = classNames.bind(styles);
 
@@ -212,22 +211,21 @@ function RoomOptions({ messages }) {
     let isValid = false;
     const uploadPhoto = e.target.files[0];
 
-    if (selectedRoom.fullPath !== "") {
-      deleteFile(selectedRoom.fullPath);
-    }
-
     if (uploadPhoto) {
-      const downloadUrl = uploadFile(uploadPhoto, `images/rooms_avatar/`);
-      downloadUrl.then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          // Update room image
-          const roomRef = doc(db, "rooms", selectedRoomId);
-          updateDoc(roomRef, {
-            photoURL: url,
-            fullPath: snapshot.metadata.fullPath,
-          });
+      // Delete old file from storage
+      if (selectedRoom.fullPath !== "") {
+        deleteFile(selectedRoom.fullPath);
+      }
+
+      // Upload new file
+      uploadFile(uploadPhoto, `images/rooms_avatar/`, (url, fullPath) => {
+        const roomRef = doc(db, "rooms", selectedRoomId);
+        updateDoc(roomRef, {
+          photoURL: url,
+          fullPath: fullPath,
         });
       });
+
       isValid = true;
     }
 
