@@ -50,7 +50,7 @@ function Message({
 
   // Lấy ra user của tin nhắn
   const memberInfor = useMemo(() => {
-    let result;
+    let result = {};
     if (members) {
       const infor = members.find((member) => member.uid === userId);
       const nickname = selectedRoom.roomNicknames.find(
@@ -171,14 +171,14 @@ function Message({
       <img
         className={cx("user-img")}
         // Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng ảnh mặc định
-        src={memberInfor ? memberInfor.photoURL : photoURL}
+        src={Object.keys(memberInfor).length ? memberInfor.photoURL : photoURL}
         alt=""
       />
 
       <div className={cx("content")}>
         <h4 className={cx("user-name")}>
           {/*Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng tên mặc định */}
-          {memberInfor ? memberInfor.nickname : displayName}
+          {Object.keys(memberInfor).length ? memberInfor.nickname : displayName}
         </h4>
         <div className={cx("text-wrap")}>
           <div className={cx("text", { [type]: type })}>
