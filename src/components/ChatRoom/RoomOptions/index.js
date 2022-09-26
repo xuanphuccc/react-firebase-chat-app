@@ -14,6 +14,7 @@ import {
   faSignature,
   faImage,
   faPen,
+  faLink,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
@@ -274,7 +275,8 @@ function RoomOptions({ messages }) {
 
       {/* Room Options */}
       <ul className={cx("options-types")}>
-        <li className={cx("type-item")}>
+        {/*====== Custom Room Options ======*/}
+        <li className={cx("type-item", { open: isOpenCustomRoom })}>
           <h4
             onClick={() => {
               setIsOpenCustomRoom(!isOpenCustomRoom);
@@ -339,7 +341,7 @@ function RoomOptions({ messages }) {
         </li>
 
         {/*====== Member Options ======*/}
-        <li className={cx("type-item")}>
+        <li className={cx("type-item", { open: isOpenMembersOptions })}>
           <h4
             onClick={() => {
               setIsOpenMembersOptions(!isOpenMembersOptions);
@@ -435,7 +437,7 @@ function RoomOptions({ messages }) {
         </li>
 
         {/*====== File Options ======*/}
-        <li className={cx("type-item")}>
+        <li className={cx("type-item", { open: isOpenMediaOptions })}>
           <h4
             onClick={() => {
               setIsOpenMediaOptions(!isOpenMediaOptions);
@@ -464,7 +466,7 @@ function RoomOptions({ messages }) {
         </li>
 
         {/*====== Privacy Options ======*/}
-        <li className={cx("type-item")}>
+        <li className={cx("type-item", { open: isOpenPrivacyOptions })}>
           <h4
             onClick={() => {
               setIsOpenPrivacyOptions(!isOpenPrivacyOptions);
@@ -482,6 +484,13 @@ function RoomOptions({ messages }) {
               open: isOpenPrivacyOptions,
             })}
           >
+            <li className={cx("option-item")}>
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faLink} />
+              </span>
+              <h5 className={cx("option-name")}>Liên kết tham gia nhóm</h5>
+            </li>
+
             {members.length > 1 && (
               <li onClick={handleLeaveRoom} className={cx("option-item")}>
                 <span className={cx("option-icon")}>
@@ -490,6 +499,7 @@ function RoomOptions({ messages }) {
                 <h5 className={cx("option-name")}>Rời khỏi nhóm</h5>
               </li>
             )}
+
             {members.length === 1 && (
               <li onClick={handleDeleteRoom} className={cx("option-item")}>
                 <span className={cx("option-icon")}>

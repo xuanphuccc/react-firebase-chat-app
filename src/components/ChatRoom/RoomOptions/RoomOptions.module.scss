@@ -123,10 +123,14 @@
 .type-item {
   padding: 0 8px;
   cursor: pointer;
+
+  &.open .type-icon {
+    transform: rotate(90deg);
+  }
 }
 
 .type-name {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 500;
   padding: 14px 10px;
   border-radius: 8px;
@@ -141,6 +145,7 @@
 
 .type-icon {
   font-size: 1.6rem;
+  transition: all 0.1s ease;
 }
 
 .type-wrap {
@@ -193,7 +198,7 @@
 }
 
 .option-name {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 500;
   margin-left: 8px;
   color: var(--text-black);
@@ -224,7 +229,7 @@
 
 .user-name {
   min-height: 38px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 500;
   color: var(--text-black);
   display: flex;
