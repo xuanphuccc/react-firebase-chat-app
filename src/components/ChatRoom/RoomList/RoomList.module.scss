@@ -59,6 +59,13 @@
   text-decoration: none;
 }
 
+.new-message-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary);
+  border-radius: 99px;
+}
+
 /* Add room */
 .add-room {
   margin-top: 24px;

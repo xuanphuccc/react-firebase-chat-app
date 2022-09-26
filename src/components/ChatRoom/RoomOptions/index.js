@@ -15,7 +15,10 @@ import {
   faImage,
   faPen,
   faLink,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { faCopy } from "@fortawesome/free-regular-svg-icons";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
 import classNames from "classnames/bind";
@@ -46,13 +49,14 @@ const cx = classNames.bind(styles);
 function RoomOptions({ messages }) {
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
-  const [isOnlyAdmin, setIsOnlyAdmin] = useState(false);
   const [isOpenMembersOptions, setIsOpenMembersOptions] = useState(false);
   const [isOpenMediaOptions, setIsOpenMediaOptions] = useState(false);
   const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
   const [isOpenCustomRoom, setIsOpenCustomRoom] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const inputImageRef = useRef();
+  const roomCodeInputRef = useRef();
 
   const navigate = useNavigate();
 
@@ -80,7 +84,6 @@ function RoomOptions({ messages }) {
     // khỏi trường members của rooms
     if (admins.includes(uid) && admins.length === 1) {
       console.log("You are the only admin!!!");
-      setIsOnlyAdmin(true);
     } else {
       // xóa nick name
       const newRoomNicknames = selectedRoom.roomNicknames.filter(
@@ -160,16 +163,11 @@ function RoomOptions({ messages }) {
 
       // Có tác dụng cập nhật hiển thị lên admin
       setVisibleAdmin(!visibleAdmin);
-
-      // Sau khi thêm admin thì chuyển trạng thái
-      // only admin thành false
-      setIsOnlyAdmin(false);
     }
   };
 
   // Xử lý Xóa admin
   const handleRemoveAdmin = (userId) => {
-    console.log("is only admin: ", isOnlyAdmin);
     if (admins.includes(uid)) {
       const roomRef = doc(db, "rooms", selectedRoomId);
 
@@ -177,7 +175,6 @@ function RoomOptions({ messages }) {
       // vai trò của mình
       if (userId === uid && admins.length === 1) {
         console.log("You are the only admin!!!");
-        setIsOnlyAdmin(true);
       } else {
         updateDoc(roomRef, {
           admins: arrayRemove(userId),
@@ -233,6 +230,24 @@ function RoomOptions({ messages }) {
     if (isValid) {
       inputImageRef.current.value = "";
     }
+  };
+
+  // Handle copy to clipboard
+  const handleCopy = () => {
+    roomCodeInputRef.current.select();
+    roomCodeInputRef.current.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(roomCodeInputRef.current.value);
+
+    roomCodeInputRef.current.focus();
+    setIsCopied(true);
+  };
+
+  // Handle accept room link or not
+  const handleToggleAcceptLink = () => {
+    const roomRef = doc(db, "rooms", selectedRoomId);
+    updateDoc(roomRef, {
+      isAcceptLink: !selectedRoom.isAcceptLink,
+    });
   };
 
   return (
@@ -378,15 +393,15 @@ function RoomOptions({ messages }) {
                   interactive="true"
                   trigger="click"
                   content={
-                    <ul className={cx("member-menu")}>
+                    <ul className={cx("tooltips-menu")}>
                       {admins.includes(member.uid) ? (
                         <li
                           onClick={() => {
                             handleRemoveAdmin(member.uid);
                           }}
-                          className={cx("member-menu-item")}
+                          className={cx("tooltips-menu-item")}
                         >
-                          <span className={cx("member-menu-icon")}>
+                          <span className={cx("tooltips-menu-icon")}>
                             <FontAwesomeIcon icon={faShieldHalved} />
                           </span>
                           Xóa tư cách quản trị viên
@@ -396,9 +411,9 @@ function RoomOptions({ messages }) {
                           onClick={() => {
                             handleAddAdmin(member.uid);
                           }}
-                          className={cx("member-menu-item")}
+                          className={cx("tooltips-menu-item")}
                         >
-                          <span className={cx("member-menu-icon")}>
+                          <span className={cx("tooltips-menu-icon")}>
                             <FontAwesomeIcon icon={faShield} />
                           </span>
                           Chỉ định làm quản trị viên
@@ -408,9 +423,9 @@ function RoomOptions({ messages }) {
                         onClick={() => {
                           handleRemoveMember(member.uid);
                         }}
-                        className={cx("member-menu-item")}
+                        className={cx("tooltips-menu-item")}
                       >
-                        <span className={cx("member-menu-icon")}>
+                        <span className={cx("tooltips-menu-icon")}>
                           <FontAwesomeIcon icon={faCommentSlash} />
                         </span>
                         Xóa thành viên
@@ -484,12 +499,69 @@ function RoomOptions({ messages }) {
               open: isOpenPrivacyOptions,
             })}
           >
-            <li className={cx("option-item")}>
-              <span className={cx("option-icon")}>
-                <FontAwesomeIcon icon={faLink} />
-              </span>
-              <h5 className={cx("option-name")}>Liên kết tham gia nhóm</h5>
-            </li>
+            <Tippy
+              interactive="true"
+              trigger="click"
+              content={
+                <ul className={cx("tooltips-menu")}>
+                  <div
+                    onMouseDown={handleCopy}
+                    onMouseOut={() => {
+                      setIsCopied(false);
+                    }}
+                    className={cx("room-code_input-wrap")}
+                    title="copy"
+                  >
+                    <input
+                      ref={roomCodeInputRef}
+                      className={cx("room-code_input")}
+                      type="text"
+                      value={`${window.location.protocol}//${window.location.hostname}/p/${selectedRoomId}`}
+                      disabled
+                      name=""
+                      id=""
+                      title="copy"
+                    />
+                    <i
+                      className={cx(
+                        "tooltips-menu-icon",
+                        "room-code_copy-icon"
+                      )}
+                    >
+                      {isCopied ? (
+                        <FontAwesomeIcon icon={faCheck} />
+                      ) : (
+                        <FontAwesomeIcon icon={faCopy} />
+                      )}
+                    </i>
+                  </div>
+
+                  <div className={cx("room-code_checkbox-wrap")}>
+                    <input
+                      className={cx("room-code_checkbox")}
+                      onChange={handleToggleAcceptLink}
+                      checked={selectedRoom.isAcceptLink}
+                      type="checkbox"
+                      name=""
+                      id="room-code-checkbox"
+                    />
+                    <label
+                      className={cx("room-code_checkbox-label")}
+                      htmlFor="room-code-checkbox"
+                    >
+                      Cho phép tham gia nhóm bằng liên kết
+                    </label>
+                  </div>
+                </ul>
+              }
+            >
+              <li className={cx("option-item")}>
+                <span className={cx("option-icon")}>
+                  <FontAwesomeIcon icon={faLink} />
+                </span>
+                <h5 className={cx("option-name")}>Liên kết tham gia nhóm</h5>
+              </li>
+            </Tippy>
 
             {members.length > 1 && (
               <li onClick={handleLeaveRoom} className={cx("option-item")}>

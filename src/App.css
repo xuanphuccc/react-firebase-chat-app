@@ -114,3 +114,36 @@ input {
 .firebase-emulator-warning {
   display: none;
 }
+
+
+
+.tooltips-menu {
+  width: 300px;
+  list-style: none;
+  padding: 4px 0;
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  border-radius: 8px;
+  user-select: none;
+}
+
+.tooltips-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 8px;
+  margin: 0 4px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.tooltips-menu-item:hover {
+  background-color: var(--light-gray);
+}
+
+.tooltips-menu-icon {
+  margin-right: 12px;
+  font-size: 1.6rem;
+}

@@ -32,7 +32,6 @@ function RoomList() {
               className={cx("room", { active: room.id === selectedRoomId })}
               onClick={() => {
                 setSelectedRoomId(room.id);
-                // navigate("/chat-window");
               }}
             >
               <img
@@ -46,8 +45,9 @@ function RoomList() {
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
-                <p className={cx("room-desc")}>Bạn: Hello</p>
+                <p className={cx("room-desc")}>Bạn: Hello .20 phút</p>
               </div>
+              <span className={cx("new-message-dot")}></span>
             </li>
           </Link>
         ))}

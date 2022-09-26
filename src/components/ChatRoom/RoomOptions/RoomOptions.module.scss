@@ -69,7 +69,7 @@
 }
 
 .room-name {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 600;
   text-align: center;
 }
@@ -263,39 +263,56 @@
   height: 36px;
 }
 
-// Member Option Menu
-.member-menu {
-  min-width: 300px;
-  list-style: none;
-  padding: 4px 0;
-  background-color: #fff;
-  box-shadow: var(--box-shadow);
-  border-radius: 8px;
-  user-select: none;
-}
-
-.member-menu-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 8px;
-  margin: 0 4px;
-  font-size: 1.4rem;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--light-gray);
-  }
-}
-
-.member-menu-icon {
-  margin-right: 12px;
-  font-size: 1.6rem;
-}
-
 // Privacy Options
 .privacy-list {
   margin-bottom: 20px;
+}
+
+.room-code_input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--medium-gray);
+  cursor: pointer;
+}
+
+.room-code_input {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 32px 8px 12px;
+  font-size: 1.4rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.room-code_copy-icon {
+  margin-left: auto;
+  margin-right: 0;
+  padding: 8px;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.room-code_checkbox-wrap {
+  padding: 4px 8px 8px;
+  display: flex;
+  align-items: center;
+}
+
+.room-code_checkbox {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.room-code_checkbox-label {
+  font-size: 1.2rem;
+  color: var(--text-gray);
 }

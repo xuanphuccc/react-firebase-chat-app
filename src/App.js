@@ -31,7 +31,7 @@ function App() {
       </Route>
       <Route path="/room-list" element={<Sidebar />} />
       <Route path="/chat-media" element={<ChatMedia />} />
-      <Route path="/add-room/:roomid" element={<InviteByLink />} />
+      <Route path="/p/:roomid" element={<InviteByLink />} />
       <Route path="*" element={<EmptyRoom />} />
     </Routes>
   );
