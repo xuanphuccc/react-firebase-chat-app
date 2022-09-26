@@ -522,18 +522,13 @@ function RoomOptions({ messages }) {
                       id=""
                       title="copy"
                     />
-                    <i
-                      className={cx(
-                        "tooltips-menu-icon",
-                        "room-code_copy-icon"
-                      )}
-                    >
+                    <span className={cx("room-code_copy-icon")}>
                       {isCopied ? (
                         <FontAwesomeIcon icon={faCheck} />
                       ) : (
                         <FontAwesomeIcon icon={faCopy} />
                       )}
-                    </i>
+                    </span>
                   </div>
 
                   <div className={cx("room-code_checkbox-wrap")}>
