@@ -55,12 +55,12 @@ function InviteByLink() {
         setRoom(roomData);
 
         if (roomData) {
-          if (roomData.members.includes(uid)) {
+          if (!roomData.isAcceptLink) {
+            setStatus("notAccept");
+          } else if (roomData.members.includes(uid)) {
             setStatus("alreadyExist");
           } else if (roomData.isAcceptLink) {
             setStatus("pendingParticipate");
-          } else {
-            setStatus("notAccept");
           }
         } else {
           setStatus("notFound");
