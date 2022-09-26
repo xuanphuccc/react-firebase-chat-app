@@ -47,19 +47,6 @@ import { deleteFile, uploadFile } from "../../../firebase/service";
 const cx = classNames.bind(styles);
 
 function RoomOptions({ messages }) {
-  const [admins, setAdmins] = useState([]);
-  const [visibleAdmin, setVisibleAdmin] = useState(false);
-  const [isOpenMembersOptions, setIsOpenMembersOptions] = useState(false);
-  const [isOpenMediaOptions, setIsOpenMediaOptions] = useState(false);
-  const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
-  const [isOpenCustomRoom, setIsOpenCustomRoom] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
-
-  const inputImageRef = useRef();
-  const roomCodeInputRef = useRef();
-
-  const navigate = useNavigate();
-
   const {
     selectedRoom,
     selectedRoomId,
@@ -70,6 +57,21 @@ function RoomOptions({ messages }) {
     setIsOpenCustomNickname,
     setIsOpenChangeRoomName,
   } = useContext(AppContext);
+  const [admins, setAdmins] = useState([]);
+  const [visibleAdmin, setVisibleAdmin] = useState(false);
+  const [isOpenMembersOptions, setIsOpenMembersOptions] = useState(false);
+  const [isOpenMediaOptions, setIsOpenMediaOptions] = useState(false);
+  const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
+  const [isOpenCustomRoom, setIsOpenCustomRoom] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isAcceptRoomLink, setIsAcceptRoomLink] = useState(
+    selectedRoom.isAcceptLink
+  );
+
+  const inputImageRef = useRef();
+  const roomCodeInputRef = useRef();
+
+  const navigate = useNavigate();
 
   const { uid } = useContext(AuthContext);
 
@@ -244,9 +246,11 @@ function RoomOptions({ messages }) {
 
   // Handle accept room link or not
   const handleToggleAcceptLink = () => {
+    setIsAcceptRoomLink(!isAcceptRoomLink);
+
     const roomRef = doc(db, "rooms", selectedRoomId);
     updateDoc(roomRef, {
-      isAcceptLink: !selectedRoom.isAcceptLink,
+      isAcceptLink: !isAcceptRoomLink,
     });
   };
 
@@ -535,7 +539,7 @@ function RoomOptions({ messages }) {
                     <input
                       className={cx("room-code_checkbox")}
                       onChange={handleToggleAcceptLink}
-                      checked={selectedRoom.isAcceptLink}
+                      checked={isAcceptRoomLink === true}
                       type="checkbox"
                       name=""
                       id="room-code-checkbox"
