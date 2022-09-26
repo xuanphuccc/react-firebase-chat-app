@@ -181,7 +181,7 @@ function Message({
           {Object.keys(memberInfor).length ? memberInfor.nickname : displayName}
         </h4>
         <div className={cx("text-wrap")}>
-          <div className={cx("text", { [type]: type })}>
+          <div className={cx("text")}>
             <Tippy
               placement="top"
               delay={[400, 250]}

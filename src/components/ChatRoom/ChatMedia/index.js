@@ -24,7 +24,6 @@ function ChatMedia() {
 
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
-  // const [currentIndex, setCurrentIndex] = useState();
 
   const slider1Ref = useRef();
   const slider2Ref = useRef();
@@ -43,7 +42,7 @@ function ChatMedia() {
     if (selectedRoomMessages) {
       includePhoto = selectedRoomMessages.map((message) => {
         let isPhotoURL;
-        if (message.messagePhotoURL) {
+        if (message.messagePhotoURL && !message.text.includes("@unsentmsg")) {
           isPhotoURL = message.messagePhotoURL;
         }
         return isPhotoURL;
@@ -73,7 +72,6 @@ function ChatMedia() {
 
   const settingsSliderNav = {
     className: "slider variable-width",
-    // dots: true,
     infinite: false,
     centerMode: true,
     slidesToShow: 1,

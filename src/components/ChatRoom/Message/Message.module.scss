@@ -86,15 +86,16 @@
 
   &.first-message,
   &.middle-message {
-    margin-left: 40px;
+    margin-left: 42px;
   }
 }
 
 .user-img {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid var(--gray);
 }
 
 .wrapper.isHasIcon {
@@ -114,7 +115,7 @@
 }
 
 .content {
-  margin-left: 12px;
+  margin-left: 8px;
   max-width: 80%;
 }
 
@@ -175,6 +176,12 @@
   max-height: 220px;
   object-fit: cover;
   cursor: pointer;
+  border: 1px solid var(--gray);
+  transition: all 0.1s ease;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
 }
 
 // Message Controls
