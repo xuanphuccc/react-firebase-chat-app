@@ -110,9 +110,8 @@ function RoomOptions({ messages }) {
   // ------ HANDLE DELETE ROOM ------
   // Xử lý xóa phòng hiện tại
   // và toàn bộ tin nhắn của phòng
-  // DONE
   const handleDeleteRoom = () => {
-    if (admins.includes(uid) && messages) {
+    if (admins.includes(uid) && members.length === 1 && messages) {
       // Xóa toàn bộ tin nhắn của phòng bị xóa
       messages.forEach((message) => {
         deleteDoc(doc(db, "messages", message.id));
@@ -483,18 +482,22 @@ function RoomOptions({ messages }) {
               open: isOpenPrivacyOptions,
             })}
           >
-            <li onClick={handleLeaveRoom} className={cx("option-item")}>
-              <span className={cx("option-icon")}>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} />
-              </span>
-              <h5 className={cx("option-name")}>Rời khỏi nhóm</h5>
-            </li>
-            <li onClick={handleDeleteRoom} className={cx("option-item")}>
-              <span className={cx("option-icon")}>
-                <FontAwesomeIcon icon={faTrash} />
-              </span>
-              <h5 className={cx("option-name")}>Xóa nhóm</h5>
-            </li>
+            {members.length > 1 && (
+              <li onClick={handleLeaveRoom} className={cx("option-item")}>
+                <span className={cx("option-icon")}>
+                  <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                </span>
+                <h5 className={cx("option-name")}>Rời khỏi nhóm</h5>
+              </li>
+            )}
+            {members.length === 1 && (
+              <li onClick={handleDeleteRoom} className={cx("option-item")}>
+                <span className={cx("option-icon")}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </span>
+                <h5 className={cx("option-name")}>Xóa đoạn chat</h5>
+              </li>
+            )}
           </ul>
         </li>
       </ul>

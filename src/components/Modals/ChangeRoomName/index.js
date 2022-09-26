@@ -65,7 +65,7 @@ function ChangeRoomName() {
       okButton={false}
       onCancel={() => {
         setIsOpenChangeRoomName(false);
-        setInputValue("");
+        setInputValue(selectedRoom.name);
       }}
     >
       <div className={cx("wrapper")}>
@@ -99,6 +99,7 @@ function ChangeRoomName() {
         <div className={cx("controls")}>
           <button
             onClick={() => {
+              setInputValue(selectedRoom.name);
               setIsOpenChangeRoomName(false);
             }}
             className={cx("btn", "cancel-btn")}
