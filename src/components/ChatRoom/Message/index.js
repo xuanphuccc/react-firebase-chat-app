@@ -50,7 +50,7 @@ function Message({
 
   // Lấy ra user của tin nhắn
   const memberInfor = useMemo(() => {
-    let result = {};
+    let result;
     if (members) {
       const infor = members.find((member) => member.uid === userId);
       const nickname = selectedRoom.roomNicknames.find(
