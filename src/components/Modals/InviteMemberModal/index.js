@@ -52,8 +52,6 @@ function InviteMemberModal() {
           };
       });
 
-      console.log("usersNickname", usersNickname);
-
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         // members: [...originMemberId, ...selectedUsers],

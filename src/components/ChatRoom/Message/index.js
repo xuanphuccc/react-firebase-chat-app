@@ -136,16 +136,21 @@ function Message({
 
   // Set hiển thị icon và set active icon
   useEffect(() => {
+    let count = 0;
     for (let type in reactions) {
       if (reactions[type].length >= 1) {
         setIsHasIcon(true);
+        count = 1;
+
         if (reactions[type].includes(uid)) {
           setActiveIcon(type);
           break;
         }
-      } else {
-        setIsHasIcon(false);
       }
+    }
+
+    if (count === 0) {
+      setIsHasIcon(false);
     }
   }, [reactions, uid]);
 
