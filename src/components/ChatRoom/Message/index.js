@@ -149,7 +149,7 @@ function Message({
     if (userId === uid) {
       let messageRef = doc(db, "messages", id);
       updateDoc(messageRef, {
-        text: `@unsentmsg ${content}`,
+        type: "@unsentmsg",
       });
     }
   };

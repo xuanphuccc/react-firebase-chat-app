@@ -28,6 +28,8 @@ import StickerIcon from "../../../assets/images/icons/StickerIcon.js";
 import GifIcon from "../../../assets/images/icons/GifIcon.js";
 import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
+import StickerModal from "../../Modals/StickerModal";
+import Tippy from "@tippyjs/react";
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -132,8 +134,9 @@ function ChatWindow({ roomId }) {
     inputRef.current.focus();
   };
 
-  const sendMessage = (messText, messPhoto, fullPath = "") => {
+  const sendMessage = (messText, messPhoto, fullPath = "", messType) => {
     addDocument("messages", {
+      type: messType,
       text: messText,
       uid,
       photoURL,
@@ -160,15 +163,15 @@ function ChatWindow({ roomId }) {
         // Nếu có input value thì gửi cả ảnh và tin nhắn
         if (inputValue.trim()) {
           // Gửi tin nhắn
-          sendMessage(inputValue, "");
+          sendMessage(inputValue, null, null, "@text");
         }
 
         //Gửi ảnh
-        sendMessage("Photo", url, fullPath);
+        sendMessage("Photo", url, fullPath, "@image");
       });
     } else if (inputValue) {
       // Nếu chưa chọn ảnh thì gửi inputValue
-      sendMessage(inputValue, "");
+      sendMessage(inputValue, null, null, "@text");
     }
 
     // Clear input and focus
@@ -179,7 +182,7 @@ function ChatWindow({ roomId }) {
   // Gửi riêng icon
   const handleSendIcon = (value) => {
     if (value) {
-      sendMessage(value, "");
+      sendMessage(value, null, null, "@icon");
     }
   };
 
@@ -341,14 +344,15 @@ function ChatWindow({ roomId }) {
                 >
                   <FontAwesomeIcon icon={faImage} />
                 </button>
-                <button
-                  onClick={() => {
-                    imageInputRef.current.click();
-                  }}
-                  className={cx("media-btn")}
+                <Tippy
+                  interactive="true"
+                  trigger="click"
+                  content={<StickerModal />}
                 >
-                  <StickerIcon />
-                </button>
+                  <button className={cx("media-btn")}>
+                    <StickerIcon />
+                  </button>
+                </Tippy>
                 <button
                   onClick={() => {
                     imageInputRef.current.click();

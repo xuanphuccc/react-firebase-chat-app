@@ -92,6 +92,7 @@ function Login() {
             fullPath: "",
             uid: user.uid,
             providerId: _tokenResponse.providerId,
+            stickers: [],
           });
         }
 
