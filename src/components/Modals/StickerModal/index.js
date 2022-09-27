@@ -1,23 +1,24 @@
 import classNames from "classnames/bind";
 import styles from "./StickerModal.module.scss";
-import { faFaceSmile, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFaceSmile,
+  faPlus,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import plaholderImg from "../../../assets/images/user.png";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { AppContext } from "../../../Context/AppProvider";
-import { useState } from "react";
-import { useRef } from "react";
 import { uploadFile } from "../../../firebase/service";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
-function StickerModal() {
+function StickerModal({ sendMessage }) {
   const { currentUser } = useContext(AppContext);
 
-  const [stickerUpload, setStickerUpload] = useState(null);
+  const [editStickers, setEditSticker] = useState(false);
 
   const inputStickerRef = useRef();
 
@@ -33,6 +34,23 @@ function StickerModal() {
         });
       }
     );
+  };
+
+  const handleRemoveSticker = (fullPath) => {
+    const newStickers = currentUser.stickers.filter(
+      (sticker) => sticker.fullPath !== fullPath
+    );
+
+    const userRef = doc(db, "users", currentUser.id);
+    updateDoc(userRef, {
+      stickers: newStickers,
+    });
+  };
+
+  const handleSendMessage = (photoURL) => {
+    if (!editStickers) {
+      sendMessage("sticker", photoURL, null, "@sticker");
+    }
   };
 
   return (
@@ -60,21 +78,57 @@ function StickerModal() {
           <FontAwesomeIcon icon={faFaceSmile} />
         </li>
       </ul>
-      <ul className={cx("stickers-content")}>
-        {currentUser.stickers.length > 0
-          ? currentUser.stickers.map((sticker, index) => (
-              <li key={index} className={cx("stickers-content_item")}>
-                <div className={cx("stickers-content_item-bg")}>
-                  <img
-                    className={cx("stickers-content_item-img")}
-                    src={sticker.url}
-                    alt=""
-                  />
-                </div>
-              </li>
-            ))
-          : false}
-      </ul>
+      <div className={cx("stickers-content-wrap")}>
+        <ul className={cx("stickers-content")}>
+          {currentUser.stickers.length > 0
+            ? currentUser.stickers.map((sticker, index) => (
+                <li key={index} className={cx("stickers-content_item")}>
+                  <div className={cx("stickers-content_item-bg")}>
+                    {editStickers && (
+                      <span
+                        onClick={() => {
+                          handleRemoveSticker(sticker.fullPath);
+                        }}
+                        className={cx("stickers-content_item-cancel")}
+                      >
+                        <FontAwesomeIcon icon={faXmark} />
+                      </span>
+                    )}
+                    <img
+                      onClick={() => {
+                        handleSendMessage(sticker.url);
+                      }}
+                      className={cx("stickers-content_item-img")}
+                      src={sticker.url}
+                      alt=""
+                    />
+                  </div>
+                </li>
+              ))
+            : false}
+        </ul>
+        <div className={cx("controls")}>
+          {!editStickers ? (
+            <button
+              onClick={() => {
+                setEditSticker(true);
+              }}
+              className={cx("control-btn")}
+            >
+              Sửa
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setEditSticker(false);
+              }}
+              className={cx("control-btn")}
+            >
+              Xong
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

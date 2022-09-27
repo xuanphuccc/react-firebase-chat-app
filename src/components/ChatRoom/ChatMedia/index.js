@@ -42,7 +42,11 @@ function ChatMedia() {
     if (selectedRoomMessages) {
       includePhoto = selectedRoomMessages.map((message) => {
         let isPhotoURL;
-        if (message.messagePhotoURL && !message.text.includes("@unsentmsg")) {
+        if (
+          message.messagePhotoURL &&
+          message.type !== "@sticker" &&
+          message.type !== "@unsentmsg"
+        ) {
           isPhotoURL = message.messagePhotoURL;
         }
         return isPhotoURL;

@@ -178,10 +178,18 @@
   cursor: pointer;
   border: 1px solid var(--gray);
   transition: all 0.1s ease;
+  background-color: #fff !important;
 
   &:hover {
     filter: brightness(0.95);
   }
+}
+
+.sticker-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
 // Message Controls

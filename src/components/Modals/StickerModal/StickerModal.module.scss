@@ -1,10 +1,11 @@
 .wrapper {
   position: relative;
-  width: 280px;
+  width: 300px;
   min-height: 300px;
   background-color: #fff;
   box-shadow: var(--box-shadow);
   border-radius: 12px;
+  user-select: none;
 }
 
 .add-stickers-btn {
@@ -16,6 +17,13 @@
   border-radius: 99px;
   font-size: 1.6rem;
   color: var(--dark-gray);
+  background-color: var(--light-gray);
+  transition: all 0.1s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--gray);
+  }
 }
 
 .stickers-header {
@@ -37,14 +45,17 @@
   background-color: var(--light-gray);
 }
 
+.stickers-content-wrap {
+  max-height: 292px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
 .stickers-content {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
   padding: 8px;
-  max-height: 280px;
-  overflow-y: auto;
-  white-space: nowrap;
 }
 
 .stickers-content_item {
@@ -70,4 +81,48 @@
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--gray);
+  transition: all 0.1s ease;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.stickers-content_item-cancel {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border: 1px solid var(--gray);
+  border-radius: 99px;
+  font-size: 1.4rem;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+.control-btn {
+  padding: 8px 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-black);
+  background-color: var(--light-gray);
+  border-radius: 8px;
+  transition: all 0.1s ease;
+
+  &:hover {
+    background-color: var(--gray);
+  }
 }

@@ -205,41 +205,42 @@ function ChatWindow({ roomId }) {
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {
     let newMessages = [...messages];
+
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
         if (i === 0) {
           if (newMessages[i].uid === newMessages[i + 1].uid) {
-            newMessages[i].type = "first-message";
-          } else newMessages[i].type = "default";
+            newMessages[i].posType = "first-message";
+          } else newMessages[i].posType = "default";
         } else if (i === newMessages.length - 1) {
           if (newMessages[i].uid === newMessages[i - 1].uid) {
-            newMessages[i].type = "last-message";
-          } else newMessages[i].type = "default";
+            newMessages[i].posType = "last-message";
+          } else newMessages[i].posType = "default";
         } else {
           if (
             newMessages[i].uid === newMessages[i + 1].uid &&
             newMessages[i].uid === newMessages[i - 1].uid
           ) {
-            newMessages[i].type = "middle-message";
+            newMessages[i].posType = "middle-message";
           } else if (newMessages[i].uid === newMessages[i + 1].uid) {
-            newMessages[i].type = "first-message";
+            newMessages[i].posType = "first-message";
           } else if (newMessages[i].uid === newMessages[i - 1].uid) {
-            newMessages[i].type = "last-message";
+            newMessages[i].posType = "last-message";
           } else {
-            newMessages[i].type = "default";
+            newMessages[i].posType = "default";
           }
         }
       }
     } else if (newMessages.length === 2) {
       if (newMessages[0].uid === newMessages[1].uid) {
-        newMessages[0].type = "first-message";
-        newMessages[1].type = "last-message";
+        newMessages[0].posType = "first-message";
+        newMessages[1].posType = "last-message";
       } else {
-        newMessages[0].type = "default";
-        newMessages[1].type = "default";
+        newMessages[0].posType = "default";
+        newMessages[1].posType = "default";
       }
     } else if (newMessages.length === 1) {
-      newMessages[0].type = "default";
+      newMessages[0].posType = "default";
     }
     return newMessages;
   }, [messages]);
@@ -315,6 +316,7 @@ function ChatWindow({ roomId }) {
                   createAt={message.createAt}
                   photoURL={message.photoURL}
                   userId={message.uid}
+                  posType={message.posType}
                   type={message.type}
                   reactions={message.reactions}
                   messagePhotoURL={message.messagePhotoURL}
@@ -347,20 +349,17 @@ function ChatWindow({ roomId }) {
                 <Tippy
                   interactive="true"
                   trigger="click"
-                  content={<StickerModal />}
+                  content={<StickerModal sendMessage={sendMessage} />}
                 >
-                  <button className={cx("media-btn")}>
-                    <StickerIcon />
-                  </button>
+                  <div>
+                    <button className={cx("media-btn")}>
+                      <StickerIcon />
+                    </button>
+                    <button className={cx("media-btn")}>
+                      <GifIcon />
+                    </button>
+                  </div>
                 </Tippy>
-                <button
-                  onClick={() => {
-                    imageInputRef.current.click();
-                  }}
-                  className={cx("media-btn")}
-                >
-                  <GifIcon />
-                </button>
               </div>
 
               <div className={cx("message-form_input-wrap")}>

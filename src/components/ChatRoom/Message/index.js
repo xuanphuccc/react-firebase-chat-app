@@ -27,6 +27,7 @@ function Message({
   createAt,
   photoURL,
   userId,
+  posType,
   type,
   reactions,
   messagePhotoURL,
@@ -111,9 +112,9 @@ function Message({
 
   // Xử lý tin nhắn hình ảnh, không có hình ảnh và bị gỡ
   const renderMessageContent = useMemo(() => {
-    if (content.includes("@unsentmsg")) {
+    if (type === "@unsentmsg") {
       return <p className={cx("unsent-message")}>Tin nhắn đã bị thu hồi</p>;
-    } else if (messagePhotoURL) {
+    } else if (type === "@image") {
       return (
         <img
           onClick={() => {
@@ -124,10 +125,14 @@ function Message({
           alt=""
         />
       );
-    } else {
+    } else if (type === "@sticker") {
+      return (
+        <img className={cx("sticker-photo")} src={messagePhotoURL} alt="" />
+      );
+    } else if (type === "@text" || type === "@icon") {
       return <p className={cx("text-inner")}>{content}</p>;
     }
-  }, [content, messagePhotoURL, handleOpenChatMedia]);
+  }, [type, content, messagePhotoURL, handleOpenChatMedia]);
 
   // Set hiển thị icon và set active icon
   useEffect(() => {
@@ -164,7 +169,7 @@ function Message({
       className={cx("wrapper", {
         sent: isSentMsg,
         received: !isSentMsg,
-        [type]: type,
+        [posType]: posType,
         isHasIcon: isHasIcon,
       })}
     >
