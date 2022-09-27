@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useContext, useRef, useState } from "react";
 import { AppContext } from "../../../Context/AppProvider";
-import { uploadFile } from "../../../firebase/service";
+import { deleteFile, uploadFile } from "../../../firebase/service";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
@@ -23,17 +23,20 @@ function StickerModal({ sendMessage }) {
   const inputStickerRef = useRef();
 
   const handleUploadSticker = (e) => {
-    // setStickerUpload(e.target.files[0]);
-    uploadFile(
-      e.target.files[0],
-      `images/users_stickers/${currentUser.uid}`,
-      (url, fullPath) => {
-        const userRef = doc(db, "users", currentUser.id);
-        updateDoc(userRef, {
-          stickers: arrayUnion({ url, fullPath }),
-        });
-      }
-    );
+    if (e.target.files[0].size < 3000000) {
+      uploadFile(
+        e.target.files[0],
+        `images/users_stickers/${currentUser.uid}`,
+        (url, fullPath) => {
+          const userRef = doc(db, "users", currentUser.id);
+          updateDoc(userRef, {
+            stickers: arrayUnion({ url, fullPath }),
+          });
+        }
+      );
+    } else {
+      alert("File sticker phải có kích thước < 3MB");
+    }
   };
 
   const handleRemoveSticker = (fullPath) => {
@@ -45,6 +48,9 @@ function StickerModal({ sendMessage }) {
     updateDoc(userRef, {
       stickers: newStickers,
     });
+
+    // Remove file from Storage
+    deleteFile(fullPath);
   };
 
   const handleSendMessage = (photoURL) => {
@@ -107,27 +113,31 @@ function StickerModal({ sendMessage }) {
               ))
             : false}
         </ul>
-        <div className={cx("controls")}>
-          {!editStickers ? (
-            <button
-              onClick={() => {
-                setEditSticker(true);
-              }}
-              className={cx("control-btn")}
-            >
-              Sửa
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                setEditSticker(false);
-              }}
-              className={cx("control-btn")}
-            >
-              Xong
-            </button>
-          )}
-        </div>
+        {currentUser.stickers.length > 0 ? (
+          <div className={cx("controls")}>
+            {!editStickers ? (
+              <button
+                onClick={() => {
+                  setEditSticker(true);
+                }}
+                className={cx("control-btn")}
+              >
+                Sửa
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setEditSticker(false);
+                }}
+                className={cx("control-btn")}
+              >
+                Xong
+              </button>
+            )}
+          </div>
+        ) : (
+          <p className={cx("empty-sticker")}>Bạn chưa có Sticker nào</p>
+        )}
       </div>
     </div>
   );

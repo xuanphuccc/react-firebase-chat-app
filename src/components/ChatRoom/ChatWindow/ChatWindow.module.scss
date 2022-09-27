@@ -61,20 +61,6 @@
   border-radius: 999px;
   object-fit: cover;
   border: 1px solid var(--medium-gray);
-
-  // &::before {
-  //   content: "";
-  //   display: block;
-  //   position: absolute;
-  //   top: 0;
-  //   bottom: 0;
-  //   left: 0;
-  //   right: 0;
-  //   // background-color: #000;
-  //   border-radius: 999px;
-
-  //   border: 1px solid #000;
-  // }
 }
 
 .chat-window_header-name {
@@ -115,7 +101,6 @@
 .message-list {
   flex: 1;
   padding-top: 36px;
-  // margin-bottom: 16px;
   padding-bottom: 24px;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -148,7 +133,7 @@
 }
 .message-form_input-wrap {
   flex: 1;
-  background-color: #f3f3f5;
+  background-color: var(--light-gray);
   border-radius: 20px;
   overflow: hidden;
   display: flex;
@@ -232,25 +217,25 @@
 }
 
 .media-preview-img {
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 12px;
 }
 
 .remove-preview-img-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: -8px;
+  right: -8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   background-color: #fff;
   color: var(--text-black);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   border-radius: 40px;
-  border: 1px solid var(--gray);
+  border: 1px solid var(--medium-gray);
   cursor: pointer;
 }
