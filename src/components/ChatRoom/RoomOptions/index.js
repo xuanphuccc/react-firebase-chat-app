@@ -64,9 +64,7 @@ function RoomOptions({ messages }) {
   const [isOpenPrivacyOptions, setIsOpenPrivacyOptions] = useState(false);
   const [isOpenCustomRoom, setIsOpenCustomRoom] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [isAcceptRoomLink, setIsAcceptRoomLink] = useState(
-    selectedRoom.isAcceptLink
-  );
+  const [isAcceptRoomLink, setIsAcceptRoomLink] = useState(false);
 
   const inputImageRef = useRef();
   const roomCodeInputRef = useRef();
@@ -245,6 +243,10 @@ function RoomOptions({ messages }) {
   };
 
   // Handle accept room link or not
+  useEffect(() => {
+    setIsAcceptRoomLink(selectedRoom.isAcceptLink);
+  }, [selectedRoom]);
+
   const handleToggleAcceptLink = () => {
     setIsAcceptRoomLink(!isAcceptRoomLink);
 
