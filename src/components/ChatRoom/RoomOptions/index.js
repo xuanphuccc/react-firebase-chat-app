@@ -56,6 +56,8 @@ function RoomOptions({ messages }) {
     isMobile,
     setIsOpenCustomNickname,
     setIsOpenChangeRoomName,
+    setAlertVisible,
+    setAlertContent,
   } = useContext(AppContext);
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
@@ -205,31 +207,35 @@ function RoomOptions({ messages }) {
 
   // Handle update room image
   const handleChangeRoomImage = (e) => {
-    let isValid = false;
     const uploadPhoto = e.target.files[0];
 
     if (uploadPhoto) {
-      // Delete old file from storage
-      if (selectedRoom.fullPath !== "") {
-        deleteFile(selectedRoom.fullPath);
-      }
+      if (uploadPhoto.size <= 3000000) {
+        // Delete old file from storage
+        if (selectedRoom.fullPath !== "") {
+          deleteFile(selectedRoom.fullPath);
+        }
 
-      // Upload new file
-      uploadFile(uploadPhoto, `images/rooms_avatar/`, (url, fullPath) => {
-        const roomRef = doc(db, "rooms", selectedRoomId);
-        updateDoc(roomRef, {
-          photoURL: url,
-          fullPath: fullPath,
+        // Upload new file
+        uploadFile(uploadPhoto, `images/rooms_avatar/`, (url, fullPath) => {
+          const roomRef = doc(db, "rooms", selectedRoomId);
+          updateDoc(roomRef, {
+            photoURL: url,
+            fullPath: fullPath,
+          });
         });
-      });
-
-      isValid = true;
+      } else {
+        setAlertVisible(true);
+        setAlertContent({
+          title: "Không tải tệp lên được",
+          description:
+            "File bạn đã chọn quá lớn. Kích thước ảnh đại diện tối đa là 3MB.",
+        });
+      }
     }
 
     // Đóng modal và xóa input
-    if (isValid) {
-      inputImageRef.current.value = "";
-    }
+    inputImageRef.current.value = "";
   };
 
   // Handle copy to clipboard

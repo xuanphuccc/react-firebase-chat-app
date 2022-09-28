@@ -1,0 +1,29 @@
+.wrapper {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-content {
+  padding: 20px 18px;
+}
+
+.alert-content_header {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-black);
+}
+
+.alert-content_description {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-top: 12px;
+  color: var(--text-black);
+}
+
+.alert-controls {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}

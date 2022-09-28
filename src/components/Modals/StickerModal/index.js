@@ -16,14 +16,15 @@ import { db } from "../../../firebase/config";
 const cx = classNames.bind(styles);
 
 function StickerModal({ sendMessage }) {
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, setAlertVisible, setAlertContent } =
+    useContext(AppContext);
 
   const [editStickers, setEditSticker] = useState(false);
 
   const inputStickerRef = useRef();
 
   const handleUploadSticker = (e) => {
-    if (e.target.files[0].size < 3000000) {
+    if (e.target.files[0].size <= 3000000) {
       uploadFile(
         e.target.files[0],
         `images/users_stickers/${currentUser.uid}`,
@@ -35,8 +36,12 @@ function StickerModal({ sendMessage }) {
         }
       );
     } else {
-      alert("File sticker phải có kích thước < 3MB");
-      // <AlertModal />;
+      setAlertVisible(true);
+      setAlertContent({
+        title: "Không tải tệp lên được",
+        description:
+          "File bạn đã chọn quá lớn. Kích thước sticker tối đa là 3MB.",
+      });
     }
 
     inputStickerRef.current.value = "";

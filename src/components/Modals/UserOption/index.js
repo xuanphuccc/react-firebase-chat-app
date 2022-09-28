@@ -23,7 +23,8 @@ const cx = classNames.bind(styles);
 function UserOption({ visible = false, setVisible }) {
   const [isShowInput, setIsShowInput] = useState(false);
   const [nameInputValue, setNameInputValue] = useState("");
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, setAlertVisible, setAlertContent } =
+    useContext(AppContext);
 
   const inputImageRef = useRef();
   const nameInputRef = useRef();
@@ -40,7 +41,6 @@ function UserOption({ visible = false, setVisible }) {
   };
 
   const handleChangeUserAvatar = (e) => {
-    let isValid = false;
     const uploadPhoto = e.target.files[0];
 
     if (uploadPhoto) {
@@ -48,26 +48,31 @@ function UserOption({ visible = false, setVisible }) {
       //   deleteFile(currentUser.fullPath);
       // }
 
-      uploadFile(
-        uploadPhoto,
-        `images/users-avatar/${currentUser.uid}`,
-        (url, fullPath) => {
-          // Update current user image
-          const userRef = doc(db, "users", currentUser.id);
-          updateDoc(userRef, {
-            photoURL: url,
-            fullPath: fullPath,
-          });
-        }
-      );
-
-      isValid = true;
+      if (uploadPhoto.size <= 3000000) {
+        uploadFile(
+          uploadPhoto,
+          `images/users-avatar/${currentUser.uid}`,
+          (url, fullPath) => {
+            // Update current user image
+            const userRef = doc(db, "users", currentUser.id);
+            updateDoc(userRef, {
+              photoURL: url,
+              fullPath: fullPath,
+            });
+          }
+        );
+      } else {
+        setAlertVisible(true);
+        setAlertContent({
+          title: "Không tải tệp lên được",
+          description:
+            "File bạn đã chọn quá lớn. Kích thước ảnh đại diện tối đa là 3MB.",
+        });
+      }
     }
 
     // Đóng modal và xóa input
-    if (isValid) {
-      inputImageRef.current.value = "";
-    }
+    inputImageRef.current.value = "";
   };
 
   const handleChangeUserName = () => {

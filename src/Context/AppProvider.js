@@ -43,6 +43,9 @@ function AppProvider({ children }) {
   // Lấy messages từ selected room
   const [selectedRoomMessages, setSelectedRoomMessages] = useState(null);
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+
   // Lấy danh sách các phòng có user hiện tại
   /**room:
    * {
@@ -145,6 +148,10 @@ function AppProvider({ children }) {
         setSelectedRoomMessages,
         isOpenChangeRoomName,
         setIsOpenChangeRoomName,
+        alertContent,
+        setAlertContent,
+        alertVisible,
+        setAlertVisible,
       }}
     >
       {children}

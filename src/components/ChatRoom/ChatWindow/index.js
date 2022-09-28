@@ -30,7 +30,7 @@ import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
 import StickerModal from "../../Modals/StickerModal";
 import Tippy from "@tippyjs/react";
-// import AlertModal from "../../Modals/AlertModal";
+import AlertModal from "../../Modals/AlertModal";
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -44,6 +44,8 @@ function ChatWindow({ roomId }) {
     handleRoomMenuVisible,
     isRoomMenuVisible,
     setSelectedRoomMessages,
+    setAlertVisible,
+    setAlertContent,
   } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
@@ -130,8 +132,17 @@ function ChatWindow({ roomId }) {
   };
 
   const handleImageInput = (e) => {
-    setImageUpload(e.target.files[0]);
-    setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
+    if (e.target.files[0].size <= 25000000) {
+      setImageUpload(e.target.files[0]);
+      setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
+    } else {
+      setAlertVisible(true);
+      setAlertContent({
+        title: "Không tải tệp lên được",
+        description: "File bạn đã chọn quá lớn. Kích thước file tối đa là 25MB",
+      });
+      imageInputRef.current.value = "";
+    }
     inputRef.current.focus();
   };
 
@@ -429,7 +440,7 @@ function ChatWindow({ roomId }) {
 
           <CustomNickname />
           <ChangeRoomName />
-          {/* <AlertModal /> */}
+          <AlertModal />
         </div>
       )}
     </>
