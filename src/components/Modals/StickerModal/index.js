@@ -107,7 +107,9 @@ function StickerModal({ sendMessage }) {
           onClick={() => {
             setStickersType("default");
           }}
-          className={cx("stickers-header_item")}
+          className={cx("stickers-header_item", {
+            active: stickersType === "default",
+          })}
         >
           <FontAwesomeIcon icon={faFaceSmile} />
         </li>
@@ -115,7 +117,9 @@ function StickerModal({ sendMessage }) {
           onClick={() => {
             setStickersType("custom");
           }}
-          className={cx("stickers-header_item")}
+          className={cx("stickers-header_item", {
+            active: stickersType === "custom",
+          })}
         >
           {listAllStickers["custom"][0] ? (
             <img
