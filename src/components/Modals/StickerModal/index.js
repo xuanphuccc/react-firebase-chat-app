@@ -3,13 +3,14 @@ import styles from "./StickerModal.module.scss";
 import {
   faFaceSmile,
   faPlus,
+  faSplotch,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { AppContext } from "../../../Context/AppProvider";
-import { uploadFile } from "../../../firebase/service";
+import { listAllFile, uploadFile } from "../../../firebase/service";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
@@ -20,8 +21,22 @@ function StickerModal({ sendMessage }) {
     useContext(AppContext);
 
   const [editStickers, setEditSticker] = useState(false);
+  const [stickersType, setStickersType] = useState("default");
+  const [listAllStickers, setListAllStickers] = useState({
+    default: [],
+    custom: [],
+  });
 
   const inputStickerRef = useRef();
+
+  useEffect(() => {
+    listAllFile("images/stickers_store/default", (listURL) => {
+      setListAllStickers({
+        default: [...listURL],
+        custom: [...currentUser.stickers],
+      });
+    });
+  }, [currentUser]);
 
   const handleUploadSticker = (e) => {
     if (e.target.files[0].size <= 3000000) {
@@ -88,40 +103,60 @@ function StickerModal({ sendMessage }) {
       </button>
 
       <ul className={cx("stickers-header")}>
-        <li className={cx("stickers-header_item")}>
+        <li
+          onClick={() => {
+            setStickersType("default");
+          }}
+          className={cx("stickers-header_item")}
+        >
           <FontAwesomeIcon icon={faFaceSmile} />
+        </li>
+        <li
+          onClick={() => {
+            setStickersType("custom");
+          }}
+          className={cx("stickers-header_item")}
+        >
+          {listAllStickers["custom"][0] ? (
+            <img
+              className={cx("stickers-header_thumb")}
+              src={listAllStickers["custom"][0].url}
+              alt=""
+            />
+          ) : (
+            <FontAwesomeIcon icon={faSplotch} />
+          )}
         </li>
       </ul>
       <div className={cx("stickers-content-wrap")}>
         <ul className={cx("stickers-content")}>
-          {currentUser.stickers.length > 0
-            ? currentUser.stickers.map((sticker, index) => (
-                <li key={index} className={cx("stickers-content_item")}>
-                  <div className={cx("stickers-content_item-bg")}>
-                    {editStickers && (
-                      <span
-                        onClick={() => {
-                          handleRemoveSticker(sticker.fullPath);
-                        }}
-                        className={cx("stickers-content_item-cancel")}
-                      >
-                        <FontAwesomeIcon icon={faXmark} />
-                      </span>
-                    )}
-                    <img
-                      onClick={() => {
-                        handleSendMessage(sticker.url);
-                      }}
-                      className={cx("stickers-content_item-img")}
-                      src={sticker.url}
-                      alt=""
-                    />
-                  </div>
-                </li>
-              ))
-            : false}
+          {listAllStickers[stickersType].map((sticker, index) => (
+            <li key={index} className={cx("stickers-content_item")}>
+              <div className={cx("stickers-content_item-bg")}>
+                {editStickers && stickersType === "custom" && (
+                  <span
+                    onClick={() => {
+                      handleRemoveSticker(sticker.fullPath);
+                    }}
+                    className={cx("stickers-content_item-cancel")}
+                  >
+                    <FontAwesomeIcon icon={faXmark} />
+                  </span>
+                )}
+                <img
+                  onClick={() => {
+                    handleSendMessage(sticker.url);
+                  }}
+                  className={cx("stickers-content_item-img")}
+                  src={sticker.url}
+                  alt=""
+                />
+              </div>
+            </li>
+          ))}
         </ul>
-        {currentUser.stickers.length > 0 ? (
+
+        {listAllStickers["custom"].length > 0 && stickersType === "custom" ? (
           <div className={cx("controls")}>
             {!editStickers ? (
               <button
@@ -144,7 +179,9 @@ function StickerModal({ sendMessage }) {
             )}
           </div>
         ) : (
-          <p className={cx("empty-sticker")}>Bạn chưa có Sticker nào</p>
+          <p className={cx("empty-sticker")}>
+            {stickersType === "custom" && "Bạn chưa có Sticker nào"}
+          </p>
         )}
       </div>
     </div>

@@ -5,6 +5,7 @@ import { storage } from "./config";
 import {
   deleteObject,
   getDownloadURL,
+  listAll,
   ref,
   uploadBytes,
 } from "firebase/storage";
@@ -49,4 +50,28 @@ function deleteFile(fullPath) {
     });
 }
 
-export { addDocument, uploadFile, deleteFile };
+function listAllFile(folder, callback) {
+  const listRef = ref(storage, folder);
+
+  listAll(listRef)
+    .then((res) => {
+      // console.log("Response: ", res);
+      const listURL = [];
+      let count = 0;
+      res.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          count = count + 1;
+          listURL.push({ url, fullPath: item.fullPath });
+          if (count === res.items.length) {
+            callback(listURL);
+            return;
+          }
+        });
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+export { addDocument, uploadFile, listAllFile, deleteFile };

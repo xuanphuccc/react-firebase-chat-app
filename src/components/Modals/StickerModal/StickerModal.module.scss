@@ -1,7 +1,6 @@
 .wrapper {
   position: relative;
   width: 300px;
-  min-height: 300px;
   background-color: #fff;
   box-shadow: var(--box-shadow);
   border-radius: 12px;
@@ -27,6 +26,7 @@
 }
 
 .stickers-header {
+  display: flex;
   list-style: none;
   padding: 60px 12px 4px;
   border-bottom: 1px solid var(--gray);
@@ -43,10 +43,26 @@
   font-size: 1.8rem;
   color: var(--primary);
   background-color: var(--light-gray);
+  transition: all 0.1s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--gray);
+  }
+
+  + .stickers-header_item {
+    margin-left: 8px;
+  }
+}
+
+.stickers-header_thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .stickers-content-wrap {
-  max-height: 292px;
+  height: 292px;
   overflow-y: auto;
   white-space: nowrap;
 }
