@@ -267,6 +267,10 @@ function ChatWindow({ roomId }) {
   //   });
   // }, [messages]);
 
+  const handlePaste = (e) => {
+    console.log("Test: ", e.clipboardData.items[0]);
+  };
+
   return (
     <>
       {selectedRoom && (
@@ -401,6 +405,7 @@ function ChatWindow({ roomId }) {
                   value={inputValue}
                   onChange={handleInputChange}
                   onKeyUp={handleKeyUp}
+                  onPaste={handlePaste}
                 />
               </div>
 
