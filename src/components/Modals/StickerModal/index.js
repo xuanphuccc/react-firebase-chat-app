@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useContext, useRef, useState } from "react";
 import { AppContext } from "../../../Context/AppProvider";
-import { deleteFile, uploadFile } from "../../../firebase/service";
+import { uploadFile } from "../../../firebase/service";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
@@ -36,7 +36,10 @@ function StickerModal({ sendMessage }) {
       );
     } else {
       alert("File sticker phải có kích thước < 3MB");
+      // <AlertModal />;
     }
+
+    inputStickerRef.current.value = "";
   };
 
   const handleRemoveSticker = (fullPath) => {
@@ -50,7 +53,7 @@ function StickerModal({ sendMessage }) {
     });
 
     // Remove file from Storage
-    deleteFile(fullPath);
+    // deleteFile(fullPath);
   };
 
   const handleSendMessage = (photoURL) => {

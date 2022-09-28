@@ -30,6 +30,7 @@ import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
 import StickerModal from "../../Modals/StickerModal";
 import Tippy from "@tippyjs/react";
+// import AlertModal from "../../Modals/AlertModal";
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -428,6 +429,7 @@ function ChatWindow({ roomId }) {
 
           <CustomNickname />
           <ChangeRoomName />
+          {/* <AlertModal /> */}
         </div>
       )}
     </>

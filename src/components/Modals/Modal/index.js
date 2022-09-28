@@ -13,6 +13,7 @@ function Modal({
   title = "This is modal",
   visible = false,
   okButton = true,
+  isHeader = true,
   onOk,
   OkTitle = "OK",
   onCancel,
@@ -29,9 +30,11 @@ function Modal({
     >
       <div onClick={onCancel} className={cx("overlay")}></div>
       <div className={cx("modal", { isMobile: isMobile })}>
-        <div className={cx("header")}>
-          <h4 className={cx("title")}>{title}</h4>
-        </div>
+        {isHeader && (
+          <div className={cx("header")}>
+            <h4 className={cx("title")}>{title}</h4>
+          </div>
+        )}
         <div className={cx("children")}>{children}</div>
         <div className={cx("controls")}>
           {okButton && (
