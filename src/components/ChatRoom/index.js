@@ -6,6 +6,7 @@ import { AppContext } from "../../Context/AppProvider";
 
 import DesktopLayout from "./DesktopLayout";
 import MobileLayout from "./MobileLayout";
+import AlertModal from "../Modals/AlertModal";
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,9 @@ function ChatRoom() {
   return (
     <div className={cx("app")}>
       {isMobile ? <MobileLayout /> : <DesktopLayout />}
+
+      {/* Show all alert and notification */}
+      <AlertModal />
     </div>
   );
 }

@@ -17,15 +17,29 @@ function CreateRoomModal() {
   const [name, setName] = useState("");
   const [uploadPhoto, setUploadPhoto] = useState(null);
   const [previewPhotoURL, setPreviewPhotoURL] = useState("");
-  const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AppContext);
+  const {
+    isAddRoomVisible,
+    setIsAddRoomVisible,
+    setAlertContent,
+    setAlertVisible,
+  } = useContext(AppContext);
   const currentUser = useContext(AuthContext);
   const inputImageRef = useRef();
   const inputNameRef = useRef();
 
   // Handle Image input
   const handleImageInput = (e) => {
-    setUploadPhoto(e.target.files[0]);
-    setPreviewPhotoURL(URL.createObjectURL(e.target.files[0]));
+    if (e.target.files[0].size < 3000000) {
+      setUploadPhoto(e.target.files[0]);
+      setPreviewPhotoURL(URL.createObjectURL(e.target.files[0]));
+    } else {
+      setAlertVisible(true);
+      setAlertContent({
+        title: "Không tải tệp lên được",
+        description:
+          "File bạn đã chọn quá lớn. Kích thước ảnh đại diện tối đa là 3MB",
+      });
+    }
   };
 
   const handleOk = () => {

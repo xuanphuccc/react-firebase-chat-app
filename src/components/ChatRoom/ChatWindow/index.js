@@ -3,19 +3,11 @@ import styles from "./ChatWindow.module.scss";
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPaperPlane,
-  faAngleLeft,
-  faEllipsisH,
-  faImage,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
 import { AppContext } from "../../../Context/AppProvider";
-import { AuthContext } from "../../../Context/AuthProvider";
 
-import { addDocument, uploadFile } from "../../../firebase/service";
 import useFirestore from "../../../hooks/useFirestore";
 
 import Message from "../Message";
@@ -23,14 +15,11 @@ import RoomOptions from "../RoomOptions";
 
 import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
-import hahaIcon from "../../../assets/images/minicon/haha.png";
-import StickerIcon from "../../../assets/images/icons/StickerIcon.js";
-import GifIcon from "../../../assets/images/icons/GifIcon.js";
+
 import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
-import StickerModal from "../../Modals/StickerModal";
-import Tippy from "@tippyjs/react";
-import AlertModal from "../../Modals/AlertModal";
+import MessagesForm from "../MessagesForm";
+
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
 
@@ -44,19 +33,10 @@ function ChatWindow({ roomId }) {
     handleRoomMenuVisible,
     isRoomMenuVisible,
     setSelectedRoomMessages,
-    setAlertVisible,
-    setAlertContent,
   } = useContext(AppContext);
 
-  const [inputValue, setInputValue] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
-  const [previewImageInput, setPreviewImageInput] = useState();
   const [currentMessage, setCurrentMessage] = useState("");
 
-  const { uid, displayName, photoURL } = useContext(AuthContext);
-
-  const inputRef = useRef();
-  const imageInputRef = useRef();
   const mesListRef = useRef();
   const LastMesListRef = useRef();
 
@@ -79,7 +59,7 @@ function ChatWindow({ roomId }) {
 
   const messages = useFirestore("messages", messagesCondition);
 
-  //
+  // Global
   useEffect(() => {
     setSelectedRoomMessages(messages);
   }, [messages, setSelectedRoomMessages]);
@@ -124,95 +104,6 @@ function ChatWindow({ roomId }) {
   //     });
   //   }
   // }, [currentMessage.id]);
-
-  // ------ HANDLE SEND MESSAGE ------
-  // Hàm xử lý input và gửi dữ liệu
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleImageInput = (e) => {
-    if (e.target.files[0].size <= 25000000) {
-      setImageUpload(e.target.files[0]);
-      setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
-    } else {
-      setAlertVisible(true);
-      setAlertContent({
-        title: "Không tải tệp lên được",
-        description: "File bạn đã chọn quá lớn. Kích thước file tối đa là 25MB",
-      });
-      imageInputRef.current.value = "";
-    }
-    inputRef.current.focus();
-  };
-
-  const sendMessage = (messText, messPhoto, fullPath = "", messType) => {
-    addDocument("messages", {
-      type: messType,
-      text: messText,
-      uid,
-      photoURL,
-      messagePhotoURL: messPhoto,
-      fullPath,
-      displayName,
-      roomId: roomId,
-      reactions: {
-        heart: [],
-        haha: [],
-        wow: [],
-        sad: [],
-        angry: [],
-        like: [],
-      },
-    });
-  };
-
-  // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
-  const handleOnSubmit = () => {
-    if (imageUpload) {
-      // Nếu đã chọn ảnh thì gửi lên URL hình ảnh
-      uploadFile(imageUpload, `images/chat_room/${roomId}`, (url, fullPath) => {
-        // Nếu có input value thì gửi cả ảnh và tin nhắn
-        if (inputValue.trim()) {
-          // Gửi tin nhắn
-          sendMessage(inputValue, null, null, "@text");
-        }
-
-        //Gửi ảnh
-        sendMessage("Photo", url, fullPath, "@image");
-      });
-    } else if (inputValue) {
-      // Nếu chưa chọn ảnh thì gửi inputValue
-      sendMessage(inputValue, null, null, "@text");
-    }
-
-    // Clear input and focus
-    handleClearPreview();
-    setInputValue("");
-  };
-
-  // Gửi riêng icon
-  const handleSendIcon = (value) => {
-    if (value) {
-      sendMessage(value, null, null, "@icon");
-    }
-  };
-
-  // Xử lý sự kiện nhấn nút Enter vào input
-  const handleKeyUp = (e) => {
-    if (e.key === "Enter") {
-      handleOnSubmit();
-    }
-  };
-
-  // Xóa preview
-  const handleClearPreview = () => {
-    setImageUpload(null);
-    setPreviewImageInput("");
-    //clear input
-    imageInputRef.current.value = "";
-    inputRef.current.focus();
-  };
 
   // Xử lý các tin nhắn liền kề cùng 1 người gửi
   const sideBySideMessages = useMemo(() => {
@@ -267,10 +158,6 @@ function ChatWindow({ roomId }) {
   //   });
   // }, [messages]);
 
-  const handlePaste = (e) => {
-    console.log("Test: ", e.clipboardData.items[0]);
-  };
-
   return (
     <>
       {selectedRoom && (
@@ -309,7 +196,7 @@ function ChatWindow({ roomId }) {
                 </div>
               </div>
 
-              {/* Invite Members And Room Controls */}
+              {/* Room Controls btn*/}
               <div className={cx("chat-window_header-users")}>
                 <i
                   onClick={handleRoomMenuVisible}
@@ -343,98 +230,8 @@ function ChatWindow({ roomId }) {
             </div>
 
             {/*=========== Message Form ===========*/}
-            <div className={cx("message-form")}>
-              <div className={cx("media-wrapper")}>
-                <input
-                  ref={imageInputRef}
-                  className={cx("media_input-image")}
-                  onChange={handleImageInput}
-                  type="file"
-                  accept="image/*"
-                  name=""
-                  id=""
-                />
-                <button
-                  onClick={() => {
-                    imageInputRef.current.click();
-                  }}
-                  className={cx("media-btn")}
-                >
-                  <FontAwesomeIcon icon={faImage} />
-                </button>
-                <Tippy
-                  interactive="true"
-                  trigger="click"
-                  content={<StickerModal sendMessage={sendMessage} />}
-                >
-                  <div>
-                    <button className={cx("media-btn")}>
-                      <StickerIcon />
-                    </button>
-                    <button className={cx("media-btn")}>
-                      <GifIcon />
-                    </button>
-                  </div>
-                </Tippy>
-              </div>
-
-              <div className={cx("message-form_input-wrap")}>
-                {previewImageInput && (
-                  <div className={cx("media-preview")}>
-                    <div className={cx("media-preview-img-wrap")}>
-                      <img
-                        className={cx("media-preview-img")}
-                        src={previewImageInput}
-                        alt=""
-                      />
-                      <button
-                        onClick={handleClearPreview}
-                        className={cx("remove-preview-img-btn")}
-                      >
-                        <FontAwesomeIcon icon={faXmark} />
-                      </button>
-                    </div>
-                  </div>
-                )}
-                <input
-                  className={cx("message-form_input")}
-                  type="text"
-                  placeholder="Aa"
-                  spellCheck="false"
-                  ref={inputRef}
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  onKeyUp={handleKeyUp}
-                  onPaste={handlePaste}
-                />
-              </div>
-
-              <div className={cx("button-wrap")}>
-                {inputValue.trim() || imageUpload ? (
-                  <button
-                    onClick={handleOnSubmit}
-                    className={cx("message-form_btn", "btn", "rounded")}
-                  >
-                    <FontAwesomeIcon
-                      className={cx("form-btn-icon")}
-                      icon={faPaperPlane}
-                    />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      handleSendIcon("😂");
-                    }}
-                    className={cx("message-form_btn", "btn", "rounded")}
-                  >
-                    <img
-                      className={cx("form-btn-image")}
-                      src={hahaIcon}
-                      alt=""
-                    />
-                  </button>
-                )}
-              </div>
+            <div className={cx("messages-form-wrapper")}>
+              <MessagesForm roomId={roomId} />
             </div>
           </div>
           {isRoomMenuVisible && (
@@ -445,7 +242,6 @@ function ChatWindow({ roomId }) {
 
           <CustomNickname />
           <ChangeRoomName />
-          <AlertModal />
         </div>
       )}
     </>

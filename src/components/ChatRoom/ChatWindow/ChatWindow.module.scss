@@ -114,128 +114,12 @@
 }
 
 /* Message form */
-.message-form {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  background-color: #fff;
-  padding: 8px 8px;
-}
-
 .chat-window.fixed {
-  & .message-form {
+  & .messages-form-wrapper {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 9;
   }
-}
-.message-form_input-wrap {
-  flex: 1;
-  background-color: var(--light-gray);
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.message-form_input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 1.6rem;
-  padding: 9px 12px;
-  caret-color: var(--primary);
-  background-color: transparent;
-}
-
-.button-wrap {
-  width: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.message-form_btn {
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-}
-
-.form-btn-icon {
-  font-size: 2.4rem;
-}
-
-.form-btn-image {
-  width: 24px;
-  height: 24px;
-  object-fit: cover;
-}
-
-// Media Input
-.media-wrapper {
-  display: flex;
-  align-items: center;
-  margin-right: 8px;
-}
-
-.media_input-image {
-  display: none;
-}
-
-.media-btn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 99px;
-  font-size: 2rem;
-  color: var(--primary);
-  background-color: transparent;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--light-gray);
-  }
-}
-
-// Media preview
-.media-preview {
-  min-width: 60px;
-  background-color: var(--light-gray);
-  padding: 12px 12px 0;
-}
-
-.media-preview-img-wrap {
-  position: relative;
-  display: inline-flex;
-}
-
-.media-preview-img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.remove-preview-img-btn {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  background-color: #fff;
-  color: var(--text-black);
-  font-size: 1.5rem;
-  border-radius: 40px;
-  border: 1px solid var(--medium-gray);
-  cursor: pointer;
 }
