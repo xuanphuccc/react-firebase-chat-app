@@ -45,7 +45,7 @@ function CreateRoomModal() {
   const handleOk = () => {
     let isValid = false;
 
-    // add new room with avatar to firestore
+    // Add new room with avatar to firestore
     if (uploadPhoto && name !== "") {
       uploadFile(uploadPhoto, `images/rooms_avatar/`, (url, fullPath) => {
         const data = {
@@ -83,7 +83,7 @@ function CreateRoomModal() {
     //   isValid = true;
     // }
 
-    // Đóng modal và xóa input
+    // Close modal and clear input
     if (isValid) {
       setIsAddRoomVisible(false);
       setName("");
@@ -101,14 +101,14 @@ function CreateRoomModal() {
     inputImageRef.current.value = "";
   };
 
-  // Submit form on press enter
+  // Submit form on press "Enter"
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && previewPhotoURL) {
       handleOk();
     }
   };
 
-  // Focus input on open
+  // Focus input when open
   useEffect(() => {
     inputNameRef.current.focus();
   }, [isAddRoomVisible]);

@@ -4,7 +4,7 @@ import styles from "./InviteMemberModal.module.scss";
 import { useState, useContext, useEffect, useMemo, useRef } from "react";
 
 import { AppContext } from "../../../Context/AppProvider";
-// import { AuthContext } from "../../Context/AuthProvider";
+
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
@@ -34,10 +34,10 @@ function InviteMemberModal() {
     return members.map((member) => member.uid);
   }, [members]);
 
-  // Khi click OK
+  // Handle submit
   const handleOk = () => {
     if (selectedUsers.length >= 1) {
-      // set nick name cho những users được thêm
+      // Set nick name cho những users được thêm
       const usersNickname = selectedUsers.map((id) => {
         let validUser = users.find((user) => user.uid === id);
         if (validUser) {
@@ -60,21 +60,21 @@ function InviteMemberModal() {
       });
     }
 
-    // Xóa selected users cũ
+    // Clear selected users
     setSelectedUsers([]);
 
-    // Đóng modal và xóa input
+    // Close modal and clear input
     setIsInviteMemberVisible(false);
     setInputValue("");
   };
 
-  // Khi click Cancel
+  // Handle cancel
   const handleCancel = () => {
     setInputValue("");
     setIsInviteMemberVisible(false);
   };
 
-  // Tìm users khi nhập tên tìm kiếm
+  // Find user when typing
   useEffect(() => {
     if (users.length >= 1 && inputValue !== "" && originMemberId) {
       let usersSearch = users.filter((member) => {
@@ -87,7 +87,7 @@ function InviteMemberModal() {
         );
       });
 
-      // Sắp xếp tăng dần theo ASCII
+      // Sort ascending by ASCII
       for (let i = 0; i < usersSearch.length - 1; i++) {
         for (let j = i + 1; j < usersSearch.length; j++) {
           if (usersSearch[i].displayName > usersSearch[j].displayName) {
@@ -103,7 +103,7 @@ function InviteMemberModal() {
     }
   }, [inputValue, users, originMemberId, uid]);
 
-  // handle selected users
+  // Handle select users
   const handleCheckedUsers = (id) => {
     setSelectedUsers((prev) => {
       if (prev.includes(id)) {
@@ -114,7 +114,7 @@ function InviteMemberModal() {
     });
   };
 
-  // Focus input on open
+  // Focus input when open
   useEffect(() => {
     inputRef.current.focus();
   }, [isInviteMemberVisible]);

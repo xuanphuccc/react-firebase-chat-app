@@ -17,13 +17,7 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const cx = classNames.bind(styles);
 
-function ReactionsControl({
-  id,
-  reactions,
-  activeIcon,
-  setActiveIcon,
-  setIsHasIcon,
-}) {
+function ReactionsControl({ id, reactions, activeIcon, setActiveIcon }) {
   const { uid } = useContext(AuthContext);
 
   const listIcon = [
@@ -38,11 +32,10 @@ function ReactionsControl({
   function handleReaction(type) {
     const messageRef = doc(db, "messages", id);
 
-    // Xóa icon người dùng hiện tại đã thả trước đó
+    // Remove previous reaction
     for (let reactionType in reactions) {
       if (reactions[reactionType].includes(uid)) {
-        // Tìm vị trí UID trong mảng của reaction chứa UID
-        // rồi thực hiện xóa UID đó
+        // Find current user uid from reactions type and remove it
         let indexOfUid = reactions[reactionType].indexOf(uid);
         if (indexOfUid !== -1) {
           reactions[reactionType].splice(indexOfUid);
@@ -57,9 +50,7 @@ function ReactionsControl({
       }
     }
 
-    // Thêm UID vào 1 reaction mới
-    // Nếu trùng với icon đã active thì
-    // không thực hiện thêm
+    // Add a new reaction if it doesn't match the old reaction
     if (activeIcon !== type) {
       reactions[type].push(uid);
       updateDoc(messageRef, {
@@ -69,7 +60,6 @@ function ReactionsControl({
         },
       });
     } else {
-      // setIsHasIcon(false);
       setActiveIcon("");
     }
   }

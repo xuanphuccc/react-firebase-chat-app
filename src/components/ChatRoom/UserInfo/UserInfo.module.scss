@@ -1,7 +1,7 @@
 /* User info */
 .user-info {
   height: 50px;
-  background-color: #fff;
+  background-color: var(--background);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,12 +34,13 @@
 .title {
   font-size: 1.4rem;
   font-weight: 600;
+  color: var(--text-black);
 }
 
 /* New room*/
 .new-room-icon {
   font-size: 2rem;
-  color: var(--primary);
+  color: var(--text-black);
   padding: 8px;
   display: inline-block;
   cursor: pointer;

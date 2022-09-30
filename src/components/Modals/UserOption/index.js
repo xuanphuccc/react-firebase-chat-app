@@ -29,7 +29,7 @@ function UserOption({ visible = false, setVisible }) {
   const inputImageRef = useRef();
   const nameInputRef = useRef();
 
-  // Xử lý Sign Out
+  // Sign Out
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -71,7 +71,7 @@ function UserOption({ visible = false, setVisible }) {
       }
     }
 
-    // Đóng modal và xóa input
+    // Close modal and clear input
     inputImageRef.current.value = "";
   };
 

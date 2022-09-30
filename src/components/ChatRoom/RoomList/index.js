@@ -9,15 +9,8 @@ import { AppContext } from "../../../Context/AppProvider";
 const cx = classNames.bind(styles);
 
 function RoomList() {
-  // Không nên gọi trực tiếp truy vấn trong đây
-  // vì mỗi lần render lại thực hiện truy vấn
-  // gây lãng phí số lần query đến database
-  // -> Cách khắc phục: dùng useContext
-  // const rooms = useFirestore("rooms", roomsCondition);
   const { rooms, setSelectedRoomId, selectedRoomId, isMobile } =
     useContext(AppContext);
-
-  // const navigate = useNavigate();
 
   return (
     <div className={cx("wrapper", { isMobile })}>
@@ -38,10 +31,6 @@ function RoomList() {
                 className={cx("room_img")}
                 src={room.photoURL || userPlacehoderImg}
                 alt=""
-                onError={(e) => {
-                  console.log("ERROR IMAGE: ", e);
-                  // e.target.src = "../../../assets/images/user.png";
-                }}
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>

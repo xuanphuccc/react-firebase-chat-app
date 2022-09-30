@@ -40,16 +40,15 @@ function ChatWindow({ roomId }) {
   const mesListRef = useRef();
   const LastMesListRef = useRef();
 
-  // Set selected room ID khi vào hoặc load lại phòng
+  // Set room ID (AppContext) when selected room or load
   useEffect(() => {
     setSelectedRoomId(roomId);
   }, [roomId, setSelectedRoomId]);
 
   // HANDLE GET MESSAGES
-  // Lấy message của phòng được selected
+  // Get current room messages
   const messagesCondition = useMemo(() => {
-    // Lấy các tin nhắn có roomId
-    // trùng với current roomId
+    // Get messages with the same roomId field as (current) roomId
     return {
       fielName: "roomId",
       operator: "==",
@@ -64,13 +63,13 @@ function ChatWindow({ roomId }) {
     setSelectedRoomMessages(messages);
   }, [messages, setSelectedRoomMessages]);
 
-  // Lấy ra phòng được selected
+  // Get selected room with room id
   const selectedRoom = useMemo(
     () => rooms.find((room) => room.id === roomId),
     [rooms, roomId]
   );
 
-  // Phát âm báo mỗi lần có tin nhắn mới
+  // Play sound when have new messag
   useEffect(() => {
     if (messages.length) {
       const messagesLength = messages.length;
@@ -84,7 +83,7 @@ function ChatWindow({ roomId }) {
     audio.play();
   }, [currentMessage.id]);
 
-  // Xử lý scroll tin nhắn lên mỗi khi có tin nhắn mới
+  // Handle scroll when have new message
   useEffect(() => {
     if (mesListRef.current) {
       mesListRef.current.scrollTo({
@@ -105,7 +104,7 @@ function ChatWindow({ roomId }) {
   //   }
   // }, [currentMessage.id]);
 
-  // Xử lý các tin nhắn liền kề cùng 1 người gửi
+  // Handle side by side messages with the same sender
   const sideBySideMessages = useMemo(() => {
     let newMessages = [...messages];
 
@@ -148,7 +147,7 @@ function ChatWindow({ roomId }) {
     return newMessages;
   }, [messages]);
 
-  // Cập nhật định dạng
+  // Update format from firestore
   // useEffect(() => {
   //   messages.forEach((message) => {
   //     let messageRef = doc(db, "messages", message.id);
@@ -171,7 +170,7 @@ function ChatWindow({ roomId }) {
                   <Link to={"/room-list"}>
                     <button
                       onClick={() => {
-                        // Bỏ active room
+                        // Remove active room
                         setSelectedRoomId("");
                       }}
                       className={cx("back-btn")}

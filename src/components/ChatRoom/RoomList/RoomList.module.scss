@@ -1,11 +1,11 @@
 /* Room list */
 .wrapper {
-  margin-top: 12px;
-  padding-top: 12px;
+  padding-top: 24px;
   padding-bottom: 24px;
   user-select: none;
   flex: 1;
   overflow-y: auto;
+  background-color: var(--background);
 
   &.isMobile {
     margin-top: 62px;
@@ -20,11 +20,11 @@
   border-radius: 8px;
   cursor: pointer;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--light-gray);
   }
 
   &.active {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--light-gray);
   }
 }
 
@@ -45,7 +45,7 @@
 .room_name {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-black);
 }
 
 .room-desc {

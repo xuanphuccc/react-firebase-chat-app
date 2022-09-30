@@ -33,12 +33,12 @@ function MessagesForm({ roomId }) {
   const inputRef = useRef();
   const imageInputRef = useRef();
 
-  // ------ HANDLE SEND MESSAGE ------
-  // Hàm xử lý input và gửi dữ liệu
+  // Handle input change
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
+  // Handle image input change and file size limit
   const handleImageInput = (e) => {
     if (e.target.files[0].size <= 25000000) {
       setImageUpload(e.target.files[0]);
@@ -54,6 +54,7 @@ function MessagesForm({ roomId }) {
     }
   };
 
+  // Send message (add document to "messages" collection)
   const sendMessage = (messText, messPhoto, fullPath = "", messType) => {
     addDocument("messages", {
       type: messType,
@@ -75,45 +76,43 @@ function MessagesForm({ roomId }) {
     });
   };
 
-  // Hàm xử lý sự kiện Submit gửi tin nhắn lên database
+  // Handle send messages (text, image)
   const handleOnSubmit = () => {
     if (imageUpload) {
-      // Nếu đã chọn ảnh thì gửi lên URL hình ảnh
       uploadFile(imageUpload, `images/chat_room/${roomId}`, (url, fullPath) => {
-        // Nếu có input value thì gửi cả ảnh và tin nhắn
         if (inputValue.trim()) {
-          // Gửi tin nhắn
+          // Send text
           sendMessage(inputValue, null, null, "@text");
         }
 
-        //Gửi ảnh
+        // Send image
         sendMessage("Photo", url, fullPath, "@image");
       });
     } else if (inputValue) {
-      // Nếu chưa chọn ảnh thì gửi inputValue
+      // Send text only
       sendMessage(inputValue, null, null, "@text");
     }
 
-    // Clear input and focus
+    // Clear input, preview and focus input again
     handleClearPreview();
     setInputValue("");
   };
 
-  // Gửi riêng icon
+  // Send icon only
   const handleSendIcon = (value) => {
     if (value) {
       sendMessage(value, null, null, "@icon");
     }
   };
 
-  // Xử lý sự kiện nhấn nút Enter vào input
+  // Press "Enter" to send messages
   const handleKeyUp = (e) => {
     if (e.key === "Enter") {
       handleOnSubmit();
     }
   };
 
-  // Xóa preview
+  // Clear preview
   const handleClearPreview = () => {
     setImageUpload(null);
     setPreviewImageInput("");

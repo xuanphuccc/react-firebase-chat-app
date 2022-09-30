@@ -20,7 +20,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(218, 218, 218, 0.6);
+  background-color: var(--overlay);
   z-index: 10;
   animation: showOverlay 0.4s ease forwards;
 }
@@ -40,7 +40,7 @@
   flex-direction: column;
   min-width: 548px;
   min-height: 170px;
-  background-color: #fff;
+  background-color: var(--background);
   box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
   bottom: 50%;
   left: 50%;
@@ -74,6 +74,7 @@
   font-size: 1.5rem;
   font-weight: 500;
   padding: 20px 64px 8px;
+  color: var(--text-black);
 }
 
 .children {

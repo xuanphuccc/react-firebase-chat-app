@@ -11,10 +11,10 @@ import AlertModal from "../Modals/AlertModal";
 const cx = classNames.bind(styles);
 
 function ChatRoom() {
-  const { isMobile } = useContext(AppContext);
+  const { isMobile, theme } = useContext(AppContext);
 
   return (
-    <div className={cx("app")}>
+    <div className={cx("app")} data-theme={theme}>
       {isMobile ? <MobileLayout /> : <DesktopLayout />}
 
       {/* Show all alert and notification */}

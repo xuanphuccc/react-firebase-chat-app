@@ -16,6 +16,7 @@ import {
   faPen,
   faLink,
   faCheck,
+  faFill,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 
@@ -48,6 +49,8 @@ const cx = classNames.bind(styles);
 
 function RoomOptions({ messages }) {
   const {
+    theme,
+    setTheme,
     selectedRoom,
     selectedRoomId,
     members,
@@ -317,6 +320,23 @@ function RoomOptions({ messages }) {
           </h4>
 
           <ul className={cx("type-wrap", { open: isOpenCustomRoom })}>
+            {/* Change theme */}
+            <li
+              onClick={() => {
+                if (theme === "light") {
+                  setTheme("dark");
+                } else {
+                  setTheme("light");
+                }
+              }}
+              className={cx("option-item")}
+            >
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faFill} />
+              </span>
+              <h5 className={cx("option-name")}>Đổi chủ đề</h5>
+            </li>
+
             {/* Change Room name */}
             <li
               onClick={() => {

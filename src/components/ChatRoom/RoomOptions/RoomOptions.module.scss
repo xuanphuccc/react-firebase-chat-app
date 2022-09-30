@@ -5,7 +5,7 @@
   white-space: nowrap;
   border-left: 1px solid rgba(22, 24, 35, 0.12);
   animation: slideToLeft 0.2s ease forwards;
-  background-color: #fff;
+  background-color: var(--background);
 }
 
 @keyframes slideToLeft {
@@ -70,6 +70,7 @@
 
 .room-name {
   font-size: 1.5rem;
+  color: var(--text-black);
   font-weight: 600;
   text-align: center;
 }
@@ -105,6 +106,7 @@
   font-size: 1.8rem;
   border-radius: 50%;
   background-color: var(--light-gray);
+  color: var(--text-black);
 }
 
 .quick-name {
@@ -131,6 +133,7 @@
 
 .type-name {
   font-size: 1.4rem;
+  color: var(--text-black);
   font-weight: 500;
   padding: 14px 10px;
   border-radius: 8px;
@@ -195,6 +198,7 @@
   justify-content: center;
   border-radius: 99px;
   background-color: var(--light-gray);
+  color: var(--text-black);
 }
 
 .option-name {
@@ -210,7 +214,7 @@
   user-select: text;
 
   &:hover {
-    background-color: #fff;
+    background-color: var(--light-gray);
     cursor: default;
   }
 }
@@ -252,6 +256,7 @@
   border-radius: 99px;
   transition: all 0.2s ease;
   cursor: pointer;
+  color: var(--text-black);
 
   &:hover {
     background-color: var(--gray);

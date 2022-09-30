@@ -1,7 +1,7 @@
 .wrapper {
   position: relative;
   width: 300px;
-  background-color: #fff;
+  background-color: var(--background);
   box-shadow: var(--box-shadow);
   border-radius: 12px;
   user-select: none;

@@ -14,13 +14,12 @@ import UserOption from "../../Modals/UserOption";
 const cx = classNames.bind(styles);
 
 function UserInfo() {
-  // Set trạng thái của Modal Add Room và Join Room
   const { setIsAddRoomVisible, isMobile, currentUser } = useContext(AppContext);
 
-  // Trạng thái hiển thị của menu user
+  // User menu visible
   const [isVisible, setIsVisible] = useState(false);
 
-  // Mở modal khi click vào tạo phòng
+  // Open modal when click reacte room button
   const handleAddRoom = () => {
     setIsAddRoomVisible(true);
   };

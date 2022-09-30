@@ -26,15 +26,14 @@ const googleProvider = new GoogleAuthProvider();
 function Login() {
   const { isDesktop } = useContext(AppContext);
 
-  // Login với Facebook
-  // Đồng thời ghi dữ liệu người dùng vào database
+  // Login with Facebook
   const handleFblogin = () => {
     signInWithPopup(auth, fbProvider)
       .then((result) => {
         // The signed-in user info.
         const { user, _tokenResponse } = result;
 
-        // Nếu là người dùng mới thì ghi dữ liệu vào database
+        // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
           console.log("New User!");
 
@@ -74,17 +73,16 @@ function Login() {
       });
   };
 
-  // Login với Google
+  // Login with Google
   const handleGoogleLogin = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const { user, _tokenResponse } = result;
 
-        // Nếu là người dùng mới thì ghi dữ liệu vào database
+        // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
           console.log("New User!");
 
-          // Custom method để ghi dữ liệu vào database
           addDocument("users", {
             displayName: user.displayName,
             email: user.email,

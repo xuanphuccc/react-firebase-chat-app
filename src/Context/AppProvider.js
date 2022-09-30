@@ -30,6 +30,9 @@ function AppProvider({ children }) {
   // Ảnh tin nhắn đang được chọn
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+  // Dark Mode / Light Mode
+  const [theme, setTheme] = useState("light");
+
   // Set trạng thái hiển thị của Room Menu
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
   // Hàm xử lý mở modal Room Menu
@@ -124,6 +127,8 @@ function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        theme,
+        setTheme,
         currentUser,
         rooms,
         members,

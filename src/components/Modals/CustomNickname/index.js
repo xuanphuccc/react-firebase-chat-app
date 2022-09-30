@@ -32,7 +32,7 @@ function CustomNickname() {
     setInputValue(e.target.value);
   };
 
-  // Lấy thông tin của user từ mảng roomNicknames
+  // Get user infor roomNicknames array
   const renderUsers = useMemo(() => {
     let result = [];
     if (selectedRoom && members.length) {
@@ -77,14 +77,14 @@ function CustomNickname() {
     setShowInput("");
   };
 
-  // Xử lý focus input khi bấm sửa
+  // Focus input
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [showInput]);
 
-  // Sử lý submit kh bấm enter
+  // Handle submit when press "Enter"
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       submitBtnRef.current.click();

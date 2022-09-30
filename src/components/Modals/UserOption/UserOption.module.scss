@@ -16,6 +16,7 @@
   font-size: 1.4rem;
   font-weight: 600;
   padding: 8px;
+  color: var(--text-black);
 }
 
 .option-list {
@@ -47,12 +48,14 @@
   align-items: center;
   border-radius: 99px;
   background-color: var(--light-gray);
+  color: var(--text-black);
 }
 
 .option-name {
   font-size: 1.4rem;
   font-weight: 600;
   margin-left: 8px;
+  color: var(--text-black);
 }
 
 // User Infor
@@ -77,6 +80,7 @@
   font-weight: 600;
   margin-left: 8px;
   padding: 12px 0;
+  color: var(--text-black);
 }
 
 .user-name-label {
@@ -114,6 +118,7 @@
   border: none;
   background-color: transparent;
   outline: none;
+  color: var(--text-black);
 }
 
 .name-input-count {

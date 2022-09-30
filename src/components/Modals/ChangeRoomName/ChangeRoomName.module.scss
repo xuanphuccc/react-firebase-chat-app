@@ -46,6 +46,8 @@
   font-size: 1.6rem;
   outline: none;
   border: none;
+  background-color: var(--background);
+  color: var(--text-black);
   caret-color: var(--primary);
 }
 
@@ -64,6 +66,7 @@
 
 .cancel-btn {
   flex: 1;
+  color: var(--text-black);
 }
 
 .ok-btn {

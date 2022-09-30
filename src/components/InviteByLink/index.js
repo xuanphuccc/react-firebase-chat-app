@@ -32,6 +32,7 @@ function InviteByLink() {
   const roomRef = useMemo(() => {
     return doc(db, "rooms", roomid);
   }, [roomid]);
+
   const handleParticipate = () => {
     if (uid && roomid) {
       updateDoc(roomRef, {

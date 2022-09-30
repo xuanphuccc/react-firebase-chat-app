@@ -23,7 +23,7 @@ function ChangeRoomName() {
     setIsOpenChangeRoomName,
   } = useContext(AppContext);
 
-  // Change room name
+  // Handle change room name
   const handleChangeRoomName = () => {
     if (inputValue.trim() && inputValue.trim() !== selectedRoom.name) {
       const roomRef = doc(db, "rooms", selectedRoomId);

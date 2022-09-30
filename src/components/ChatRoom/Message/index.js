@@ -36,20 +36,15 @@ function Message({
   const { members, selectedRoom, setSelectedPhoto } = useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
-
-  // Kiểm tra tin nhắn là nhận hay gửi
-  const isSentMsg = userId === uid;
-
-  // Set active reaction icon
   const [activeIcon, setActiveIcon] = useState("");
-
-  // Set trạng thái hiển thị của ReactionsModal
   const [isVisibleReactionsModal, setIsVisibleReactionsModal] = useState(false);
 
-  // Navigate
   const navigate = useNavigate();
 
-  // Lấy ra user của tin nhắn
+  // Received or sent messages check
+  const isSentMsg = userId === uid;
+
+  // Get message user
   const memberInfor = useMemo(() => {
     let result = {};
     if (members) {
@@ -66,7 +61,7 @@ function Message({
     return result;
   }, [members, userId, selectedRoom]);
 
-  // Định dạng lại ngày tháng
+  // Date time format
   const formatMessageDate = (createAt) => {
     const time = {
       year: 0,
@@ -102,7 +97,7 @@ function Message({
     return `${hoursMinutes} ${yearMonthDate}`;
   };
 
-  // Mở Chat media khi click vào ảnh
+  // Open ChatMedia when click image
   const handleOpenChatMedia = useMemo(() => {
     return (url) => {
       setSelectedPhoto(url);
@@ -110,7 +105,7 @@ function Message({
     };
   }, [navigate, setSelectedPhoto]);
 
-  // Xử lý tin nhắn hình ảnh, không có hình ảnh và bị gỡ
+  // Handle display message
   const renderMessageContent = useMemo(() => {
     if (type === "@unsentmsg") {
       return <p className={cx("unsent-message")}>Tin nhắn đã bị thu hồi</p>;
@@ -134,7 +129,7 @@ function Message({
     }
   }, [type, content, messagePhotoURL, handleOpenChatMedia]);
 
-  // Set hiển thị icon và set active icon
+  // Set icon display and set active icon
   useEffect(() => {
     let count = 0;
     for (let type in reactions) {
@@ -154,8 +149,8 @@ function Message({
     }
   }, [reactions, uid]);
 
-  // Xử lý thu hồi tin nhắn
-  const handleUnsentMessage = () => {
+  // Handle unsend message
+  const handleUnsendMessage = () => {
     if (userId === uid) {
       let messageRef = doc(db, "messages", id);
       updateDoc(messageRef, {
@@ -164,7 +159,7 @@ function Message({
     }
   };
 
-  // Xử lý đóng mở modal ReactionsModal
+  // handle open and close ReactionsModal
   const handleToggleReactionsModal = () => {
     setIsVisibleReactionsModal(!isVisibleReactionsModal);
   };
@@ -237,7 +232,7 @@ function Message({
                   content={
                     <div className={cx("unsent-control")}>
                       <button
-                        onClick={handleUnsentMessage}
+                        onClick={handleUnsendMessage}
                         className={cx("unsent-btn")}
                       >
                         Gỡ tin nhắn

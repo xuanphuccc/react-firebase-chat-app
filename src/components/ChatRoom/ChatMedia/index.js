@@ -29,14 +29,17 @@ function ChatMedia() {
   const slider2Ref = useRef();
 
   useEffect(() => {
+    // slider sync
     setNav1(slider1Ref.current);
     setNav2(slider2Ref.current);
 
+    // If there's no message then come back
     if (!selectedRoomMessages) {
       navigate(-1);
     }
   }, [navigate, selectedRoomMessages]);
 
+  // Get all images from current room
   const roomPhotos = useMemo(() => {
     let includePhoto = [];
     if (selectedRoomMessages) {
@@ -57,15 +60,17 @@ function ChatMedia() {
   }, [selectedRoomMessages]);
 
   useEffect(() => {
+    // go to selected image
     if (selectedPhoto) {
       const index = roomPhotos.indexOf(selectedPhoto);
       slider1Ref.current.slickGoTo(index);
     } else {
+      // if no image is selected then go to latest image
       slider1Ref.current.slickGoTo(roomPhotos.length);
     }
   }, [roomPhotos, selectedPhoto]);
 
-  // Setting
+  // Settings for main slider
   const settingCarousel = {
     // nextArrow: <NextArrow />,
     // prevArrow: <PrevArrow />,
@@ -74,6 +79,7 @@ function ChatMedia() {
     slidesToScroll: 1,
   };
 
+  // Settings for nav slider
   const settingsSliderNav = {
     className: "slider variable-width",
     infinite: false,
