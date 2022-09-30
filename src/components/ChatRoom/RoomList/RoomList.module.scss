@@ -6,10 +6,12 @@
   flex: 1;
   overflow-y: auto;
   background-color: var(--background);
+  border-right: 1px solid var(--border-color);
   transition: all 0.2s ease;
 
   &.isMobile {
     padding-top: 86px;
+    border-right-color: transparent;
   }
 }
 

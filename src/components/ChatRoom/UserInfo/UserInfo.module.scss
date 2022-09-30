@@ -7,6 +7,7 @@
   align-items: center;
   padding: 0 16px;
   border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
   user-select: none;
   transition: all 0.2s ease;
 
@@ -15,6 +16,7 @@
     top: 0;
     left: 0;
     right: 0;
+    border-right-color: transparent;
   }
 }
 
