@@ -36,7 +36,7 @@ function AppProvider({ children }) {
   // Dark Mode / Light Mode
   const appConfig = JSON.parse(
     localStorage.getItem("xuanphuc_space_config")
-  ) ?? { appTheme: "light" };
+  ) ?? { appTheme: "dark" };
 
   const setAppConfig = (key, value) => {
     appConfig[key] = value;
