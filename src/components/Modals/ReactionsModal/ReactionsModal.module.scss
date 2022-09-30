@@ -27,7 +27,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: var(--light-gray);
   }
 }
 
@@ -81,7 +81,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: var(--light-gray);
   }
 }
 
@@ -102,6 +102,7 @@
   margin-left: 8px;
   font-size: 14px;
   font-weight: 600;
+  color: var(--text-black);
 }
 
 .user-reaction {

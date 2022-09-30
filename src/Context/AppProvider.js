@@ -31,7 +31,7 @@ function AppProvider({ children }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   // Dark Mode / Light Mode
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   // Set trạng thái hiển thị của Room Menu
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);

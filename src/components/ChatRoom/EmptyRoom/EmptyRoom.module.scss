@@ -5,6 +5,7 @@
   height: 100vh;
   justify-content: center;
   align-items: center;
+  background-color: var(--background);
 }
 
 .wrapper {
@@ -34,7 +35,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--background);
   box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
   user-select: none;
   position: fixed;
