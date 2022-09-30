@@ -1,9 +1,10 @@
 .wrapper {
   background-color: transparent;
   padding: 8px 14px;
-  background-color: #fff;
+  background-color: var(--background);
   border-radius: 50px;
-  box-shadow: -4px 4px 18px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--box-border-color);
 }
 
 .reactions {
@@ -26,6 +27,6 @@
   }
 
   &.active {
-    background-color: #e4e6eb;
+    background-color: var(--light-gray);
   }
 }

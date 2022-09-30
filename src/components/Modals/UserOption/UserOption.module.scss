@@ -3,7 +3,7 @@
 }
 
 .section {
-  border-top: 1px solid var(--gray);
+  border-top: 1px solid var(--border-color);
   margin: 8px 0;
   padding-top: 8px;
 
@@ -63,7 +63,7 @@
   width: 64px;
   height: 64px;
   border-radius: 999px;
-  border: 1px solid var(--gray);
+  border: 1px solid var(--border-color);
   object-fit: cover;
   // transition: opacity 0.2s ease;
 

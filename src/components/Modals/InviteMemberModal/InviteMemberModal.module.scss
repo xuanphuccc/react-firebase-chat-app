@@ -63,7 +63,7 @@
   padding: 8px;
 
   &:hover {
-    background-color: #f3f3f5;
+    background-color: var(--light-gray);
     border-radius: 8px;
   }
 }
@@ -85,6 +85,7 @@
   font-size: 1.4rem;
   font-weight: 600;
   margin-left: 8px;
+  color: var(--text-black);
 }
 
 .choose-user {

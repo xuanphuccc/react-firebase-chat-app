@@ -1,16 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&display=swap");
 
 :root {
-  --background: #fff;
   --primary: rgba(254, 44, 85, 1);
+  --background: #fff;
   --text-black: #050505;
-  --text-gray: #65676B;
-  --dark-gray: #606770;
-  --medium-gray: #BCC0C4;
-  --gray: #E4E6EB;
   --light-gray: #F3F3F5;
-  --overlay: rgba(218, 218, 218, 0.6);
+  --gray: #E4E6EB;
+  --message-gray: #E4E6EB;
 
+  --medium-gray: #BCC0C4; /**/
+  --text-gray: #65676B; /**/
+  --dark-gray: #606770; /**/
+
+  --overlay: rgba(218, 218, 218, 0.6);
+  --border-color: #E4E6EB;
+  --box-border-color: transparent;
   --box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;
 }
 
@@ -19,7 +23,13 @@
   --text-black: #E4E6EB;
   --light-gray: #3A3B3C;
   --gray: #767677;
+  --message-gray: #3A3B3C;
+
+
   --overlay: rgba(0, 0, 0, 0.6);
+  --border-color: #3A3B3C;
+  --box-border-color: #3A3B3C;
+  --box-shadow: rgb(0, 0, 0, 0.3) 0px 4px 16px;
 }
 
 /* width */

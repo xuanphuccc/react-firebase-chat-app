@@ -6,6 +6,7 @@
   flex: 1;
   overflow-y: auto;
   background-color: var(--background);
+  transition: all 0.2s ease;
 
   &.isMobile {
     padding-top: 86px;
@@ -19,6 +20,8 @@
   margin: 0 8px;
   border-radius: 8px;
   cursor: pointer;
+  transition: all 0.2s ease;
+
   &:hover {
     background-color: var(--light-gray);
   }
@@ -33,7 +36,7 @@
   height: 58px;
   border-radius: 999px;
   object-fit: cover;
-  border: 1px solid var(--gray);
+  border: 1px solid var(--border-color);
 }
 
 .room-info {

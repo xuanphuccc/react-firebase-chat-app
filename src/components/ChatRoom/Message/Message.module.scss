@@ -147,10 +147,11 @@
 .text-inner {
   font-size: 1.6rem;
   color: var(--text-black);
-  background-color: var(--gray);
+  background-color: var(--message-gray);
   padding: 10px 16px;
   border-radius: 20px;
   animation: popup 0.2s ease forwards;
+  transition: all 0.2s ease;
   // Với tin nhắn gửi là 100%
   transform-origin: 0%;
 }
@@ -176,7 +177,7 @@
   max-height: 220px;
   object-fit: cover;
   cursor: pointer;
-  border: 1px solid var(--gray);
+  border: 1px solid var(--border-color);
   transition: all 0.1s ease;
   background-color: #fff !important;
 
@@ -243,9 +244,10 @@
 // Unsent Control
 .unsent-control {
   padding: 4px;
-  background-color: #fff;
+  background-color: var(--background);
   border-radius: 12px;
   box-shadow: var(--box-shadow);
+  border: 1px solid var(--box-border-color);
 }
 
 .unsent-btn {
@@ -257,6 +259,7 @@
   cursor: pointer;
   background-color: transparent;
   transition: all 0.1s ease;
+  color: var(--text-black);
 
   &:hover {
     background-color: var(--light-gray);

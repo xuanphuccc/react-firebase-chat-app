@@ -3,7 +3,7 @@
   overflow-y: scroll;
   overflow-x: hidden;
   white-space: nowrap;
-  border-left: 1px solid rgba(22, 24, 35, 0.12);
+  border-left: 1px solid var(--border-color);
   animation: slideToLeft 0.2s ease forwards;
   background-color: var(--background);
 }
@@ -51,6 +51,8 @@
 
 .room-info-wrap {
   min-height: 200px;
+  background-color: var(--background);
+  transition: all 0.2s ease;
 }
 
 .room-img-wrap {
@@ -107,6 +109,7 @@
   border-radius: 50%;
   background-color: var(--light-gray);
   color: var(--text-black);
+  transition: all 0.2s ease;
 }
 
 .quick-name {
@@ -120,6 +123,8 @@
 .options-types {
   list-style: none;
   padding-top: 20px;
+  background-color: var(--background);
+  transition: all 0.2s ease;
 }
 
 .type-item {
@@ -199,6 +204,7 @@
   border-radius: 99px;
   background-color: var(--light-gray);
   color: var(--text-black);
+  transition: all 0.2s ease;
 }
 
 .option-name {

@@ -4,13 +4,14 @@
   background-color: var(--background);
   box-shadow: var(--box-shadow);
   border-radius: 12px;
+  border: 1px solid var(--box-border-color);
   user-select: none;
 }
 
 .add-stickers-btn {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 16px;
+  right: 12px;
   width: 32px;
   height: 32px;
   border-radius: 99px;
@@ -28,8 +29,8 @@
 .stickers-header {
   display: flex;
   list-style: none;
-  padding: 60px 12px 4px;
-  border-bottom: 1px solid var(--gray);
+  padding: 12px 12px 4px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .stickers-header_item {
@@ -51,7 +52,7 @@
   }
 
   &.active {
-    background-color: var(--gray);
+    background-color: var(--light-gray);
     .stickers-header_thumb {
       border: 1px solid var(--medium-gray);
     }
@@ -95,7 +96,7 @@
   left: 0;
   right: 0;
   padding: 4px;
-  background-color: #fff;
+  background-color: var(--background);
   border-radius: 8px;
 }
 
@@ -104,7 +105,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  border: 1px solid var(--gray);
+  border: 1px solid var(--border-color);
   transition: all 0.1s ease;
   cursor: pointer;
 

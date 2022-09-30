@@ -4,6 +4,8 @@
   height: 100vh;
   display: flex;
   background-color: var(--background);
+  border-left: 1px solid var(--border-color);
+  transition: all 0.2s ease;
 }
 
 .chat-window {
@@ -19,8 +21,9 @@
   display: flex;
   justify-content: space-between;
   background-color: var(--background);
-  box-shadow: 0px 1px 1px rgb(0 0 0 / 12%);
+  border-bottom: 1px solid var(--border-color);
   user-select: none;
+  transition: all 0.2s ease;
 }
 
 .chat-window.fixed {
@@ -61,7 +64,7 @@
   margin-left: 12px;
   border-radius: 999px;
   object-fit: cover;
-  border: 1px solid var(--medium-gray);
+  border: 1px solid var(--border-color);
 }
 
 .chat-window_header-name {
@@ -72,7 +75,7 @@
 
 .chat-desc {
   font-size: 1.2rem;
-  color: #65676b;
+  color: var(--dark-gray);
   font-weight: 300;
 }
 
