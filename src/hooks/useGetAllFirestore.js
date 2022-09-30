@@ -4,7 +4,7 @@ import { db } from "../firebase/config";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 
-function useGetAllFirestore(collectionName) {
+function useGetAllFirestore(collectionName, callback) {
   const [documents, setDocuments] = useState([]);
   const { uid } = useContext(AuthContext);
 
@@ -22,6 +22,9 @@ function useGetAllFirestore(collectionName) {
             };
           });
 
+          if (typeof callback === "function") {
+            callback();
+          }
           setDocuments(documents);
         },
         (error) => {
@@ -36,7 +39,7 @@ function useGetAllFirestore(collectionName) {
         unsubscribe();
       };
     }
-  }, [collectionName, uid]);
+  }, [collectionName, uid, callback]);
 
   return documents;
 }

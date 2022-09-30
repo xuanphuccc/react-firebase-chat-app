@@ -12,6 +12,9 @@ const AppContext = createContext();
 // Có nhiệm vụ truyền context khi lấy được data
 // từ câu truy vấn đến realtime database
 function AppProvider({ children }) {
+  const [isUsersLoading, setIsUsersLoading] = useState(true);
+  const [isRoomListLoading, setIsRoomListLoading] = useState(true);
+
   // Set trạng thái hiển thị cho modal Add Room
   const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
 
@@ -71,7 +74,13 @@ function AppProvider({ children }) {
     };
   }, [uid]);
 
-  const rooms = useFirestore("rooms", roomsCondition);
+  const roomsCallback = useMemo(() => {
+    return () => {
+      setIsRoomListLoading(false);
+    };
+  }, []);
+
+  const rooms = useFirestore("rooms", roomsCondition, roomsCallback);
 
   // Lấy ra phòng được selected
   const selectedRoom = useMemo(() => {
@@ -91,8 +100,14 @@ function AppProvider({ children }) {
     return roomMembers;
   }, [selectedRoom]);
 
+  const usersCallback = useMemo(() => {
+    return () => {
+      setIsUsersLoading(false);
+    };
+  }, []);
+
   // Lấy TẤT CẢ user
-  const users = useGetAllFirestore("users");
+  const users = useGetAllFirestore("users", usersCallback);
 
   const members = useMemo(() => {
     if (users.length >= 1 && selectedRoomMembers) {
@@ -157,6 +172,8 @@ function AppProvider({ children }) {
         setAlertContent,
         alertVisible,
         setAlertVisible,
+        isRoomListLoading,
+        isUsersLoading,
       }}
     >
       {children}

@@ -10,6 +10,7 @@ import { AppContext } from "../../../Context/AppProvider";
 import userPlacehoderImg from "../../../assets/images/user.png";
 import CreateRoomModal from "../../Modals/CreateRoomModal";
 import UserOption from "../../Modals/UserOption";
+import Skeleton from "../../Skeleton";
 
 const cx = classNames.bind(styles);
 
@@ -56,5 +57,25 @@ function UserInfo() {
     </div>
   );
 }
+
+const Loading = () => {
+  const { isMobile } = useContext(AppContext);
+
+  return (
+    <div className={cx("user-info", { fixed: isMobile })}>
+      <div className={cx("container")}>
+        <Skeleton className={cx("user-img")} />
+      </div>
+
+      <Skeleton style={{ height: 14, width: 60 }} className={cx("title")} />
+
+      <div className={cx("new-room-wrap")}>
+        <Skeleton className={cx("new-room-icon")} />
+      </div>
+    </div>
+  );
+};
+
+UserInfo.Loading = Loading;
 
 export default UserInfo;

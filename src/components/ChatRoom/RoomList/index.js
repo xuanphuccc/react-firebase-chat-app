@@ -5,6 +5,7 @@ import styles from "./RoomList.module.scss";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../../Context/AppProvider";
+import Skeleton from "../../Skeleton";
 
 const cx = classNames.bind(styles);
 
@@ -40,9 +41,38 @@ function RoomList() {
             </li>
           </Link>
         ))}
+
+        <Skeleton />
       </ul>
     </div>
   );
 }
+
+const Loading = () => {
+  const { isMobile } = useContext(AppContext);
+  return (
+    <div className={cx("wrapper", { isMobile })}>
+      <ul className={cx("room-list")}>
+        <li className={cx("room")}>
+          <Skeleton className={cx("room_img", "xuanphuc")} />
+          <div className={cx("room-info")}>
+            <Skeleton style={{ height: 14 }} className={cx("room_name")} />
+            <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
+          </div>
+        </li>
+
+        <li className={cx("room")}>
+          <Skeleton className={cx("room_img", "xuanphuc")} />
+          <div className={cx("room-info")}>
+            <Skeleton style={{ height: 14 }} className={cx("room_name")} />
+            <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
+          </div>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+RoomList.Loading = Loading;
 
 export default RoomList;

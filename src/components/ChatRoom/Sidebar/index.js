@@ -10,12 +10,12 @@ import RoomList from "../RoomList";
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-  const { theme } = useContext(AppContext);
+  const { theme, isRoomListLoading, isUsersLoading } = useContext(AppContext);
 
   return (
     <div className={cx("side-bar")} data-theme={theme}>
-      <UserInfo />
-      <RoomList />
+      {isUsersLoading ? <UserInfo.Loading /> : <UserInfo />}
+      {isRoomListLoading ? <RoomList.Loading /> : <RoomList />}
     </div>
   );
 }

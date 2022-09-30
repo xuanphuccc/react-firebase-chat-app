@@ -9,12 +9,10 @@ import { db } from "../firebase/config";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 
-function useFirestore(collectionName, condition) {
+function useFirestore(collectionName, condition, callback) {
   const [documents, setDocuments] = useState([]);
   const { uid } = useContext(AuthContext);
 
-  // Lấy dữ liệu người dùng mỗi khi thêm vào database
-  // Realtime database
   useEffect(() => {
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
@@ -38,8 +36,6 @@ function useFirestore(collectionName, condition) {
       const unsubscribe = onSnapshot(
         q,
         (snapshot) => {
-          // Respond to data
-          // ...
           // Lặp qua snapshot để lấy mảng dữ liệu
           const documents = snapshot.docs.map((doc) => {
             let data = doc.data();
@@ -51,6 +47,9 @@ function useFirestore(collectionName, condition) {
             };
           });
 
+          if (typeof callback === "function") {
+            callback();
+          }
           setDocuments(documents);
         },
         (error) => {
@@ -67,7 +66,7 @@ function useFirestore(collectionName, condition) {
         unsubscribe();
       };
     }
-  }, [collectionName, condition, uid]);
+  }, [collectionName, condition, uid, callback]);
 
   return documents;
 }

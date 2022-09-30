@@ -154,6 +154,7 @@ input {
   background-color: var(--background);
   box-shadow: var(--box-shadow);
   border-radius: 8px;
+  border: 1px solid var(--box-border-color);
   user-select: none;
 }
 
@@ -179,3 +180,4 @@ input {
   font-size: 1.6rem;
   color: var(--text-black);
 }
+
