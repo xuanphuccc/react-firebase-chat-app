@@ -68,6 +68,14 @@ const Loading = () => {
             <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
           </div>
         </li>
+
+        <li className={cx("room")}>
+          <Skeleton className={cx("room_img", "xuanphuc")} />
+          <div className={cx("room-info")}>
+            <Skeleton style={{ height: 14 }} className={cx("room_name")} />
+            <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
+          </div>
+        </li>
       </ul>
     </div>
   );

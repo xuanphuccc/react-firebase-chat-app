@@ -34,7 +34,16 @@ function AppProvider({ children }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   // Dark Mode / Light Mode
-  const [theme, setTheme] = useState("dark");
+  const appConfig = JSON.parse(
+    localStorage.getItem("xuanphuc_space_config")
+  ) ?? { appTheme: "light" };
+
+  const setAppConfig = (key, value) => {
+    appConfig[key] = value;
+    localStorage.setItem("xuanphuc_space_config", JSON.stringify(appConfig));
+  };
+
+  const [theme, setTheme] = useState(appConfig.appTheme);
 
   // Set trạng thái hiển thị của Room Menu
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
@@ -142,6 +151,7 @@ function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        setAppConfig,
         theme,
         setTheme,
         currentUser,

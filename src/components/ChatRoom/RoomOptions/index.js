@@ -49,6 +49,7 @@ const cx = classNames.bind(styles);
 
 function RoomOptions({ messages }) {
   const {
+    setAppConfig,
     theme,
     setTheme,
     selectedRoom,
@@ -265,6 +266,17 @@ function RoomOptions({ messages }) {
     });
   };
 
+  // Handle change theme
+  const handleChangeTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+      setAppConfig("appTheme", "dark");
+    } else {
+      setTheme("light");
+      setAppConfig("appTheme", "light");
+    }
+  };
+
   return (
     <div className={cx("wrapper", { isMobile: isMobile })}>
       {isMobile && (
@@ -321,16 +333,7 @@ function RoomOptions({ messages }) {
 
           <ul className={cx("type-wrap", { open: isOpenCustomRoom })}>
             {/* Change theme */}
-            <li
-              onClick={() => {
-                if (theme === "light") {
-                  setTheme("dark");
-                } else {
-                  setTheme("light");
-                }
-              }}
-              className={cx("option-item")}
-            >
+            <li onClick={handleChangeTheme} className={cx("option-item")}>
               <span className={cx("option-icon")}>
                 <FontAwesomeIcon icon={faFill} />
               </span>
