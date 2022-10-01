@@ -74,9 +74,7 @@ function RoomList() {
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
-                <p className={cx("room-desc")}>
-                  {descriptionText(room) ? descriptionText(room) : ""}
-                </p>
+                <p className={cx("room-desc")}>{descriptionText(room)}</p>
               </div>
               <span className={cx("new-message-dot")}></span>
             </li>

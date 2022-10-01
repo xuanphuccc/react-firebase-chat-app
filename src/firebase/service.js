@@ -38,16 +38,18 @@ function uploadFile(fileUpload, folder, callback) {
 }
 
 function deleteFile(fullPath) {
-  const desertRef = ref(storage, fullPath);
+  if (fullPath) {
+    const desertRef = ref(storage, fullPath);
 
-  // Delete the file
-  deleteObject(desertRef)
-    .then(() => {
-      // File deleted successfully
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    // Delete the file
+    deleteObject(desertRef)
+      .then(() => {
+        // File deleted successfully
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 }
 
 function listAllFile(folder, callback) {
