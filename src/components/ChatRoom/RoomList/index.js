@@ -12,17 +12,32 @@ const cx = classNames.bind(styles);
 
 function RoomList() {
   const { uid } = useContext(AuthContext);
-  const { rooms, setSelectedRoomId, selectedRoomId, isMobile } =
+  const { users, rooms, setSelectedRoomId, selectedRoomId, isMobile } =
     useContext(AppContext);
 
   const descriptionText = (room) => {
     const lastMessage = room.lastMessage;
+    // console.log("createAt: ", room.lastMessage);
     let userName;
     let message;
     if (lastMessage.uid === uid) {
       userName = "Bạn";
     } else {
-      userName = lastMessage.displayName;
+      const memberNickname = room.roomNicknames.find(
+        (memberNickname) => memberNickname.uid === lastMessage.uid
+      );
+
+      const userCurrentName = users.find(
+        (user) => user.uid === lastMessage.uid
+      );
+
+      if (memberNickname) {
+        userName = memberNickname.nickname;
+      } else if (userCurrentName) {
+        userName = userCurrentName.displayName;
+      } else {
+        userName = lastMessage.displayName;
+      }
     }
 
     switch (lastMessage.type) {
