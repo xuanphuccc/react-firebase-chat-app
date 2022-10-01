@@ -2,7 +2,7 @@ import userPlacehoderImg from "../../../assets/images/user.png";
 import classNames from "classnames/bind";
 import styles from "./RoomList.module.scss";
 
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../../Context/AppProvider";
 import Skeleton from "../../Skeleton";
@@ -12,14 +12,22 @@ const cx = classNames.bind(styles);
 
 function RoomList() {
   const { uid } = useContext(AuthContext);
-  const { users, rooms, setSelectedRoomId, selectedRoomId, isMobile } =
-    useContext(AppContext);
+  const {
+    users,
+    rooms,
+    setSelectedRoomId,
+    selectedRoomId,
+    formatDate,
+    isMobile,
+  } = useContext(AppContext);
 
   const descriptionText = (room) => {
     const lastMessage = room.lastMessage;
     // console.log("createAt: ", room.lastMessage);
     let userName;
     let message;
+
+    // Get Name
     if (lastMessage.uid === uid) {
       userName = "Bạn";
     } else {
@@ -40,6 +48,7 @@ function RoomList() {
       }
     }
 
+    // Get Message text
     switch (lastMessage.type) {
       case "@unsentmsg":
         message = "Đã thu hồi tin nhắn";
@@ -67,10 +76,41 @@ function RoomList() {
     return `${userName}: ${message}`;
   };
 
+  const descriptionTimeFormat = (createAt) => {
+    const descTime = formatDate(createAt);
+    let dateTimeString = "";
+    if (descTime.date && descTime.month && descTime.year) {
+      dateTimeString = `${descTime.date}Th${descTime.month}`;
+    } else {
+      dateTimeString = descTime.hoursMinutes;
+    }
+
+    return dateTimeString;
+  };
+
+  const roomSortByLastMessage = useMemo(() => {
+    const newRoomsArr = [...rooms];
+
+    for (let i = 0; i < newRoomsArr.length - 1; i++) {
+      for (let j = i + 1; j < newRoomsArr.length; j++) {
+        if (
+          newRoomsArr[i].lastMessage.createAt <
+          newRoomsArr[j].lastMessage.createAt
+        ) {
+          let tmp = newRoomsArr[i];
+          newRoomsArr[i] = newRoomsArr[j];
+          newRoomsArr[j] = tmp;
+        }
+      }
+    }
+
+    return newRoomsArr;
+  }, [rooms]);
+
   return (
     <div className={cx("wrapper", { isMobile })}>
       <ul className={cx("room-list")}>
-        {rooms.map((room) => (
+        {roomSortByLastMessage.map((room) => (
           <Link
             key={room.id}
             to={`/room/${room.id}`}
@@ -89,14 +129,16 @@ function RoomList() {
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
-                <p className={cx("room-desc")}>{descriptionText(room)}</p>
+                <p className={cx("room-desc")}>
+                  {descriptionText(room)}
+                  {" · "}
+                  {descriptionTimeFormat(room.lastMessage.createAt)}
+                </p>
               </div>
               <span className={cx("new-message-dot")}></span>
             </li>
           </Link>
         ))}
-
-        <Skeleton />
       </ul>
     </div>
   );

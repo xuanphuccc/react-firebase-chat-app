@@ -33,7 +33,8 @@ function Message({
   messagePhotoURL,
 }) {
   const { uid } = useContext(AuthContext);
-  const { members, selectedRoom, setSelectedPhoto } = useContext(AppContext);
+  const { members, selectedRoom, setSelectedPhoto, formatDate } =
+    useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
   const [activeIcon, setActiveIcon] = useState("");
@@ -61,40 +62,18 @@ function Message({
     return result;
   }, [members, userId, selectedRoom]);
 
-  // Date time format
+  //
   const formatMessageDate = (createAt) => {
-    const time = {
-      year: 0,
-      month: 0,
-      date: 0,
-      hours: 0,
-      minutes: 0,
-      day: 0,
-    };
-    if (createAt) {
-      const messageTime = createAt.toDate();
-      time.year = messageTime.getFullYear();
-      time.month = messageTime.getMonth() + 1;
-      time.date = messageTime.getDate();
-      time.hours = messageTime.getHours();
-      time.minutes = messageTime.getMinutes();
-      time.day = messageTime.getDay();
+    const messageDate = formatDate(createAt);
+
+    let dateTimeString = "";
+    if (messageDate.date && messageDate.month && messageDate.year) {
+      dateTimeString = `${messageDate.hoursMinutes} ${messageDate.date} Tháng ${messageDate.month}, ${messageDate.year}`;
+    } else {
+      dateTimeString = messageDate.hoursMinutes;
     }
 
-    let yearMonthDate = `${time.date} Tháng ${time.month}, ${time.year}`;
-    const currentTime = new Date();
-    if (
-      time.year === currentTime.getFullYear() &&
-      time.month === currentTime.getMonth() + 1 &&
-      time.date === currentTime.getDate()
-    ) {
-      yearMonthDate = "";
-    }
-
-    const hoursMinutes = `${time.hours < 10 ? `0${time.hours}` : time.hours}:${
-      time.minutes < 10 ? `0${time.minutes}` : time.minutes
-    }`;
-    return `${hoursMinutes} ${yearMonthDate}`;
+    return dateTimeString;
   };
 
   // Open ChatMedia when click image
