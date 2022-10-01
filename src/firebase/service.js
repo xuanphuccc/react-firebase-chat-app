@@ -55,7 +55,6 @@ function listAllFile(folder, callback) {
 
   listAll(listRef)
     .then((res) => {
-      // console.log("Response: ", res);
       const listURL = [];
       let count = 0;
       res.items.forEach((item) => {

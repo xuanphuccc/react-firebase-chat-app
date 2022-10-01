@@ -164,13 +164,23 @@ function Message({
     setIsVisibleReactionsModal(!isVisibleReactionsModal);
   };
 
+  const [isOpenMessageControls, setIsOpenMessageControls] = useState(false);
+
   return (
     <div
+      tabIndex={0}
+      onFocus={() => {
+        setIsOpenMessageControls(true);
+      }}
+      onBlur={() => {
+        setIsOpenMessageControls(false);
+      }}
       className={cx("wrapper", {
         sent: isSentMsg,
         received: !isSentMsg,
         [posType]: posType,
         isHasIcon: isHasIcon,
+        active: isOpenMessageControls,
       })}
     >
       <img

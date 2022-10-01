@@ -184,7 +184,7 @@ function StickerModal({ sendMessage }) {
           </div>
         ) : (
           <p className={cx("empty-sticker")}>
-            {stickersType === "custom" && "Bạn chưa có Sticker nào"}
+            {stickersType === "custom" && "Nhấn vào + để thêm Sticker của bạn."}
           </p>
         )}
       </div>

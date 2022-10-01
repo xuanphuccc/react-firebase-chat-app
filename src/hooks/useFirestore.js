@@ -30,9 +30,6 @@ function useFirestore(collectionName, condition, callback) {
         orderBy("createAt")
       );
 
-      // onSnapshot
-      // mỗi lần dữ liệu trong database được thay đổi thì nó
-      // sẽ thực hiện cập nhật dữ liệu cho snapshot
       const unsubscribe = onSnapshot(
         q,
         (snapshot) => {

@@ -91,6 +91,7 @@ function Login() {
             uid: user.uid,
             providerId: _tokenResponse.providerId,
             stickers: [],
+            active: false,
           });
         }
 

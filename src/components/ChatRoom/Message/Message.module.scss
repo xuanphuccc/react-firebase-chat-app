@@ -241,6 +241,10 @@
   display: flex;
 }
 
+.wrapper.active .message-controls {
+  display: flex;
+}
+
 // Unsent Control
 .unsent-control {
   padding: 4px;

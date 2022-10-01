@@ -15,22 +15,11 @@ function AppProvider({ children }) {
   const [isUsersLoading, setIsUsersLoading] = useState(true);
   const [isRoomListLoading, setIsRoomListLoading] = useState(true);
 
-  // Set trạng thái hiển thị cho modal Add Room
-  const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
-
-  // Set trạng thái hiển thị cho modal Invite Members
-  const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
-
-  // Set trạng thái hiển thị cho modal Custom Nickname
-  const [isOpenCustomNickname, setIsOpenCustomNickname] = useState(false);
-
-  // Set trạng thái hiển thị cho modal Custom Nickname
-  const [isOpenChangeRoomName, setIsOpenChangeRoomName] = useState(false);
-
-  // Phòng đang được chọn để hiển thị chat
   const [selectedRoomId, setSelectedRoomId] = useState("");
-
-  // Ảnh tin nhắn đang được chọn
+  const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
+  const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
+  const [isOpenCustomNickname, setIsOpenCustomNickname] = useState(false);
+  const [isOpenChangeRoomName, setIsOpenChangeRoomName] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   // Dark Mode / Light Mode
@@ -45,17 +34,16 @@ function AppProvider({ children }) {
 
   const [theme, setTheme] = useState(appConfig.appTheme);
 
-  // Set trạng thái hiển thị của Room Menu
   const [isRoomMenuVisible, setIsRoomMenuVisible] = useState(false);
-  // Hàm xử lý mở modal Room Menu
+
   const handleRoomMenuVisible = () => {
     setIsRoomMenuVisible(!isRoomMenuVisible);
   };
 
-  // Lấy ra uid của user hiện tại khi đăng nhập
+  // Get current user UID
   const { uid } = useContext(AuthContext);
 
-  // Lấy messages từ selected room
+  // Get current room messages
   const [selectedRoomMessages, setSelectedRoomMessages] = useState(null);
 
   const [alertVisible, setAlertVisible] = useState(false);
@@ -70,12 +58,8 @@ function AppProvider({ children }) {
    * }
    */
 
-  // LƯU Ý: Vì object là kiểu tham chiếu
-  // Nên mỗi lần được gọi useFirestore hiểu là
-  // 1 dữ liệu mới nên sẽ tạo nên vòng lặp vô hạn
-  // nên cần phải cho vào useMemo
   const roomsCondition = useMemo(() => {
-    // Tìm tất cả rooms có trường members chứa uid không
+    // Tìm tất cả rooms có trường members chứa uid
     return {
       fielName: "members",
       operator: "array-contains",
@@ -115,7 +99,7 @@ function AppProvider({ children }) {
     };
   }, []);
 
-  // Lấy TẤT CẢ user
+  // Get All user
   const users = useGetAllFirestore("users", usersCallback);
 
   const members = useMemo(() => {
@@ -126,14 +110,14 @@ function AppProvider({ children }) {
     }
   }, [users, selectedRoomMembers]);
 
-  // Lấy người dùng hiện tại từ users
+  // Get current user
   const currentUser = useMemo(() => {
     if (users.length >= 1) {
       return users.find((user) => user.uid === uid);
     }
   }, [users, uid]);
 
-  // Xử lý responsive
+  // Handle reponsive
   const viewport = useViewport();
   const [isMobile, setIsMobile] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);

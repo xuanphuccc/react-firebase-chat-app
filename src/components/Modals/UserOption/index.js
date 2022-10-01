@@ -5,6 +5,7 @@ import {
   faArrowRightFromBracket,
   faCheck,
   faCircle,
+  faMoon,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,8 +24,14 @@ const cx = classNames.bind(styles);
 function UserOption({ visible = false, setVisible }) {
   const [isShowInput, setIsShowInput] = useState(false);
   const [nameInputValue, setNameInputValue] = useState("");
-  const { currentUser, setAlertVisible, setAlertContent } =
-    useContext(AppContext);
+  const {
+    currentUser,
+    setAlertVisible,
+    setAlertContent,
+    theme,
+    setTheme,
+    setAppConfig,
+  } = useContext(AppContext);
 
   const inputImageRef = useRef();
   const nameInputRef = useRef();
@@ -105,6 +112,17 @@ function UserOption({ visible = false, setVisible }) {
       nameInputRef.current.focus();
     }
   }, [isShowInput, currentUser]);
+
+  // Handle change theme
+  const handleChangeTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+      setAppConfig("appTheme", "dark");
+    } else {
+      setTheme("light");
+      setAppConfig("appTheme", "light");
+    }
+  };
 
   return (
     <Modal
@@ -216,12 +234,21 @@ function UserOption({ visible = false, setVisible }) {
 
         <div className={cx("section")}>
           <ul className={cx("option-list")}>
+            <li onClick={handleChangeTheme} className={cx("option-item")}>
+              <span className={cx("option-icon")}>
+                <FontAwesomeIcon icon={faMoon} />
+              </span>
+              <h4 className={cx("option-name")}>
+                Chế độ tối: {theme === "light" ? "Đang tắt" : "Đang bật"}
+              </h4>
+            </li>
+
             <li className={cx("option-item")}>
               <span className={cx("option-icon")}>
                 <FontAwesomeIcon icon={faCircle} />
               </span>
               <h4 className={cx("option-name")}>
-                Trạng thái hoạt động: ĐANG BẬT
+                Trạng thái hoạt động: Đang bật
               </h4>
             </li>
           </ul>

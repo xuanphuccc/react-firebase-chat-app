@@ -28,6 +28,7 @@ const cx = classNames.bind(styles);
 function ChatWindow({ roomId }) {
   const {
     rooms,
+    // currentUser,
     setSelectedRoomId,
     isMobile,
     handleRoomMenuVisible,
@@ -106,7 +107,7 @@ function ChatWindow({ roomId }) {
 
   // Handle side by side messages with the same sender
   const sideBySideMessages = useMemo(() => {
-    let newMessages = [...messages];
+    const newMessages = [...messages];
 
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
@@ -147,6 +148,8 @@ function ChatWindow({ roomId }) {
     return newMessages;
   }, [messages]);
 
+  // console.log("messages: ", messages);
+
   // Update format from firestore
   // useEffect(() => {
   //   messages.forEach((message) => {
@@ -156,6 +159,24 @@ function ChatWindow({ roomId }) {
   //     });
   //   });
   // }, [messages]);
+
+  // useEffect(() => {
+  //   window.onfocus = () => {
+  //     console.log("active");
+  //     let userRef = doc(db, "users", currentUser.id);
+  //     updateDoc(userRef, {
+  //       active: true,
+  //     });
+  //   };
+
+  //   window.onblur = () => {
+  //     console.log("active");
+  //     let userRef = doc(db, "users", currentUser.id);
+  //     updateDoc(userRef, {
+  //       active: false,
+  //     });
+  //   };
+  // }, [currentUser]);
 
   return (
     <>
