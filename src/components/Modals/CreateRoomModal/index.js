@@ -6,6 +6,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { useState, useContext, useRef, useEffect } from "react";
 
 import { addDocument, uploadFile } from "../../../firebase/service";
+import { serverTimestamp } from "firebase/firestore";
 
 import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
@@ -59,6 +60,13 @@ function CreateRoomModal() {
           roomNicknames: [
             { nickname: currentUser.displayName, uid: currentUser.uid },
           ],
+          lastMessage: {
+            type: "",
+            text: "",
+            uid: "",
+            displayName: "",
+            createAt: serverTimestamp(),
+          },
         };
 
         addDocument("rooms", data);

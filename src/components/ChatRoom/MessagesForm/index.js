@@ -19,12 +19,15 @@ import hahaIcon from "../../../assets/images/minicon/haha.png";
 import StickerIcon from "../../../assets/images/icons/StickerIcon.js";
 import GifIcon from "../../../assets/images/icons/GifIcon.js";
 import StickerModal from "../../Modals/StickerModal";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
 function MessagesForm({ roomId }) {
-  const { uid, displayName, photoURL } = useContext(AuthContext);
-  const { setAlertVisible, setAlertContent } = useContext(AppContext);
+  const { uid } = useContext(AuthContext);
+  const { setAlertVisible, setAlertContent, currentUser } =
+    useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
@@ -60,10 +63,10 @@ function MessagesForm({ roomId }) {
       type: messType,
       text: messText,
       uid,
-      photoURL,
+      photoURL: currentUser.photoURL,
       messagePhotoURL: messPhoto,
       fullPath,
-      displayName,
+      displayName: currentUser.displayName,
       roomId: roomId,
       reactions: {
         heart: [],
@@ -72,6 +75,18 @@ function MessagesForm({ roomId }) {
         sad: [],
         angry: [],
         like: [],
+      },
+    });
+
+    // Update room last message
+    let roomRef = doc(db, "rooms", roomId);
+    updateDoc(roomRef, {
+      lastMessage: {
+        type: messType,
+        text: messText,
+        uid,
+        displayName: currentUser.displayName,
+        createAt: serverTimestamp(),
       },
     });
   };

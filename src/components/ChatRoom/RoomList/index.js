@@ -6,12 +6,51 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../../Context/AppProvider";
 import Skeleton from "../../Skeleton";
+import { AuthContext } from "../../../Context/AuthProvider";
 
 const cx = classNames.bind(styles);
 
 function RoomList() {
+  const { uid } = useContext(AuthContext);
   const { rooms, setSelectedRoomId, selectedRoomId, isMobile } =
     useContext(AppContext);
+
+  const descriptionText = (room) => {
+    const lastMessage = room.lastMessage;
+    let userName;
+    let message;
+    if (lastMessage.uid === uid) {
+      userName = "Bạn";
+    } else {
+      userName = lastMessage.displayName;
+    }
+
+    switch (lastMessage.type) {
+      case "@unsentmsg":
+        message = "Đã thu hồi tin nhắn";
+        break;
+
+      case "@icon":
+      case "@text":
+        message = lastMessage.text;
+        break;
+
+      case "@sticker":
+        message = "Gửi sticker";
+        break;
+
+      case "@image":
+        message = "Gửi hình ảnh";
+        break;
+      default:
+    }
+
+    if (!userName || !message) {
+      return "Bắt đầu đoạn chat";
+    }
+
+    return `${userName}: ${message}`;
+  };
 
   return (
     <div className={cx("wrapper", { isMobile })}>
@@ -35,7 +74,9 @@ function RoomList() {
               />
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
-                <p className={cx("room-desc")}>Bạn: Hello .20 phút</p>
+                <p className={cx("room-desc")}>
+                  {descriptionText(room) ? descriptionText(room) : ""}
+                </p>
               </div>
               <span className={cx("new-message-dot")}></span>
             </li>

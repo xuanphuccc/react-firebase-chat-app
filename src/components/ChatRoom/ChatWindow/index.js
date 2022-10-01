@@ -160,24 +160,6 @@ function ChatWindow({ roomId }) {
   //   });
   // }, [messages]);
 
-  // useEffect(() => {
-  //   window.onfocus = () => {
-  //     console.log("active");
-  //     let userRef = doc(db, "users", currentUser.id);
-  //     updateDoc(userRef, {
-  //       active: true,
-  //     });
-  //   };
-
-  //   window.onblur = () => {
-  //     console.log("active");
-  //     let userRef = doc(db, "users", currentUser.id);
-  //     updateDoc(userRef, {
-  //       active: false,
-  //     });
-  //   };
-  // }, [currentUser]);
-
   return (
     <>
       {selectedRoom && (
