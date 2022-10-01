@@ -33,12 +33,28 @@
   }
 }
 
+.room_img-wrapper {
+  position: relative;
+}
+
 .room_img {
   width: 58px;
   height: 58px;
   border-radius: 999px;
   object-fit: cover;
   border: 1px solid var(--border-color);
+}
+
+.room_active {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  display: block;
+  width: 15px;
+  height: 15px;
+  background-color: var(--active-green);
+  border-radius: 99px;
+  border: 2px solid var(--background);
 }
 
 .room-info {

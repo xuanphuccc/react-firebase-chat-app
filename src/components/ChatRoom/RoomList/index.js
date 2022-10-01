@@ -122,11 +122,14 @@ function RoomList() {
                 setSelectedRoomId(room.id);
               }}
             >
-              <img
-                className={cx("room_img")}
-                src={room.photoURL || userPlacehoderImg}
-                alt=""
-              />
+              <div className={cx("room_img-wrapper")}>
+                <img
+                  className={cx("room_img")}
+                  src={room.photoURL || userPlacehoderImg}
+                  alt=""
+                />
+                <span className={cx("room_active")}></span>
+              </div>
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
                 <p className={cx("room-desc")}>
