@@ -17,6 +17,7 @@ import { useContext } from "react";
 import { AppContext } from "../../Context/AppProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { serverTimestamp } from "firebase/firestore";
 
 const cx = classNames.bind(styles);
 
@@ -91,7 +92,7 @@ function Login() {
             uid: user.uid,
             providerId: _tokenResponse.providerId,
             stickers: [],
-            active: false,
+            active: serverTimestamp(),
           });
         }
 

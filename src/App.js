@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { AppContext } from "./Context/AppProvider";
@@ -11,9 +11,28 @@ import EmptyRoom from "./components/ChatRoom/EmptyRoom";
 import ChatMedia from "./components/ChatRoom/ChatMedia";
 import InviteByLink from "./components/InviteByLink";
 import "./App.css";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db } from "./firebase/config";
 
 function App() {
-  const { rooms } = useContext(AppContext);
+  const { rooms, currentUser } = useContext(AppContext);
+
+  useEffect(() => {
+    const updateActiveTime = () => {
+      console.log(new Date());
+      const currentUserRef = doc(db, "users", currentUser.id);
+
+      updateDoc(currentUserRef, {
+        active: serverTimestamp(),
+      });
+    };
+    document.addEventListener("click", updateActiveTime);
+
+    return () => {
+      console.log("Clear function APP");
+      document.removeEventListener("click", updateActiveTime);
+    };
+  }, [currentUser]);
 
   return (
     <Routes>
