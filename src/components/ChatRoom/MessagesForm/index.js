@@ -58,7 +58,12 @@ function MessagesForm({ roomId }) {
   };
 
   // Send message (add document to "messages" collection)
-  const sendMessage = (messText, messPhoto, fullPath = "", messType) => {
+  const sendMessage = (
+    messText = "",
+    messPhoto = "",
+    fullPath = "",
+    messType = ""
+  ) => {
     addDocument("messages", {
       type: messType,
       text: messText,

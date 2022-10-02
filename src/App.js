@@ -19,15 +19,17 @@ function App() {
 
   useEffect(() => {
     const updateActiveTime = () => {
-      const currentTime = Date.parse(new Date()) / 1000;
-      const activeTime = currentUser.active.seconds;
+      if (currentUser) {
+        const currentTime = Date.parse(new Date()) / 1000;
+        const activeTime = currentUser.active.seconds;
 
-      if (currentTime > activeTime + 60) {
-        console.log("UPDATE ACTIVE TIME");
-        const currentUserRef = doc(db, "users", currentUser.id);
-        updateDoc(currentUserRef, {
-          active: serverTimestamp(),
-        });
+        if (currentTime - activeTime > 10) {
+          console.log("UPDATE ACTIVE TIME");
+          const currentUserRef = doc(db, "users", currentUser.id);
+          updateDoc(currentUserRef, {
+            active: serverTimestamp(),
+          });
+        }
       }
     };
     document.addEventListener("click", updateActiveTime);

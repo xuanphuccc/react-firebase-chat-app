@@ -14,6 +14,7 @@ function RoomList() {
   const { uid } = useContext(AuthContext);
   const {
     users,
+    usersActiveStatus,
     rooms,
     setSelectedRoomId,
     selectedRoomId,
@@ -112,6 +113,22 @@ function RoomList() {
   //   sort: roomSortByLastMessage.map((room) => room.name),
   // });
 
+  const isActiveRoom = (room) => {
+    const roomMembersActive = usersActiveStatus.filter((user) => {
+      return room.members.includes(user.uid);
+    });
+
+    console.log(
+      `Room ${room.name}`,
+      roomMembersActive.some(
+        (member) => member.isActive === true && member.uid !== uid
+      )
+    );
+    return roomMembersActive.some(
+      (member) => member.isActive === true && member.uid !== uid
+    );
+  };
+
   return (
     <div className={cx("wrapper", { isMobile })}>
       <ul className={cx("room-list")}>
@@ -133,7 +150,9 @@ function RoomList() {
                   src={room.photoURL || userPlacehoderImg}
                   alt=""
                 />
-                <span className={cx("room_active")}></span>
+                {isActiveRoom(room) && (
+                  <span className={cx("room_active")}></span>
+                )}
               </div>
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>

@@ -21,6 +21,14 @@ function AppProvider({ children }) {
   const [isOpenCustomNickname, setIsOpenCustomNickname] = useState(false);
   const [isOpenChangeRoomName, setIsOpenChangeRoomName] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+
+  // Current room messages
+  const [selectedRoomMessages, setSelectedRoomMessages] = useState(null);
+
+  // User Active Status
+  const [usersActiveStatus, setUsersActiveStatus] = useState([]);
 
   // Dark Mode / Light Mode
   const appConfig = JSON.parse(
@@ -42,12 +50,6 @@ function AppProvider({ children }) {
 
   // Get current user UID
   const { uid } = useContext(AuthContext);
-
-  // Get current room messages
-  const [selectedRoomMessages, setSelectedRoomMessages] = useState(null);
-
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
 
   // Lấy danh sách các phòng có user hiện tại
   /**room:
@@ -102,6 +104,51 @@ function AppProvider({ children }) {
   // Get All user
   const users = useGetAllFirestore("users", usersCallback);
 
+  useEffect(() => {
+    const updateUserActive = () => {
+      let count = true;
+
+      const usersActiveTime = users.map((user) => {
+        if (user.active === null) {
+          count = false;
+          return null;
+        }
+
+        const currentTime = Date.parse(new Date()) / 1000;
+        const activeTime = user.active.seconds;
+        const preMinutesActive = Math.floor((currentTime - activeTime) / 60);
+        const isActive = Math.floor((currentTime - activeTime) / 60) <= 1;
+
+        return {
+          uid: user.uid,
+          preMinutesActive,
+          isActive,
+        };
+      });
+
+      if (count) {
+        setUsersActiveStatus(usersActiveTime);
+      }
+    };
+
+    if (users) {
+      updateUserActive();
+    }
+
+    const timeId = setInterval(() => {
+      if (users) {
+        updateUserActive();
+      }
+    }, 30 * 1000);
+
+    return () => {
+      console.log("clear time id!");
+      clearInterval(timeId);
+    };
+  }, [users]);
+  // console.log(usersActiveStatus);
+
+  // Get members by selected room
   const members = useMemo(() => {
     if (users.length >= 1 && selectedRoomMembers) {
       return users.filter((user) => {
@@ -211,6 +258,7 @@ function AppProvider({ children }) {
         isRoomListLoading,
         isUsersLoading,
         formatDate,
+        usersActiveStatus,
       }}
     >
       {children}
