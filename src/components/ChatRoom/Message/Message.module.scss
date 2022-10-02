@@ -16,6 +16,9 @@
   .text-inner {
     background-color: var(--primary);
     color: #fff;
+    .text-link {
+      color: #fff;
+    }
   }
   flex-direction: row-reverse;
 
@@ -150,10 +153,17 @@
   background-color: var(--message-gray);
   padding: 10px 16px;
   border-radius: 20px;
+  word-break: break-word;
   animation: popup 0.2s ease forwards;
   transition: all 0.2s ease;
   // Với tin nhắn gửi là 100%
   transform-origin: 0%;
+
+  .text-link {
+    text-decoration: underline;
+    font-size: 1.6rem;
+    color: var(--text-black);
+  }
 }
 
 .unsent-message {

@@ -104,7 +104,26 @@ function Message({
         <img className={cx("sticker-photo")} src={messagePhotoURL} alt="" />
       );
     } else if (type === "@text" || type === "@icon") {
-      return <p className={cx("text-inner")}>{content}</p>;
+      if (
+        content.includes("http://") ||
+        content.includes("https://") ||
+        content.includes("www.")
+      ) {
+        return (
+          <p className={cx("text-inner")}>
+            <a
+              className={cx("text-link")}
+              href={`${content}`}
+              target="_blank"
+              rel="noreferrer nofollow"
+            >
+              {content}
+            </a>
+          </p>
+        );
+      } else {
+        return <p className={cx("text-inner")}>{content}</p>;
+      }
     }
   }, [type, content, messagePhotoURL, handleOpenChatMedia]);
 

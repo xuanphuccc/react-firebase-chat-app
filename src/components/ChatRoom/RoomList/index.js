@@ -60,11 +60,11 @@ function RoomList() {
         break;
 
       case "@sticker":
-        message = "Gửi sticker";
+        message = "đã gửi một nhãn dán";
         break;
 
       case "@image":
-        message = "Gửi hình ảnh";
+        message = "đã gửi một ảnh";
         break;
       default:
     }
@@ -107,10 +107,10 @@ function RoomList() {
     return newRoomsArr;
   }, [rooms]);
 
-  console.log("sort: ", {
-    original: rooms.map((room) => room.name),
-    sort: roomSortByLastMessage.map((room) => room.name),
-  });
+  // console.log("sort: ", {
+  //   original: rooms.map((room) => room.name),
+  //   sort: roomSortByLastMessage.map((room) => room.name),
+  // });
 
   return (
     <div className={cx("wrapper", { isMobile })}>
