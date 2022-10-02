@@ -1,5 +1,6 @@
 /* Room list */
 .wrapper {
+  width: 100%;
   padding-top: 24px;
   padding-bottom: 24px;
   user-select: none;
@@ -13,6 +14,12 @@
     padding-top: 86px;
     border-right-color: transparent;
   }
+}
+
+.room-list {
+  display: flex;
+  flex-direction: column-reverse;
+  transition: all 0.2s ease;
 }
 
 .room {
@@ -47,8 +54,8 @@
 
 .room_active {
   position: absolute;
-  bottom: 2px;
-  right: 2px;
+  bottom: 4px;
+  right: 4px;
   display: block;
   width: 15px;
   height: 15px;
@@ -67,16 +74,33 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-black);
+
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.room-desc-wrap {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
 }
 
 .room-desc {
   font-size: 1.2rem;
-  color: #65676b;
+  color: var(--text-gray);
   font-weight: 300;
-  margin-top: 6px;
-  // max-width: 160px;
+
+  max-width: 200px;
   overflow: hidden;
-  // white-space: nowrap;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.room-desc-time {
+  font-size: 1.2rem;
+  color: var(--text-gray);
 }
 
 .text-decor-none {

@@ -4,12 +4,10 @@
   height: 100vh;
   display: flex;
   background-color: var(--background);
-  // border-left: 1px solid var(--border-color);
   transition: all 0.2s ease;
 }
 
 .chat-window {
-  // width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -71,6 +69,11 @@
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--text-black);
+
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .chat-desc {

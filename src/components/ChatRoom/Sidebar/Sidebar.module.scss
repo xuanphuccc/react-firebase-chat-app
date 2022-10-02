@@ -1,6 +1,10 @@
 .side-bar {
-  width: 100%;
+  width: 360px;
   height: 100vh;
   display: flex;
   flex-direction: column;
+
+  &.isMobile {
+    width: 100%;
+  }
 }

@@ -94,7 +94,7 @@ function RoomList() {
     for (let i = 0; i < newRoomsArr.length - 1; i++) {
       for (let j = i + 1; j < newRoomsArr.length; j++) {
         if (
-          newRoomsArr[i].lastMessage.createAt <
+          newRoomsArr[i].lastMessage.createAt >
           newRoomsArr[j].lastMessage.createAt
         ) {
           let tmp = newRoomsArr[i];
@@ -106,6 +106,11 @@ function RoomList() {
 
     return newRoomsArr;
   }, [rooms]);
+
+  console.log("sort: ", {
+    original: rooms.map((room) => room.name),
+    sort: roomSortByLastMessage.map((room) => room.name),
+  });
 
   return (
     <div className={cx("wrapper", { isMobile })}>
@@ -132,11 +137,12 @@ function RoomList() {
               </div>
               <div className={cx("room-info")}>
                 <h4 className={cx("room_name")}>{room.name}</h4>
-                <p className={cx("room-desc")}>
-                  {descriptionText(room)}
-                  {" · "}
-                  {descriptionTimeFormat(room.lastMessage.createAt)}
-                </p>
+                <div className={cx("room-desc-wrap")}>
+                  <p className={cx("room-desc")}>{descriptionText(room)}</p>
+                  <span className={cx("room-desc-time")}>
+                    {" · " + descriptionTimeFormat(room.lastMessage.createAt)}
+                  </span>
+                </div>
               </div>
               <span className={cx("new-message-dot")}></span>
             </li>
@@ -153,26 +159,41 @@ const Loading = () => {
     <div className={cx("wrapper", { isMobile })}>
       <ul className={cx("room-list")}>
         <li className={cx("room")}>
-          <Skeleton className={cx("room_img", "xuanphuc")} />
+          <Skeleton className={cx("room_img")} />
           <div className={cx("room-info")}>
             <Skeleton style={{ height: 14 }} className={cx("room_name")} />
-            <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
+            <div className={cx("room-desc-wrap")}>
+              <Skeleton
+                style={{ height: 14, width: "100%" }}
+                className={cx("room-desc")}
+              />
+            </div>
           </div>
         </li>
 
         <li className={cx("room")}>
-          <Skeleton className={cx("room_img", "xuanphuc")} />
+          <Skeleton className={cx("room_img")} />
           <div className={cx("room-info")}>
             <Skeleton style={{ height: 14 }} className={cx("room_name")} />
-            <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
+            <div className={cx("room-desc-wrap")}>
+              <Skeleton
+                style={{ height: 14, width: "100%" }}
+                className={cx("room-desc")}
+              />
+            </div>
           </div>
         </li>
 
         <li className={cx("room")}>
-          <Skeleton className={cx("room_img", "xuanphuc")} />
+          <Skeleton className={cx("room_img")} />
           <div className={cx("room-info")}>
             <Skeleton style={{ height: 14 }} className={cx("room_name")} />
-            <Skeleton style={{ height: 14 }} className={cx("room-desc")} />
+            <div className={cx("room-desc-wrap")}>
+              <Skeleton
+                style={{ height: 14, width: "100%" }}
+                className={cx("room-desc")}
+              />
+            </div>
           </div>
         </li>
       </ul>

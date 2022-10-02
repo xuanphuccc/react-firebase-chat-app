@@ -62,7 +62,7 @@ function Message({
     return result;
   }, [members, userId, selectedRoom]);
 
-  //
+  // Format Time
   const formatMessageDate = (createAt) => {
     const messageDate = formatDate(createAt);
 

@@ -50,6 +50,9 @@
 }
 
 .room-info-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: 200px;
   background-color: var(--background);
   transition: all 0.2s ease;
@@ -75,9 +78,15 @@
   color: var(--text-black);
   font-weight: 600;
   text-align: center;
+
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .room-desc {
+  margin-top: 6px;
   font-size: 1.2rem;
   font-weight: 300;
   text-align: center;
@@ -226,6 +235,7 @@
 }
 
 .user-info {
+  flex: 1;
   display: flex;
   align-items: center;
 }
@@ -238,15 +248,21 @@
 }
 
 .user-name {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 161px;
   min-height: 38px;
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--text-black);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   padding-left: 8px;
   cursor: text;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-desc {
