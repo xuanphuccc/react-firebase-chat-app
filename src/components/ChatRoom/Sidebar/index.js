@@ -25,6 +25,7 @@ function Sidebar() {
       <AlertModal />
 
       <UserOptions />
+
       {/* Create Room Modal */}
       <CreateRoomModal />
     </div>
