@@ -21,13 +21,15 @@ import Modal from "../Modal";
 
 const cx = classNames.bind(styles);
 
-function UserOption({ visible = false, setVisible }) {
+function UserOptions() {
   const [isShowInput, setIsShowInput] = useState(false);
   const [nameInputValue, setNameInputValue] = useState("");
   const {
     currentUser,
     setAlertVisible,
     setAlertContent,
+    userOptionsVisible,
+    setUserOptionsVisible,
     theme,
     setTheme,
     setAppConfig,
@@ -35,6 +37,8 @@ function UserOption({ visible = false, setVisible }) {
 
   const inputImageRef = useRef();
   const nameInputRef = useRef();
+
+  console.log("user option visible: ", userOptionsVisible);
 
   // Sign Out
   const handleSignOut = () => {
@@ -127,13 +131,13 @@ function UserOption({ visible = false, setVisible }) {
   return (
     <Modal
       onCancel={() => {
-        setVisible(false);
+        setUserOptionsVisible(false);
         setIsShowInput(false);
         setNameInputValue("");
       }}
       title="Tùy chọn"
       okButton={false}
-      visible={visible}
+      visible={userOptionsVisible}
     >
       <div className={cx("wrapper")}>
         <div className={cx("section", "no-boder")}>
@@ -274,4 +278,4 @@ function UserOption({ visible = false, setVisible }) {
   );
 }
 
-export default UserOption;
+export default UserOptions;

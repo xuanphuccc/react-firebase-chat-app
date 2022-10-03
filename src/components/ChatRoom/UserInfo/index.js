@@ -1,24 +1,20 @@
 import classNames from "classnames/bind";
 import styles from "./UserInfo.module.scss";
 
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 import { AppContext } from "../../../Context/AppProvider";
 import userPlacehoderImg from "../../../assets/images/user.png";
-import CreateRoomModal from "../../Modals/CreateRoomModal";
-import UserOption from "../../Modals/UserOption";
 import Skeleton from "../../Skeleton";
 
 const cx = classNames.bind(styles);
 
 function UserInfo() {
-  const { setIsAddRoomVisible, isMobile, currentUser } = useContext(AppContext);
-
-  // User menu visible
-  const [isVisible, setIsVisible] = useState(false);
+  const { setUserOptionsVisible, setIsAddRoomVisible, isMobile, currentUser } =
+    useContext(AppContext);
 
   // Open modal when click reacte room button
   const handleAddRoom = () => {
@@ -29,7 +25,7 @@ function UserInfo() {
     <div className={cx("user-info", { fixed: isMobile })}>
       <div
         onClick={() => {
-          setIsVisible(true);
+          setUserOptionsVisible(true);
         }}
         className={cx("container")}
       >
@@ -49,11 +45,6 @@ function UserInfo() {
           <FontAwesomeIcon icon={faPenToSquare} />
         </i>
       </div>
-
-      {/* Create Room Modal */}
-      <CreateRoomModal />
-
-      <UserOption visible={isVisible} setVisible={setIsVisible} />
     </div>
   );
 }
@@ -67,7 +58,7 @@ const Loading = () => {
         <Skeleton className={cx("user-img")} />
       </div>
 
-      <Skeleton style={{ height: 14, width: 60 }} className={cx("title")} />
+      <Skeleton style={{ height: 18, width: 60 }} className={cx("title")} />
 
       <div className={cx("new-room-wrap")}>
         <Skeleton className={cx("new-room-icon")} />

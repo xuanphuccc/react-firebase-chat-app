@@ -177,44 +177,23 @@ const Loading = () => {
   return (
     <div className={cx("wrapper", { isMobile })}>
       <ul className={cx("room-list")}>
-        <li className={cx("room")}>
-          <Skeleton className={cx("room_img")} />
-          <div className={cx("room-info")}>
-            <Skeleton style={{ height: 14 }} className={cx("room_name")} />
-            <div className={cx("room-desc-wrap")}>
+        {[1, 2, 3, 4, 5, 6].map((item, index) => (
+          <li key={index} className={cx("room")}>
+            <Skeleton className={cx("room_img")} />
+            <div className={cx("room-info")}>
               <Skeleton
-                style={{ height: 14, width: "100%" }}
-                className={cx("room-desc")}
+                style={{ height: 18, width: 140 }}
+                className={cx("room_name")}
               />
+              <div className={cx("room-desc-wrap")}>
+                <Skeleton
+                  style={{ height: 14, width: "100%" }}
+                  className={cx("room-desc")}
+                />
+              </div>
             </div>
-          </div>
-        </li>
-
-        <li className={cx("room")}>
-          <Skeleton className={cx("room_img")} />
-          <div className={cx("room-info")}>
-            <Skeleton style={{ height: 14 }} className={cx("room_name")} />
-            <div className={cx("room-desc-wrap")}>
-              <Skeleton
-                style={{ height: 14, width: "100%" }}
-                className={cx("room-desc")}
-              />
-            </div>
-          </div>
-        </li>
-
-        <li className={cx("room")}>
-          <Skeleton className={cx("room_img")} />
-          <div className={cx("room-info")}>
-            <Skeleton style={{ height: 14 }} className={cx("room_name")} />
-            <div className={cx("room-desc-wrap")}>
-              <Skeleton
-                style={{ height: 14, width: "100%" }}
-                className={cx("room-desc")}
-              />
-            </div>
-          </div>
-        </li>
+          </li>
+        ))}
       </ul>
     </div>
   );
