@@ -64,6 +64,24 @@
   border: 2px solid var(--background);
 }
 
+.room_not-active {
+  position: absolute;
+  bottom: 3px;
+  right: 2px;
+  border-radius: 99px;
+  background-color: var(--background);
+  border: 2px solid var(--background);
+}
+
+.room_not-active-overlay {
+  background-color: var(--overlay-green);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--active-green);
+  border-radius: 99px;
+  padding: 0 2px;
+}
+
 .room-info {
   flex: 1;
   height: 100%;

@@ -144,8 +144,14 @@ function RoomList() {
                   src={room.photoURL || userPlacehoderImg}
                   alt=""
                 />
-                {isActiveRoom(room) && (
+                {isActiveRoom(room) ? (
                   <span className={cx("room_active")}></span>
+                ) : (
+                  <span className={cx("room_not-active")}>
+                    <span className={cx("room_not-active-overlay")}>
+                      8 phút
+                    </span>
+                  </span>
                 )}
               </div>
               <div className={cx("room-info")}>

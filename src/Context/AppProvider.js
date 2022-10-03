@@ -4,6 +4,8 @@ import useFirestore from "../hooks/useFirestore";
 
 import useViewport from "../hooks/useViewport";
 import useGetAllFirestore from "../hooks/useGetAllFirestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 const AppContext = createContext();
 
@@ -59,7 +61,6 @@ function AppProvider({ children }) {
    *    members: [uid1, uid2,...]
    * }
    */
-
   const roomsCondition = useMemo(() => {
     // Tìm tất cả rooms có trường members chứa uid
     return {
@@ -163,6 +164,31 @@ function AppProvider({ children }) {
     }
   }, [users, uid]);
 
+  // Active time
+  useEffect(() => {
+    const updateActiveTime = () => {
+      if (currentUser.active) {
+        const currentTime = Date.parse(new Date()) / 1000;
+        const activeTime = currentUser.active.seconds;
+
+        if (currentTime - activeTime > 60) {
+          console.log("Active");
+          const currentUserRef = doc(db, "users", currentUser.id);
+          updateDoc(currentUserRef, {
+            active: serverTimestamp(),
+          });
+        }
+      }
+    };
+    document.addEventListener("click", updateActiveTime);
+    document.addEventListener("keydown", updateActiveTime);
+
+    return () => {
+      document.removeEventListener("click", updateActiveTime);
+      document.removeEventListener("keydown", updateActiveTime);
+    };
+  }, [currentUser]);
+
   // Date time format
   const formatDate = (createAt) => {
     const time = {
@@ -183,7 +209,6 @@ function AppProvider({ children }) {
       time.day = messageTime.getDay();
     }
 
-    // let yearMonthDate = `${time.date} Tháng ${time.month}, ${time.year}`;
     let yearMonthDate = {
       date: "" + time.date,
       month: "" + time.month,
@@ -201,7 +226,7 @@ function AppProvider({ children }) {
     const hoursMinutes = `${time.hours < 10 ? `0${time.hours}` : time.hours}:${
       time.minutes < 10 ? `0${time.minutes}` : time.minutes
     }`;
-    // return `${hoursMinutes} ${yearMonthDate}`;
+
     return { hoursMinutes, ...yearMonthDate };
   };
 

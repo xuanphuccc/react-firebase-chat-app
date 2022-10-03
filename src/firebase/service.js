@@ -17,7 +17,7 @@ function addDocument(collectionName, data, callback) {
     ...data,
     createAt: serverTimestamp(),
   }).then((data) => {
-    callback(data);
+    if (typeof callback === "function") callback(data);
   });
 }
 
