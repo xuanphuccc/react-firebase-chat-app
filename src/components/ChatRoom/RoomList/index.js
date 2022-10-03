@@ -118,12 +118,6 @@ function RoomList() {
       return room.members.includes(user.uid);
     });
 
-    console.log(
-      `Room ${room.name}`,
-      roomMembersActive.some(
-        (member) => member.isActive === true && member.uid !== uid
-      )
-    );
     return roomMembersActive.some(
       (member) => member.isActive === true && member.uid !== uid
     );

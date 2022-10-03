@@ -12,10 +12,12 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 // ============ FIRESTORE ============
-function addDocument(collectionName, data) {
+function addDocument(collectionName, data, callback) {
   addDoc(collection(db, collectionName), {
     ...data,
     createAt: serverTimestamp(),
+  }).then((data) => {
+    callback(data);
   });
 }
 

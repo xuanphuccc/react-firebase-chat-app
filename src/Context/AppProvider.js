@@ -104,13 +104,14 @@ function AppProvider({ children }) {
   // Get All user
   const users = useGetAllFirestore("users", usersCallback);
 
+  // Update users active status
   useEffect(() => {
     const updateUserActive = () => {
-      let count = true;
+      let isNotNull = true;
 
       const usersActiveTime = users.map((user) => {
         if (user.active === null) {
-          count = false;
+          isNotNull = false;
           return null;
         }
 
@@ -126,7 +127,7 @@ function AppProvider({ children }) {
         };
       });
 
-      if (count) {
+      if (isNotNull) {
         setUsersActiveStatus(usersActiveTime);
       }
     };
@@ -139,14 +140,12 @@ function AppProvider({ children }) {
       if (users) {
         updateUserActive();
       }
-    }, 30 * 1000);
+    }, 60 * 1000);
 
     return () => {
-      console.log("clear time id!");
       clearInterval(timeId);
     };
   }, [users]);
-  // console.log(usersActiveStatus);
 
   // Get members by selected room
   const members = useMemo(() => {

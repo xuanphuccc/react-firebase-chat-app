@@ -23,7 +23,7 @@ function App() {
         const currentTime = Date.parse(new Date()) / 1000;
         const activeTime = currentUser.active.seconds;
 
-        if (currentTime - activeTime > 10) {
+        if (currentTime - activeTime > 60) {
           console.log("UPDATE ACTIVE TIME");
           const currentUserRef = doc(db, "users", currentUser.id);
           updateDoc(currentUserRef, {
