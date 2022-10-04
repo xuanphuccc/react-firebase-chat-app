@@ -152,10 +152,14 @@ function ChatWindow({ roomId }) {
     const roomActive = roomsActiveStatus.find(
       (roomActive) => roomActive.roomId === roomId
     );
-    if (roomActive.isActive) {
-      return "Đang hoạt động";
-    } else {
-      return roomActive.timeCount && `Hoạt động ${roomActive.timeCount} trước`;
+    if (roomActive) {
+      if (roomActive.isActive) {
+        return "Đang hoạt động";
+      } else {
+        return (
+          roomActive.timeCount && `Hoạt động ${roomActive.timeCount} trước`
+        );
+      }
     }
   };
 
