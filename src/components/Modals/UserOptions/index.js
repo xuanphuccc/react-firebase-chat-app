@@ -38,8 +38,6 @@ function UserOptions() {
   const inputImageRef = useRef();
   const nameInputRef = useRef();
 
-  console.log("user option visible: ", userOptionsVisible);
-
   // Sign Out
   const handleSignOut = () => {
     signOut(auth)

@@ -32,6 +32,8 @@ function AppProvider({ children }) {
 
   // User Active Status
   const [usersActiveStatus, setUsersActiveStatus] = useState([]);
+  // Room Active Status
+  const [roomsActiveStatus, setRoomsActiveStatus] = useState([]);
 
   // Dark Mode / Light Mode
   const appConfig = JSON.parse(
@@ -106,6 +108,35 @@ function AppProvider({ children }) {
   // Get All user
   const users = useGetAllFirestore("users", usersCallback);
 
+  // Get members by selected room
+  const members = useMemo(() => {
+    if (users.length >= 1 && selectedRoomMembers) {
+      return users.filter((user) => {
+        return selectedRoomMembers.members.includes(user.uid);
+      });
+    }
+  }, [users, selectedRoomMembers]);
+
+  // Get current user
+  const currentUser = useMemo(() => {
+    if (users.length >= 1) {
+      return users.find((user) => user.uid === uid);
+    }
+  }, [users, uid]);
+
+  // Format time
+  const formatTime = (numbers) => {
+    const hours = Math.floor(numbers / 60);
+    let result = "";
+
+    if (hours < 1) {
+      result = numbers + " phút";
+    } else if (hours < 24) {
+      result = hours + " giờ";
+    }
+    return result;
+  };
+
   // Update users active status
   useEffect(() => {
     const updateUserActive = () => {
@@ -119,12 +150,12 @@ function AppProvider({ children }) {
 
         const currentTime = Date.parse(new Date()) / 1000;
         const activeTime = user.active.seconds;
-        const preMinutesActive = Math.floor((currentTime - activeTime) / 60);
+        const timeCount = Math.floor((currentTime - activeTime) / 60);
         const isActive = Math.floor((currentTime - activeTime) / 60) <= 1;
 
         return {
           uid: user.uid,
-          preMinutesActive,
+          timeCount,
           isActive,
         };
       });
@@ -149,44 +180,70 @@ function AppProvider({ children }) {
     };
   }, [users]);
 
-  // Get members by selected room
-  const members = useMemo(() => {
-    if (users.length >= 1 && selectedRoomMembers) {
-      return users.filter((user) => {
-        return selectedRoomMembers.members.includes(user.uid);
-      });
-    }
-  }, [users, selectedRoomMembers]);
+  // Room active status
+  useEffect(() => {
+    if (rooms.length > 0 && usersActiveStatus.length > 0) {
+      const roomsActive = rooms.map((room) => {
+        let membersActive = usersActiveStatus.filter((user) => {
+          return room.members.includes(user.uid);
+        });
 
-  // Get current user
-  const currentUser = useMemo(() => {
-    if (users.length >= 1) {
-      return users.find((user) => user.uid === uid);
+        if (
+          membersActive.some(
+            (member) => member.isActive === true && member.uid !== uid
+          )
+        ) {
+          return {
+            roomId: room.id,
+            isActive: true,
+            timeCount: 0,
+          };
+        } else {
+          let minCount = 9999;
+          membersActive.forEach((member) => {
+            if (member.timeCount < minCount && member.uid !== uid) {
+              minCount = member.timeCount;
+            }
+          });
+
+          return {
+            roomId: room.id,
+            isActive: false,
+            timeCount: formatTime(minCount),
+          };
+        }
+      });
+
+      setRoomsActiveStatus(roomsActive);
     }
-  }, [users, uid]);
+  }, [rooms, usersActiveStatus, uid]);
 
   // Active time
   useEffect(() => {
     const updateActiveTime = () => {
-      if (currentUser.active) {
-        const currentTime = Date.parse(new Date()) / 1000;
-        const activeTime = currentUser.active.seconds;
+      if (currentUser) {
+        if (currentUser.active) {
+          const currentTime = Date.parse(new Date()) / 1000;
+          const activeTime = currentUser.active.seconds;
 
-        if (currentTime - activeTime > 60) {
-          console.log("Active");
-          const currentUserRef = doc(db, "users", currentUser.id);
-          updateDoc(currentUserRef, {
-            active: serverTimestamp(),
-          });
+          if (currentTime - activeTime > 60) {
+            console.log("Active");
+            const currentUserRef = doc(db, "users", currentUser.id);
+            updateDoc(currentUserRef, {
+              active: serverTimestamp(),
+            });
+          }
         }
       }
     };
     document.addEventListener("click", updateActiveTime);
     document.addEventListener("keydown", updateActiveTime);
+    document.addEventListener("wheel", updateActiveTime);
 
     return () => {
       document.removeEventListener("click", updateActiveTime);
       document.removeEventListener("keydown", updateActiveTime);
+      document.removeEventListener("wheel", updateActiveTime);
     };
   }, [currentUser]);
 
@@ -286,6 +343,7 @@ function AppProvider({ children }) {
         isUsersLoading,
         formatDate,
         usersActiveStatus,
+        roomsActiveStatus,
       }}
     >
       {children}

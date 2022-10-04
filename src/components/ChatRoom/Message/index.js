@@ -166,7 +166,7 @@ function Message({
 
   return (
     <div
-      tabIndex={0}
+      tabIndex={-1}
       onFocus={() => {
         setIsOpenMessageControls(true);
       }}

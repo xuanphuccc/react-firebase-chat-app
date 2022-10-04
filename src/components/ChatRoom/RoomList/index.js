@@ -14,8 +14,8 @@ function RoomList() {
   const { uid } = useContext(AuthContext);
   const {
     users,
-    usersActiveStatus,
     rooms,
+    roomsActiveStatus,
     setSelectedRoomId,
     selectedRoomId,
     formatDate,
@@ -108,19 +108,8 @@ function RoomList() {
     return newRoomsArr;
   }, [rooms]);
 
-  // console.log("sort: ", {
-  //   original: rooms.map((room) => room.name),
-  //   sort: roomSortByLastMessage.map((room) => room.name),
-  // });
-
-  const isActiveRoom = (room) => {
-    const roomMembersActive = usersActiveStatus.filter((user) => {
-      return room.members.includes(user.uid);
-    });
-
-    return roomMembersActive.some(
-      (member) => member.isActive === true && member.uid !== uid
-    );
+  const findRoomActive = (roomId) => {
+    return roomsActiveStatus.find((roomActive) => roomActive.roomId === roomId);
   };
 
   return (
@@ -144,14 +133,22 @@ function RoomList() {
                   src={room.photoURL || userPlacehoderImg}
                   alt=""
                 />
-                {isActiveRoom(room) ? (
-                  <span className={cx("room_active")}></span>
-                ) : (
-                  <span className={cx("room_not-active")}>
-                    <span className={cx("room_not-active-overlay")}>
-                      8 phút
-                    </span>
-                  </span>
+                {findRoomActive(room.id) && (
+                  <>
+                    {findRoomActive(room.id).isActive ? (
+                      <span className={cx("room_active")}></span>
+                    ) : (
+                      <>
+                        {findRoomActive(room.id).timeCount && (
+                          <div className={cx("room_not-active")}>
+                            <span className={cx("room_not-active-overlay")}>
+                              {findRoomActive(room.id).timeCount}
+                            </span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </>
                 )}
               </div>
               <div className={cx("room-info")}>
