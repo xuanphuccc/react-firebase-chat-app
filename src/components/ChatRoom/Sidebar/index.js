@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./Sidebar.module.scss";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 
 import UserInfo from "../UserInfo";
@@ -9,24 +9,46 @@ import RoomList from "../RoomList";
 import AlertModal from "../../Modals/AlertModal";
 import UserOptions from "../../Modals/UserOptions";
 import CreateRoomModal from "../../Modals/CreateRoomModal";
+import SearchUsers from "../SearchUsers";
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-  const { theme, isRoomListLoading, isUsersLoading, isMobile } =
-    useContext(AppContext);
+  const {
+    theme,
+    isRoomListLoading,
+    isUsersLoading,
+    isOpenSearchUsers,
+    isMobile,
+  } = useContext(AppContext);
+  const [inputValue, setInputValue] = useState("");
 
   return (
     <div className={cx("side-bar", { isMobile })} data-theme={theme}>
-      {isUsersLoading ? <UserInfo.Loading /> : <UserInfo />}
-      {isRoomListLoading ? <RoomList.Loading /> : <RoomList />}
+      {isUsersLoading ? (
+        <UserInfo.Loading />
+      ) : (
+        <UserInfo inputValue={inputValue} setInputValue={setInputValue} />
+      )}
 
-      {/* Show all alert and notification */}
+      {isRoomListLoading ? (
+        <RoomList.Loading />
+      ) : (
+        <>
+          {isOpenSearchUsers ? (
+            <SearchUsers
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+            />
+          ) : (
+            <RoomList />
+          )}
+        </>
+      )}
+
+      {/* Modal */}
       <AlertModal />
-
       <UserOptions />
-
-      {/* Create Room Modal */}
       <CreateRoomModal />
     </div>
   );

@@ -23,6 +23,7 @@ function AppProvider({ children }) {
   const [isOpenCustomNickname, setIsOpenCustomNickname] = useState(false);
   const [isOpenChangeRoomName, setIsOpenChangeRoomName] = useState(false);
   const [userOptionsVisible, setUserOptionsVisible] = useState(false);
+  const [isOpenSearchUsers, setIsOpenSearchUsers] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertContent, setAlertContent] = useState("");
@@ -333,6 +334,8 @@ function AppProvider({ children }) {
         setSelectedRoomMessages,
         isOpenChangeRoomName,
         setIsOpenChangeRoomName,
+        isOpenSearchUsers,
+        setIsOpenSearchUsers,
         userOptionsVisible,
         setUserOptionsVisible,
         alertContent,

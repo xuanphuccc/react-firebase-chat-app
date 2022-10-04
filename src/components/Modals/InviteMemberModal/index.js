@@ -76,7 +76,7 @@ function InviteMemberModal() {
 
   // Find user when typing
   useEffect(() => {
-    if (users.length >= 1 && inputValue !== "" && originMemberId) {
+    if (users.length > 1 && inputValue !== "" && originMemberId) {
       let usersSearch = users.filter((member) => {
         let memberDisplayName = member.displayName.toLowerCase();
         let input = inputValue.toLowerCase();

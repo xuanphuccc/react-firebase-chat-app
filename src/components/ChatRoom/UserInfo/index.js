@@ -4,7 +4,11 @@ import styles from "./UserInfo.module.scss";
 import { useContext } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faPenToSquare,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { AppContext } from "../../../Context/AppProvider";
 import userPlacehoderImg from "../../../assets/images/user.png";
@@ -12,13 +16,24 @@ import Skeleton from "../../Skeleton";
 
 const cx = classNames.bind(styles);
 
-function UserInfo() {
-  const { setUserOptionsVisible, setIsAddRoomVisible, isMobile, currentUser } =
-    useContext(AppContext);
+function UserInfo({ inputValue, setInputValue }) {
+  const {
+    setUserOptionsVisible,
+    setIsAddRoomVisible,
+    isOpenSearchUsers,
+    setIsOpenSearchUsers,
+    isMobile,
+    currentUser,
+  } = useContext(AppContext);
 
   // Open modal when click reacte room button
   const handleAddRoom = () => {
     setIsAddRoomVisible(true);
+  };
+
+  // Handle input
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
   };
 
   return (
@@ -49,14 +64,30 @@ function UserInfo() {
       </div>
 
       <div className={cx("users-search")}>
+        {isOpenSearchUsers && (
+          <span
+            onClick={() => {
+              setIsOpenSearchUsers(false);
+              setInputValue("");
+            }}
+            className={cx("users-search_back-btn")}
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </span>
+        )}
         <div className={cx("users-search_input-wrap")}>
           <span className={cx("users-search_icon")}>
             <FontAwesomeIcon icon={faSearch} />
           </span>
           <input
+            onClick={() => {
+              setIsOpenSearchUsers(true);
+            }}
+            onChange={handleInputChange}
+            value={inputValue}
             className={cx("users-search_input")}
             type="text"
-            placeholder="Tìm kiếm bạn bè"
+            placeholder="Tìm kiếm"
           />
         </div>
       </div>

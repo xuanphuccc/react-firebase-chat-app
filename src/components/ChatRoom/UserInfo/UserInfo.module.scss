@@ -66,9 +66,12 @@
 // User Search
 .users-search {
   padding: 6px 16px 12px;
+  display: flex;
+  align-items: center;
 }
 
 .users-search_input-wrap {
+  width: 100%;
   display: flex;
   padding: 8px 12px;
   background-color: var(--light-gray);
@@ -88,9 +91,29 @@
   border: none;
   outline: none;
   font-size: 1.6rem;
+  color: var(--text-black);
   background-color: transparent;
 
   &::placeholder {
     font-size: 1.5rem;
+  }
+}
+
+.users-search_back-btn {
+  display: flex;
+  width: 42px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: var(--dark-gray);
+  margin-right: 8px;
+  border-radius: 99px;
+  background-color: var(--light-gray);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--gray);
   }
 }

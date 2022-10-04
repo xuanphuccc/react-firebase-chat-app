@@ -43,6 +43,7 @@ function UserOptions() {
     signOut(auth)
       .then(() => {
         console.log("Sign out successful");
+        setUserOptionsVisible(false);
       })
       .catch((error) => {
         console.error(error);
