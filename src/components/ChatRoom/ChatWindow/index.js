@@ -28,7 +28,7 @@ const cx = classNames.bind(styles);
 function ChatWindow({ roomId }) {
   const {
     rooms,
-    // currentUser,
+    roomsActiveStatus,
     setSelectedRoomId,
     isMobile,
     handleRoomMenuVisible,
@@ -148,7 +148,16 @@ function ChatWindow({ roomId }) {
     return newMessages;
   }, [messages]);
 
-  // console.log("messages: ", messages);
+  const findRoomActive = (roomId) => {
+    const roomActive = roomsActiveStatus.find(
+      (roomActive) => roomActive.roomId === roomId
+    );
+    if (roomActive.isActive) {
+      return "Đang hoạt động";
+    } else {
+      return roomActive.timeCount && `Hoạt động ${roomActive.timeCount} trước`;
+    }
+  };
 
   // Update format from firestore
   // useEffect(() => {
@@ -194,7 +203,13 @@ function ChatWindow({ roomId }) {
                   <h4 className={cx("chat-window_header-name")}>
                     {selectedRoom.name}
                   </h4>
-                  <p className={cx("chat-desc")}>Đang hoạt động</p>
+                  {findRoomActive(roomId) && (
+                    <>
+                      <p className={cx("chat-desc")}>
+                        {findRoomActive(roomId)}
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -238,7 +253,10 @@ function ChatWindow({ roomId }) {
           </div>
           {isRoomMenuVisible && (
             <div className={cx("room-option")}>
-              <RoomOptions messages={messages} />
+              <RoomOptions
+                messages={messages}
+                activeTime={findRoomActive(roomId)}
+              />
             </div>
           )}
 

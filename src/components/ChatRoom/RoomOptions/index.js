@@ -46,7 +46,7 @@ import { deleteFile, uploadFile } from "../../../firebase/service";
 
 const cx = classNames.bind(styles);
 
-function RoomOptions({ messages }) {
+function RoomOptions({ messages, activeTime }) {
   const {
     selectedRoom,
     selectedRoomId,
@@ -283,7 +283,7 @@ function RoomOptions({ messages }) {
           />
         </div>
         <h2 className={cx("room-name")}>{selectedRoom.name}</h2>
-        <p className={cx("room-desc")}>Đang hoạt động</p>
+        <p className={cx("room-desc")}>{activeTime}</p>
         <ul className={cx("quick-options")}>
           <li className={cx("quick-item")}>
             <span className={cx("quick-icon")}>
