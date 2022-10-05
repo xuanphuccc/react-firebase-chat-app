@@ -177,7 +177,7 @@ function ChatWindow({ roomId }) {
     <>
       {selectedRoom && (
         <div className={cx("chat-window-wrapper")}>
-          <div className={cx("chat-window", { fixed: isMobile })}>
+          <div className={cx("chat-window")}>
             {/*=========== Header ===========*/}
             <div className={cx("chat-window_header")}>
               {/* Room Name And Image */}

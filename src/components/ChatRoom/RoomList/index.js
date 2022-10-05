@@ -165,6 +165,8 @@ function RoomList() {
           </Link>
         ))}
       </ul>
+
+      <p className={cx("author")}>©2022 - Made by XP with ❤️</p>
     </div>
   );
 }

@@ -37,7 +37,7 @@ function UserInfo({ inputValue, setInputValue }) {
   };
 
   return (
-    <div className={cx("user-info", { fixed: isMobile })}>
+    <div className={cx("user-info")}>
       <div className={cx("user-info-wrapper")}>
         <div
           onClick={() => {
