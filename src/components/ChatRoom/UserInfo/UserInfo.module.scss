@@ -7,14 +7,14 @@
   transition: all 0.2s ease;
   user-select: none;
 
-  &.fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    border-right-color: transparent;
-    z-index: 1;
-  }
+  // &.fixed {
+  //   position: fixed;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   border-right-color: transparent;
+  //   z-index: 1;
+  // }
 }
 
 .user-info-wrapper {
