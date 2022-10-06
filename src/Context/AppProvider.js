@@ -233,6 +233,7 @@ function AppProvider({ children }) {
             console.log({
               currentTime,
               activeTime,
+              uid,
             });
             console.log("Active");
             const currentUserRef = doc(db, "users", currentUser.id);
@@ -252,7 +253,7 @@ function AppProvider({ children }) {
       document.removeEventListener("keydown", updateActiveTime);
       document.removeEventListener("wheel", updateActiveTime);
     };
-  }, [currentUser]);
+  }, [currentUser, uid]);
 
   // Date time format
   const formatDate = (createAt) => {
