@@ -25,7 +25,7 @@ const fbProvider = new FacebookAuthProvider(); //OK
 const googleProvider = new GoogleAuthProvider();
 
 function Login() {
-  const { isDesktop } = useContext(AppContext);
+  const { setIsLogin, isDesktop } = useContext(AppContext);
 
   // Login with Facebook
   const handleFblogin = () => {
@@ -33,6 +33,9 @@ function Login() {
       .then((result) => {
         // The signed-in user info.
         const { user, _tokenResponse } = result;
+
+        // Login state to handle active user events
+        setIsLogin(true);
 
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
@@ -80,6 +83,9 @@ function Login() {
       .then((result) => {
         const { user, _tokenResponse } = result;
 
+        // Login state to handle active user events
+        setIsLogin(true);
+
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
           console.log("New User!");
@@ -110,6 +116,14 @@ function Login() {
         const credential = GoogleAuthProvider.credentialFromError(error);
 
         console.error({ errorCode, errorMessage, email, credential });
+
+        signOut(auth)
+          .then(() => {
+            console.log("Sign out successful");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
   };
 

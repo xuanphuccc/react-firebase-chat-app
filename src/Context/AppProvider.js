@@ -14,6 +14,7 @@ const AppContext = createContext();
 // Có nhiệm vụ truyền context khi lấy được data
 // từ câu truy vấn đến realtime database
 function AppProvider({ children }) {
+  const [isLogin, setIsLogin] = useState(false);
   const [isUsersLoading, setIsUsersLoading] = useState(true);
   const [isRoomListLoading, setIsRoomListLoading] = useState(true);
 
@@ -228,12 +229,13 @@ function AppProvider({ children }) {
           const currentTime = Date.parse(new Date()) / 1000;
           const activeTime = currentUser.active.seconds;
 
+          console.log("isLogin: ", isLogin);
+
           if (currentTime - activeTime > 60) {
             console.log("current user: ", currentUser);
             console.log({
               currentTime,
               activeTime,
-              uid,
             });
             console.log("Active");
             const currentUserRef = doc(db, "users", currentUser.id);
@@ -254,7 +256,7 @@ function AppProvider({ children }) {
       document.removeEventListener("keydown", updateActiveTime);
       document.removeEventListener("wheel", updateActiveTime);
     };
-  }, [currentUser, uid]);
+  }, [currentUser, isLogin]);
 
   // Date time format
   const formatDate = (createAt) => {
@@ -315,6 +317,8 @@ function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        isLogin,
+        setIsLogin,
         setAppConfig,
         theme,
         setTheme,
