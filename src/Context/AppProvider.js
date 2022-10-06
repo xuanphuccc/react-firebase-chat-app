@@ -249,6 +249,7 @@ function AppProvider({ children }) {
     document.addEventListener("wheel", updateActiveTime);
 
     return () => {
+      console.log("Clear listen active");
       document.removeEventListener("click", updateActiveTime);
       document.removeEventListener("keydown", updateActiveTime);
       document.removeEventListener("wheel", updateActiveTime);
