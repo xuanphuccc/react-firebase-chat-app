@@ -25,7 +25,7 @@ const fbProvider = new FacebookAuthProvider(); //OK
 const googleProvider = new GoogleAuthProvider();
 
 function Login() {
-  const { setIsLogin, isDesktop } = useContext(AppContext);
+  const { isDesktop } = useContext(AppContext);
 
   // Login with Facebook
   const handleFblogin = () => {
@@ -33,9 +33,6 @@ function Login() {
       .then((result) => {
         // The signed-in user info.
         const { user, _tokenResponse } = result;
-
-        // Login state to handle active user events
-        setIsLogin(true);
 
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
@@ -82,9 +79,6 @@ function Login() {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const { user, _tokenResponse } = result;
-
-        // Login state to handle active user events
-        setIsLogin(true);
 
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {

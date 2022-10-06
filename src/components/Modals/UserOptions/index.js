@@ -25,7 +25,6 @@ function UserOptions() {
   const [isShowInput, setIsShowInput] = useState(false);
   const [nameInputValue, setNameInputValue] = useState("");
   const {
-    setIsLogin,
     currentUser,
     setAlertVisible,
     setAlertContent,
@@ -45,7 +44,7 @@ function UserOptions() {
       .then(() => {
         console.log("Sign out successful");
         setUserOptionsVisible(false);
-        setIsLogin(false);
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
