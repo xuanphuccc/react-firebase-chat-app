@@ -219,6 +219,7 @@ function AppProvider({ children }) {
     }
   }, [rooms, usersActiveStatus, uid]);
 
+  console.log("outside user: ", currentUser);
   // Active time
   useEffect(() => {
     const updateActiveTime = () => {
