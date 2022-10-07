@@ -7,9 +7,8 @@
 .overlay {
   width: 100%;
   height: 100%;
-  background: no-repeat center/cover
-    url("../../assets/images/background-min.png");
-  // filter: brightness(0.8);
+  background: no-repeat center/cover url("../../assets/images/background.jpg");
+  filter: brightness(0.8);
 }
 
 .overlay-svg {

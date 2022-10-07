@@ -231,19 +231,12 @@ function ChatWindow({ roomId }) {
             {/*=========== Message List ===========*/}
 
             <div ref={mesListRef} className={cx("message-list")}>
-              {sideBySideMessages.map((message) => (
+              {sideBySideMessages.map((message, index) => (
                 <Message
                   key={message.id}
-                  id={message.id}
-                  content={message.text}
-                  displayName={message.displayName}
-                  createAt={message.createAt}
-                  photoURL={message.photoURL}
-                  userId={message.uid}
-                  posType={message.posType}
-                  type={message.type}
-                  reactions={message.reactions}
-                  messagePhotoURL={message.messagePhotoURL}
+                  message={message}
+                  messageIndex={index}
+                  messagesLength={sideBySideMessages.length}
                 />
               ))}
 

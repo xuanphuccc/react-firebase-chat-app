@@ -25,7 +25,7 @@ const fbProvider = new FacebookAuthProvider(); //OK
 const googleProvider = new GoogleAuthProvider();
 
 function Login() {
-  const { isDesktop } = useContext(AppContext);
+  const { isDesktop, isMobile } = useContext(AppContext);
 
   // Login with Facebook
   const handleFblogin = () => {
@@ -123,7 +123,7 @@ function Login() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("overlay")}></div>
+      <div className={cx("overlay", { isMobile })}></div>
       <div className={cx("login", { isDesktop })}>
         <div className={cx("content")}>
           <h1 className={cx("title")}>Đăng nhập</h1>

@@ -12,7 +12,7 @@ import { AuthContext } from "../../../Context/AuthProvider";
 import { AppContext } from "../../../Context/AppProvider";
 
 import { db } from "../../../firebase/config";
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, serverTimestamp } from "firebase/firestore";
 
 import ReactionsControl from "../ReactionsControl";
 import ReactionsIcon from "../ReactionsIcon";
@@ -20,18 +20,20 @@ import ReactionsModal from "../../Modals/ReactionsModal";
 
 const cx = classNames.bind(styles);
 
-function Message({
-  id,
-  content,
-  displayName,
-  createAt,
-  photoURL,
-  userId,
-  posType,
-  type,
-  reactions,
-  messagePhotoURL,
-}) {
+function Message({ message, messageIndex, messagesLength }) {
+  const {
+    id,
+    text: content,
+    displayName,
+    createAt,
+    photoURL,
+    uid: userId,
+    posType,
+    type,
+    reactions,
+    messagePhotoURL,
+    roomId,
+  } = message;
   const { uid } = useContext(AuthContext);
   const { members, selectedRoom, setSelectedPhoto, formatDate } =
     useContext(AppContext);
@@ -150,10 +152,25 @@ function Message({
   // Handle unsend message
   const handleUnsendMessage = () => {
     if (userId === uid) {
+      // Update this message type
       let messageRef = doc(db, "messages", id);
       updateDoc(messageRef, {
         type: "@unsentmsg",
       });
+
+      // Update last message type
+      if (messageIndex === messagesLength - 1) {
+        let roomRef = doc(db, "rooms", roomId);
+        updateDoc(roomRef, {
+          lastMessage: {
+            type: "@unsentmsg",
+            text: content,
+            uid: userId,
+            displayName: displayName,
+            createAt: serverTimestamp(),
+          },
+        });
+      }
     }
   };
 

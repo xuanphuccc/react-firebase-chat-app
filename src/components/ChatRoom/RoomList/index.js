@@ -49,6 +49,8 @@ function RoomList() {
       }
     }
 
+    console.log({ text: lastMessage.text, type: lastMessage.type });
+
     // Get Message text
     switch (lastMessage.type) {
       case "@unsentmsg":
@@ -165,8 +167,6 @@ function RoomList() {
           </Link>
         ))}
       </ul>
-
-      <p className={cx("author")}>©2022 - Made by XP with ❤️</p>
     </div>
   );
 }
