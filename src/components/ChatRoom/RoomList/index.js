@@ -41,7 +41,7 @@ function RoomList() {
       );
 
       if (memberNickname) {
-        userName = memberNickname.nickname;
+        userName = memberNickname.nickname || userCurrentName.displayName;
       } else if (userCurrentName) {
         userName = userCurrentName.displayName;
       } else {
@@ -49,12 +49,13 @@ function RoomList() {
       }
     }
 
-    console.log({ text: lastMessage.text, type: lastMessage.type });
-
     // Get Message text
     switch (lastMessage.type) {
       case "@unsentmsg":
         message = "Đã thu hồi tin nhắn";
+        break;
+      case "@roomnotify":
+        message = lastMessage.text;
         break;
 
       case "@icon":
@@ -73,6 +74,11 @@ function RoomList() {
     }
 
     if (!userName || !message) {
+      console.log("last message:" + room.name, {
+        userName,
+        message,
+        lastMessage,
+      });
       return "Bắt đầu đoạn chat";
     }
 

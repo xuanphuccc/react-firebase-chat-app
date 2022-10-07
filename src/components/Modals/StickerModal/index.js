@@ -16,8 +16,8 @@ import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
-function StickerModal({ sendMessage }) {
-  const { currentUser, setAlertVisible, setAlertContent } =
+function StickerModal() {
+  const { currentUser, setAlertVisible, setAlertContent, sendMessage } =
     useContext(AppContext);
 
   const [editStickers, setEditSticker] = useState(false);

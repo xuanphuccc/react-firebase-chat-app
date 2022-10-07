@@ -35,7 +35,7 @@ function Message({ message, messageIndex, messagesLength }) {
     roomId,
   } = message;
   const { uid } = useContext(AuthContext);
-  const { members, selectedRoom, setSelectedPhoto, formatDate } =
+  const { users, selectedRoom, setSelectedPhoto, formatDate } =
     useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
@@ -48,10 +48,10 @@ function Message({ message, messageIndex, messagesLength }) {
   const isSentMsg = userId === uid;
 
   // Get message user
-  const memberInfor = useMemo(() => {
+  const userInfor = useMemo(() => {
     let result = {};
-    if (members) {
-      const infor = members.find((member) => member.uid === userId);
+    if (users) {
+      const infor = users.find((user) => user.uid === userId);
       const nickname = selectedRoom.roomNicknames.find(
         (nickname) => nickname.uid === userId
       );
@@ -62,7 +62,7 @@ function Message({ message, messageIndex, messagesLength }) {
     }
 
     return result;
-  }, [members, userId, selectedRoom]);
+  }, [users, userId, selectedRoom]);
 
   // Format Time
   const formatMessageDate = (createAt) => {
@@ -201,14 +201,16 @@ function Message({ message, messageIndex, messagesLength }) {
       <img
         className={cx("user-img")}
         // Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng ảnh mặc định
-        src={Object.keys(memberInfor).length ? memberInfor.photoURL : photoURL}
+        src={Object.keys(userInfor).length ? userInfor.photoURL : photoURL}
         alt=""
       />
 
       <div className={cx("content")}>
         <h4 className={cx("user-name")}>
           {/*Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng tên mặc định */}
-          {Object.keys(memberInfor).length ? memberInfor.nickname : displayName}
+          {Object.keys(userInfor).length
+            ? userInfor.nickname || userInfor.displayName
+            : displayName}
         </h4>
         <div className={cx("text-wrap")}>
           <div className={cx("text")}>

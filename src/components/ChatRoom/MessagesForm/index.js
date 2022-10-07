@@ -10,23 +10,19 @@ import Tippy from "@tippyjs/react";
 
 import { useContext, useState, useRef } from "react";
 
-import { AuthContext } from "../../../Context/AuthProvider";
 import { AppContext } from "../../../Context/AppProvider";
 
-import { addDocument, uploadFile } from "../../../firebase/service";
+import { uploadFile } from "../../../firebase/service";
 
 import hahaIcon from "../../../assets/images/minicon/haha.png";
 import StickerIcon from "../../../assets/images/icons/StickerIcon.js";
 import GifIcon from "../../../assets/images/icons/GifIcon.js";
 import StickerModal from "../../Modals/StickerModal";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase/config";
 
 const cx = classNames.bind(styles);
 
 function MessagesForm({ roomId }) {
-  const { uid } = useContext(AuthContext);
-  const { setAlertVisible, setAlertContent, currentUser } =
+  const { setAlertVisible, setAlertContent, sendMessage } =
     useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
@@ -55,45 +51,6 @@ function MessagesForm({ roomId }) {
       });
       imageInputRef.current.value = "";
     }
-  };
-
-  // Send message (add document to "messages" collection)
-  const sendMessage = (
-    messText = "",
-    messPhoto = "",
-    fullPath = "",
-    messType = ""
-  ) => {
-    addDocument("messages", {
-      type: messType,
-      text: messText,
-      uid,
-      photoURL: currentUser.photoURL,
-      messagePhotoURL: messPhoto,
-      fullPath,
-      displayName: currentUser.displayName,
-      roomId: roomId,
-      reactions: {
-        heart: [],
-        haha: [],
-        wow: [],
-        sad: [],
-        angry: [],
-        like: [],
-      },
-    });
-
-    // Update room last message
-    let roomRef = doc(db, "rooms", roomId);
-    updateDoc(roomRef, {
-      lastMessage: {
-        type: messType,
-        text: messText,
-        uid,
-        displayName: currentUser.displayName,
-        createAt: serverTimestamp(),
-      },
-    });
   };
 
   // Handle send messages (text, image)
@@ -161,11 +118,7 @@ function MessagesForm({ roomId }) {
         >
           <FontAwesomeIcon icon={faImage} />
         </button>
-        <Tippy
-          interactive="true"
-          trigger="click"
-          content={<StickerModal sendMessage={sendMessage} />}
-        >
+        <Tippy interactive="true" trigger="click" content={<StickerModal />}>
           <div>
             <button className={cx("media-btn")}>
               <StickerIcon />

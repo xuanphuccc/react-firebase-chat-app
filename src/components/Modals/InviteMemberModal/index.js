@@ -26,6 +26,7 @@ function InviteMemberModal() {
     selectedRoomId,
     users,
     members,
+    sendMessage,
   } = useContext(AppContext);
 
   const { uid } = useContext(AuthContext);
@@ -38,25 +39,31 @@ function InviteMemberModal() {
   const handleOk = () => {
     if (selectedUsers.length >= 1) {
       // Set nick name cho những users được thêm
-      const usersNickname = selectedUsers.map((id) => {
-        let validUser = users.find((user) => user.uid === id);
-        if (validUser) {
-          return {
-            uid: validUser.uid,
-            nickname: validUser.displayName,
-          };
-        } else
-          return {
-            uid: "",
-            nickname: "",
-          };
+      let usersNickname = users.map((user) => {
+        return selectedUsers.includes(user.uid)
+          ? {
+              uid: user.uid,
+              nickname: "",
+            }
+          : {
+              uid: "",
+              nickname: "",
+            };
       });
+      usersNickname = usersNickname.filter((user) => user.uid !== "");
 
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         // members: [...originMemberId, ...selectedUsers],
         members: arrayUnion(...selectedUsers),
         roomNicknames: arrayUnion(...usersNickname),
+      }).then(() => {
+        users.forEach((user) => {
+          if (selectedUsers.includes(user.uid)) {
+            const notifitext = `đã thêm ${user.displayName} vào nhóm`;
+            sendMessage(notifitext, null, null, "@roomnotify");
+          }
+        });
       });
     }
 

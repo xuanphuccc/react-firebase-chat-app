@@ -57,7 +57,7 @@ function CustomNickname() {
       (nickname) => nickname.uid === userId
     );
 
-    if (inputValue.trim() && prevNickname.nickname !== inputValue.trim()) {
+    if (prevNickname.nickname !== inputValue.trim()) {
       const newRoomNicknames = selectedRoom.roomNicknames.filter(
         (nickname) => nickname.uid !== userId
       );
@@ -65,13 +65,26 @@ function CustomNickname() {
       newRoomNicknames.push({ uid: userId, nickname: inputValue });
 
       const roomRef = doc(db, "rooms", selectedRoomId);
-      updateDoc(roomRef, {
-        roomNicknames: newRoomNicknames,
-      })
-        .then(() => {})
-        .catch((error) => {
-          console.log(error);
-        });
+
+      if (inputValue.trim() !== "") {
+        updateDoc(roomRef, {
+          roomNicknames: newRoomNicknames,
+        })
+          .then(() => {})
+          .catch((error) => {
+            console.log(error);
+          });
+      } else if (inputValue.trim() === "") {
+        updateDoc(roomRef, {
+          roomNicknames: newRoomNicknames,
+        })
+          .then(() => {
+            console.log(`đã xóa biệt danh của ${prevNickname.nickname}`);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
     setInputValue("");
     setShowInput("");
@@ -105,7 +118,7 @@ function CustomNickname() {
         <ul className={cx("users-list")}>
           {renderUsers.map((user) => (
             <li
-              key={user.id}
+              key={user.uid}
               tabIndex="0"
               onClick={() => {
                 setShowInput(user.uid);
@@ -130,12 +143,12 @@ function CustomNickname() {
                     onChange={handleInputOnChange}
                     onKeyDown={handleKeyDown}
                     className={cx("nickname-input")}
-                    placeholder={user.nickname}
+                    placeholder={user.nickname || user.displayName}
                     type="text"
                   />
                 ) : (
                   <h4 className={cx("user-name")}>
-                    {user.nickname}
+                    {user.nickname || user.displayName}
                     <span className={cx("custom-nickname-title")}>
                       Đặt biệt danh
                     </span>

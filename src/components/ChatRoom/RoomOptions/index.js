@@ -58,6 +58,7 @@ function RoomOptions({ messages, activeTime }) {
     setIsOpenChangeRoomName,
     setAlertVisible,
     setAlertContent,
+    sendMessage,
   } = useContext(AppContext);
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
@@ -96,20 +97,21 @@ function RoomOptions({ messages, activeTime }) {
       updateDoc(roomRef, {
         members: arrayRemove(uid),
         roomNicknames: newRoomNicknames,
+      }).then(() => {
+        // Nếu là admin và không là admin duy nhất
+        // thì xóa vai trò admin
+        handleRemoveAdmin(uid);
+
+        // Đóng modal sau khi rời phòng
+        setIsRoomMenuVisible(false);
+
+        // Chuyển về sidebar (mobile)
+        if (isMobile) {
+          navigate("/room-list");
+        } else navigate("/room/room-id");
+
+        sendMessage("đã rời khỏi nhóm", null, null, "@roomnotify");
       });
-
-      // Nếu là admin và không là admin duy nhất
-      // thì xóa vai trò admin
-      handleRemoveAdmin(uid);
-
-      // Đóng modal sau khi rời phòng
-      setIsRoomMenuVisible(false);
-      console.log("Leave Room!");
-
-      // Chuyển về sidebar (mobile)
-      if (isMobile) {
-        navigate("/room-list");
-      } else navigate("/room/room-id");
     }
   };
 
@@ -189,7 +191,9 @@ function RoomOptions({ messages, activeTime }) {
   };
 
   // ------ HANDLE REMOVE MEMBER ------
-  const handleRemoveMember = (userId) => {
+  const handleRemoveMember = (member) => {
+    const { uid: userId, displayName } = member;
+
     // Nếu người xóa là admin và không phải xóa chính mình
     if (admins.includes(uid) && userId !== uid) {
       // xóa nick name
@@ -201,6 +205,10 @@ function RoomOptions({ messages, activeTime }) {
       updateDoc(roomRef, {
         members: arrayRemove(userId),
         roomNicknames: newRoomNicknames,
+      }).then(() => {
+        // Send notifi message
+        const notifitext = `đã xóa ${displayName} khỏi nhóm`;
+        sendMessage(notifitext, null, null, "@roomnotify");
       });
     }
   };
@@ -433,7 +441,7 @@ function RoomOptions({ messages, activeTime }) {
                       )}
                       <li
                         onClick={() => {
-                          handleRemoveMember(member.uid);
+                          handleRemoveMember(member);
                         }}
                         className={cx("tooltips-menu-item")}
                       >

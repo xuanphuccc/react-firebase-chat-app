@@ -57,9 +57,7 @@ function CreateRoomModal() {
           fullPath: fullPath,
           members: [currentUser.uid],
           admins: [currentUser.uid],
-          roomNicknames: [
-            { nickname: currentUser.displayName, uid: currentUser.uid },
-          ],
+          roomNicknames: [{ nickname: "", uid: currentUser.uid }],
           lastMessage: {
             type: "",
             text: "",

@@ -19,6 +19,7 @@ import placeHolderImg from "../../../assets/images/user.png";
 import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
 import MessagesForm from "../MessagesForm";
+import NotifiMessage from "../NotifiMessage";
 
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
@@ -231,14 +232,20 @@ function ChatWindow({ roomId }) {
             {/*=========== Message List ===========*/}
 
             <div ref={mesListRef} className={cx("message-list")}>
-              {sideBySideMessages.map((message, index) => (
-                <Message
-                  key={message.id}
-                  message={message}
-                  messageIndex={index}
-                  messagesLength={sideBySideMessages.length}
-                />
-              ))}
+              {sideBySideMessages.map((message, index) => {
+                if (message.type === "@roomnotify") {
+                  return <NotifiMessage key={message.id} message={message} />;
+                }
+
+                return (
+                  <Message
+                    key={message.id}
+                    message={message}
+                    messageIndex={index}
+                    messagesLength={sideBySideMessages.length}
+                  />
+                );
+              })}
 
               <span ref={LastMesListRef}></span>
             </div>

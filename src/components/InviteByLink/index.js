@@ -27,7 +27,7 @@ function InviteByLink() {
   const { roomid } = useParams();
 
   const { uid } = useContext(AuthContext);
-  const { currentUser } = useContext(AppContext);
+  const { sendMessage } = useContext(AppContext);
 
   const roomRef = useMemo(() => {
     return doc(db, "rooms", roomid);
@@ -37,11 +37,18 @@ function InviteByLink() {
     if (uid && roomid) {
       updateDoc(roomRef, {
         members: arrayUnion(uid),
-        roomNicknames: arrayUnion({ nickname: currentUser.displayName, uid }),
+        roomNicknames: arrayUnion({ nickname: "", uid }),
       })
         .then(() => {
-          setStatus("successful");
           navigate(`/room/${roomid}`);
+          setStatus("successful");
+          sendMessage(
+            `đã tham gia bằng liên kết nhóm`,
+            null,
+            null,
+            "@roomnotify",
+            roomid
+          );
         })
         .catch((error) => {
           console.warn(error);

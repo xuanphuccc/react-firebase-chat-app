@@ -6,6 +6,7 @@ import useViewport from "../hooks/useViewport";
 import useGetAllFirestore from "../hooks/useGetAllFirestore";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
+import { addDocument } from "../firebase/service";
 
 const AppContext = createContext();
 
@@ -248,6 +249,48 @@ function AppProvider({ children }) {
     };
   }, [currentUser]);
 
+  // Send message (add document to "messages" collection)
+  const sendMessage = (
+    messText = "",
+    messPhoto = "",
+    fullPath = "",
+    messType = "",
+    subRoomId = ""
+  ) => {
+    addDocument("messages", {
+      type: messType,
+      text: messText,
+      uid,
+      photoURL: currentUser.photoURL,
+      messagePhotoURL: messPhoto,
+      fullPath,
+      displayName: currentUser.displayName,
+      roomId: selectedRoomId || subRoomId,
+      reactions: {
+        heart: [],
+        haha: [],
+        wow: [],
+        sad: [],
+        angry: [],
+        like: [],
+      },
+    });
+
+    // Update room last message
+    let roomRef = doc(db, "rooms", selectedRoomId || subRoomId);
+    updateDoc(roomRef, {
+      lastMessage: {
+        type: messType,
+        text: messText,
+        uid,
+        displayName: currentUser.displayName,
+        createAt: serverTimestamp(),
+      },
+    }).catch((error) => {
+      console.error(error);
+    });
+  };
+
   // Date time format
   const formatDate = (createAt) => {
     const time = {
@@ -314,6 +357,7 @@ function AppProvider({ children }) {
         rooms,
         members,
         users,
+        sendMessage,
         isAddRoomVisible,
         setIsAddRoomVisible,
         selectedRoomId,
