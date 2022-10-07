@@ -157,12 +157,18 @@ function RoomOptions({ messages, activeTime }) {
   }, [selectedRoom, visibleAdmin]);
 
   // Xử lý thêm admin
-  const handleAddAdmin = (userId) => {
+  const handleAddAdmin = (userId, userName) => {
     if (admins.includes(uid)) {
       const roomRef = doc(db, "rooms", selectedRoomId);
-
       updateDoc(roomRef, {
         admins: arrayUnion(userId),
+      }).then(() => {
+        sendMessage(
+          `đã chỉ định ${userName} làm quản trị viên`,
+          null,
+          null,
+          "@roomnotify"
+        );
       });
 
       // Có tác dụng cập nhật hiển thị lên admin
@@ -230,6 +236,8 @@ function RoomOptions({ messages, activeTime }) {
           updateDoc(roomRef, {
             photoURL: url,
             fullPath: fullPath,
+          }).then(() => {
+            sendMessage("đã thay đổi ảnh nhóm", null, null, "@roomnotify");
           });
         });
       } else {
@@ -429,7 +437,7 @@ function RoomOptions({ messages, activeTime }) {
                       ) : (
                         <li
                           onClick={() => {
-                            handleAddAdmin(member.uid);
+                            handleAddAdmin(member.uid, member.displayName);
                           }}
                           className={cx("tooltips-menu-item")}
                         >

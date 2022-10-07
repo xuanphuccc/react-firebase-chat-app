@@ -21,6 +21,7 @@ function ChangeRoomName() {
     selectedRoomId,
     isOpenChangeRoomName,
     setIsOpenChangeRoomName,
+    sendMessage,
   } = useContext(AppContext);
 
   // Handle change room name
@@ -29,7 +30,18 @@ function ChangeRoomName() {
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
         name: inputValue.trim(),
-      });
+      })
+        .then(() => {
+          sendMessage(
+            `đã đặt tên nhóm là ${inputValue.trim()}`,
+            null,
+            null,
+            "@roomnotify"
+          );
+        })
+        .catch((error) => {
+          console.error(error);
+        });
 
       setIsOpenChangeRoomName(false);
     }

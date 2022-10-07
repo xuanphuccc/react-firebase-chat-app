@@ -21,6 +21,7 @@ function CustomNickname() {
     members,
     isOpenCustomNickname,
     setIsOpenCustomNickname,
+    sendMessage,
   } = useContext(AppContext);
 
   const [showInput, setShowInput] = useState("");
@@ -52,7 +53,7 @@ function CustomNickname() {
   }, [selectedRoom, members]);
 
   // Handle change nickname
-  const handleOnSubmit = (userId) => {
+  const handleOnSubmit = (userId, userName) => {
     const prevNickname = selectedRoom.roomNicknames.find(
       (nickname) => nickname.uid === userId
     );
@@ -70,7 +71,14 @@ function CustomNickname() {
         updateDoc(roomRef, {
           roomNicknames: newRoomNicknames,
         })
-          .then(() => {})
+          .then(() => {
+            sendMessage(
+              `đã đặt biệt danh của ${userName} là ${inputValue.trim()}`,
+              null,
+              null,
+              "@roomnotify"
+            );
+          })
           .catch((error) => {
             console.log(error);
           });
@@ -79,7 +87,12 @@ function CustomNickname() {
           roomNicknames: newRoomNicknames,
         })
           .then(() => {
-            console.log(`đã xóa biệt danh của ${prevNickname.nickname}`);
+            sendMessage(
+              `đã xóa biệt danh của ${prevNickname.nickname || userName}`,
+              null,
+              null,
+              "@roomnotify"
+            );
           })
           .catch((error) => {
             console.log(error);
@@ -161,7 +174,7 @@ function CustomNickname() {
                     ref={submitBtnRef}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleOnSubmit(user.uid);
+                      handleOnSubmit(user.uid, user.displayName);
                     }}
                     className={cx("icon-item")}
                   >

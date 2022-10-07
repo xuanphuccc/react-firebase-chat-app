@@ -74,11 +74,6 @@ function RoomList() {
     }
 
     if (!userName || !message) {
-      console.log("last message:" + room.name, {
-        userName,
-        message,
-        lastMessage,
-      });
       return "Bắt đầu đoạn chat";
     }
 
