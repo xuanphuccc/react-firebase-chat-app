@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&display=swap");
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 :root {
   --primary: rgba(254, 44, 85, 1);
   --background: #fff;
@@ -47,6 +49,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 /* Track */
@@ -83,6 +86,7 @@ body {
 
 button {
   font-family: "Be Vietnam Pro", sans-serif;
+
   border: none;
   outline: none;
 }

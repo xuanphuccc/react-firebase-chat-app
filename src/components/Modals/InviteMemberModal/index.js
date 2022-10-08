@@ -1,17 +1,18 @@
 import classNames from "classnames/bind";
 import styles from "./InviteMemberModal.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { useState, useContext, useEffect, useMemo, useRef } from "react";
 
 import { AppContext } from "../../../Context/AppProvider";
+import { AuthContext } from "../../../Context/AuthProvider";
 
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 
 import Modal from "../Modal";
-import { AuthContext } from "../../../Context/AuthProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
 const cx = classNames.bind(styles);
 
 function InviteMemberModal() {
@@ -79,6 +80,7 @@ function InviteMemberModal() {
   const handleCancel = () => {
     setInputValue("");
     setIsInviteMemberVisible(false);
+    setSelectedUsers([]);
   };
 
   // Find user when typing
@@ -121,6 +123,17 @@ function InviteMemberModal() {
     });
   };
 
+  // Render selected users
+  const renderSelectedUsers = useMemo(() => {
+    let validUsers;
+    if (users && selectedUsers) {
+      validUsers = users.map((user) => {
+        return selectedUsers.includes(user.uid) && user;
+      });
+    }
+    return validUsers.filter((user) => user !== false);
+  }, [selectedUsers, users]);
+
   // Focus input when open
   useEffect(() => {
     inputRef.current.focus();
@@ -150,6 +163,29 @@ function InviteMemberModal() {
             value={inputValue}
           />
         </div>
+
+        <ul className={cx("users-choosing")}>
+          {renderSelectedUsers.map((user) => (
+            <li className={cx("users-choosing_item")}>
+              <div className={cx("user-img-wrap")}>
+                <img
+                  className={cx("users-choosing_img")}
+                  src={user.photoURL}
+                  alt=""
+                />
+                <span
+                  onClick={() => {
+                    handleCheckedUsers(user.uid);
+                  }}
+                  className={cx("users-choosing_remove")}
+                >
+                  <FontAwesomeIcon icon={faXmark} />
+                </span>
+              </div>
+              <h4 className={cx("users-choosing_name")}>{user.displayName}</h4>
+            </li>
+          ))}
+        </ul>
 
         <ul className={cx("users-list")}>
           {searchUsers.length > 0 ? (

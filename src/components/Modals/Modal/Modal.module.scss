@@ -38,7 +38,7 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  min-width: 548px;
+  width: 548px;
   min-height: 170px;
   background-color: var(--background);
   border: 1px solid var(--box-border-color);
@@ -52,7 +52,6 @@
   animation: showModal 0.4s ease forwards;
 
   &.isMobile {
-    min-width: 160px;
     width: 96vw;
   }
 }
