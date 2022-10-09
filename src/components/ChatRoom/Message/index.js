@@ -3,10 +3,10 @@ import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Context/AuthProvider";
 import { AppContext } from "../../../Context/AppProvider";
@@ -41,6 +41,9 @@ function Message({ message, messageIndex, messagesLength }) {
   const [isHasIcon, setIsHasIcon] = useState(false);
   const [activeIcon, setActiveIcon] = useState("");
   const [isVisibleReactionsModal, setIsVisibleReactionsModal] = useState(false);
+  const [isPlay, setIsPlay] = useState(false);
+
+  const videoRef = useRef();
 
   const navigate = useNavigate();
 
@@ -86,6 +89,39 @@ function Message({ message, messageIndex, messagesLength }) {
     };
   }, [navigate, setSelectedPhoto]);
 
+  //
+  useEffect(() => {
+    const handlePlay = () => {
+      videoRef.current.play();
+      videoRef.current.setAttribute("controls", "controls");
+    };
+
+    const handlePauseVisible = () => {
+      setIsPlay(false);
+    };
+    const handlePlayVisible = () => {
+      setIsPlay(true);
+    };
+
+    const handleRemoveControls = () => {
+      videoRef.current.removeAttribute("controls");
+    };
+    if (videoRef.current) {
+      const videoTag = videoRef.current;
+      videoTag.addEventListener("mouseover", handlePlay);
+      videoTag.addEventListener("mouseleave", handleRemoveControls);
+      videoTag.addEventListener("pause", handlePauseVisible);
+      videoTag.addEventListener("play", handlePlayVisible);
+
+      return () => {
+        videoTag.removeEventListener("mouseover", handlePlay);
+        videoTag.removeEventListener("mouseleave", handleRemoveControls);
+        videoTag.removeEventListener("pause", handlePauseVisible);
+        videoTag.addEventListener("play", handlePlayVisible);
+      };
+    }
+  }, []);
+
   // Handle display message
   const renderMessageContent = useMemo(() => {
     if (type === "@unsentmsg") {
@@ -100,6 +136,15 @@ function Message({ message, messageIndex, messagesLength }) {
           src={messagePhotoURL}
           alt=""
         />
+      );
+    } else if (type === "@video") {
+      return (
+        <video
+          ref={videoRef}
+          className={cx("message-video")}
+          src={messagePhotoURL}
+          muted="muted"
+        ></video>
       );
     } else if (type === "@sticker") {
       return (
@@ -225,6 +270,13 @@ function Message({ message, messageIndex, messagesLength }) {
             >
               {renderMessageContent}
             </Tippy>
+
+            {!isPlay && type === "@video" && (
+              <span className={cx("message-video-play-icon")}>
+                <FontAwesomeIcon icon={faCirclePlay} />
+              </span>
+            )}
+
             <div onClick={handleToggleReactionsModal}>
               {isHasIcon && <ReactionsIcon reactions={reactions} />}
             </div>

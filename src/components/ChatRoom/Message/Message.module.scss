@@ -196,6 +196,31 @@
   }
 }
 
+.message-video {
+  max-width: 280px;
+  max-width: 280px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: all 0.1s ease;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+}
+
+.message-video-play-icon {
+  position: absolute;
+  display: flex;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6rem;
+  background-color: #fff;
+  border-radius: 999px;
+  opacity: 0.4;
+}
+
 .sticker-photo {
   width: 100px;
   height: 100px;

@@ -4,6 +4,7 @@ import {
   faPaperPlane,
   faImage,
   faXmark,
+  faCirclePlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
@@ -21,13 +22,13 @@ import StickerModal from "../../Modals/StickerModal";
 
 const cx = classNames.bind(styles);
 
-function MessagesForm({ roomId }) {
+function MessagesForm({ roomId, setMuted }) {
   const { setAlertVisible, setAlertContent, sendMessage } =
     useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
-  const [previewImageInput, setPreviewImageInput] = useState();
+  const [fileUpload, setFileUpload] = useState(null);
+  const [previewFileInput, setPreviewFileInput] = useState();
 
   const inputRef = useRef();
   const imageInputRef = useRef();
@@ -39,15 +40,31 @@ function MessagesForm({ roomId }) {
 
   // Handle image input change and file size limit
   const handleImageInput = (e) => {
-    console.log("image type: ", e.target.files[0].type);
     if (
       e.target.files[0].size <= 25000000 &&
       e.target.files[0].type.includes("image")
     ) {
-      setImageUpload(e.target.files[0]);
-      setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
+      setFileUpload(e.target.files[0]);
+      setPreviewFileInput({
+        type: "@image",
+        data: URL.createObjectURL(e.target.files[0]),
+      });
       inputRef.current.focus();
-    } else if (!e.target.files[0].type.includes("image")) {
+    } else if (e.target.files[0].type.includes("video")) {
+      setFileUpload(e.target.files[0]);
+      setPreviewFileInput({
+        type: "@video",
+        data: URL.createObjectURL(e.target.files[0]),
+      });
+      inputRef.current.focus();
+    } else if (e.target.files[0].size > 25000000) {
+      setAlertVisible(true);
+      setAlertContent({
+        title: "Không tải tệp lên được",
+        description: "File bạn đã chọn quá lớn. Kích thước file tối đa là 25MB",
+      });
+      imageInputRef.current.value = "";
+    } else {
       setAlertVisible(true);
       setAlertContent({
         title: "Không tải tệp lên được",
@@ -55,28 +72,41 @@ function MessagesForm({ roomId }) {
           "File bạn đã chọn không phù hợp. Hiện tại chưa hỗ trợ định dạng này.",
       });
       imageInputRef.current.value = "";
-    } else {
-      setAlertVisible(true);
-      setAlertContent({
-        title: "Không tải tệp lên được",
-        description: "File bạn đã chọn quá lớn. Kích thước file tối đa là 25MB",
-      });
-      imageInputRef.current.value = "";
     }
   };
 
   // Handle send messages (text, image)
   const handleOnSubmit = () => {
-    if (imageUpload) {
-      uploadFile(imageUpload, `images/chat_room/${roomId}`, (url, fullPath) => {
-        if (inputValue.trim()) {
-          // Send text
-          sendMessage(inputValue, null, null, "@text");
-        }
+    if (fileUpload) {
+      if (fileUpload.type.includes("image")) {
+        uploadFile(
+          fileUpload,
+          `images/chat_room/${roomId}`,
+          (url, fullPath) => {
+            if (inputValue.trim()) {
+              // Send text
+              sendMessage(inputValue, null, null, "@text");
+            }
 
-        // Send image
-        sendMessage("Photo", url, fullPath, "@image");
-      });
+            // Send image
+            sendMessage("Photo", url, fullPath, "@image");
+          }
+        );
+      } else if (fileUpload.type.includes("video")) {
+        uploadFile(
+          fileUpload,
+          `videos/chat_room/${roomId}`,
+          (url, fullPath) => {
+            if (inputValue.trim()) {
+              // Send text
+              sendMessage(inputValue, null, null, "@text");
+            }
+
+            // Send video
+            sendMessage("Photo", url, fullPath, "@video");
+          }
+        );
+      }
     } else if (inputValue) {
       // Send text only
       sendMessage(inputValue, null, null, "@text");
@@ -85,6 +115,7 @@ function MessagesForm({ roomId }) {
     // Clear input, preview and focus input again
     handleClearPreview();
     setInputValue("");
+    setMuted(false);
   };
 
   // Send icon only
@@ -103,8 +134,8 @@ function MessagesForm({ roomId }) {
 
   // Clear preview
   const handleClearPreview = () => {
-    setImageUpload(null);
-    setPreviewImageInput("");
+    setFileUpload(null);
+    setPreviewFileInput("");
     //clear input
     imageInputRef.current.value = "";
     inputRef.current.focus();
@@ -118,7 +149,7 @@ function MessagesForm({ roomId }) {
           className={cx("media_input-image")}
           onChange={handleImageInput}
           type="file"
-          accept="image/*"
+          accept="image/*, video/*"
           name=""
           id=""
         />
@@ -143,17 +174,35 @@ function MessagesForm({ roomId }) {
       </div>
 
       <div className={cx("message-form_input-wrap")}>
-        {previewImageInput && (
+        {previewFileInput && (
           <div className={cx("media-preview")}>
-            <div className={cx("media-preview-img-wrap")}>
-              <img
-                className={cx("media-preview-img")}
-                src={previewImageInput}
-                alt=""
-              />
+            <div className={cx("media-preview-file-wrap")}>
+              {previewFileInput.type === "@image" && (
+                <img
+                  className={cx("media-preview-file")}
+                  src={previewFileInput.data}
+                  alt=""
+                />
+              )}
+
+              {previewFileInput.type === "@video" && (
+                <video
+                  className={cx("media-preview-file")}
+                  src={previewFileInput.data}
+                  width="50"
+                  height="50"
+                ></video>
+              )}
+
+              {previewFileInput.type === "@video" && (
+                <span className={cx("play-preview-file-btn")}>
+                  <FontAwesomeIcon icon={faCirclePlay} />
+                </span>
+              )}
+
               <button
                 onClick={handleClearPreview}
-                className={cx("remove-preview-img-btn")}
+                className={cx("remove-preview-file-btn")}
               >
                 <FontAwesomeIcon icon={faXmark} />
               </button>
@@ -170,18 +219,10 @@ function MessagesForm({ roomId }) {
           placeholder="Aa"
           className={cx("message-form_input")}
         />
-
-        {/* <div
-                  ref={inputRef}
-                  onChange={handleInputChange}
-                  spellCheck="false"
-                  contentEditable="true"
-                  className={cx("message-form_input")}
-                ></div> */}
       </div>
 
       <div className={cx("button-wrap")}>
-        {inputValue.trim() || imageUpload ? (
+        {inputValue.trim() || fileUpload ? (
           <button
             onClick={handleOnSubmit}
             className={cx("message-form_btn", "btn", "rounded")}

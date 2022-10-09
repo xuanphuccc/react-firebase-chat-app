@@ -70,6 +70,9 @@ function RoomList() {
       case "@image":
         message = "đã gửi một ảnh";
         break;
+      case "@video":
+        message = "đã gửi một video";
+        break;
       default:
     }
 

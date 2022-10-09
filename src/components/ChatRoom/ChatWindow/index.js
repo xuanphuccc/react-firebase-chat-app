@@ -38,6 +38,7 @@ function ChatWindow({ roomId }) {
   } = useContext(AppContext);
 
   const [currentMessage, setCurrentMessage] = useState("");
+  const [isMutedSound, setIsMutedSound] = useState(true);
 
   const mesListRef = useRef();
   const LastMesListRef = useRef();
@@ -82,8 +83,13 @@ function ChatWindow({ roomId }) {
   useEffect(() => {
     const audio = new Audio(messageSound);
     audio.volume = 0.5;
-    audio.play();
-  }, [currentMessage.id]);
+    if (isMutedSound) {
+      audio.muted = true;
+    } else {
+      audio.muted = false;
+      audio.play();
+    }
+  }, [currentMessage.id, isMutedSound]);
 
   // Handle scroll when have new message
   useEffect(() => {
@@ -252,7 +258,7 @@ function ChatWindow({ roomId }) {
 
             {/*=========== Message Form ===========*/}
             <div className={cx("messages-form-wrapper")}>
-              <MessagesForm roomId={roomId} />
+              <MessagesForm roomId={roomId} setMuted={setIsMutedSound} />
             </div>
           </div>
           {isRoomMenuVisible && (
