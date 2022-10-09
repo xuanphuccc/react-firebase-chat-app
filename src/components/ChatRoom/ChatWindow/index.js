@@ -44,6 +44,7 @@ function ChatWindow({ roomId }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isMutedSound, setIsMutedSound] = useState(true);
   const [isScrollToBottom, setIsScrollToBottom] = useState(false);
+  const [nowPlaying, setNowPlaying] = useState();
 
   const mesListRef = useRef();
   const LastMesListRef = useRef();
@@ -281,6 +282,8 @@ function ChatWindow({ roomId }) {
                     message={message}
                     messageIndex={index}
                     messagesLength={sideBySideMessages.length}
+                    nowPlaying={nowPlaying}
+                    setNowPlaying={setNowPlaying}
                   />
                 );
               })}

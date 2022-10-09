@@ -6,7 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 
-import { useContext, useEffect, useMemo, useState, useRef } from "react";
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Context/AuthProvider";
 import { AppContext } from "../../../Context/AppProvider";
@@ -20,7 +27,13 @@ import ReactionsModal from "../../Modals/ReactionsModal";
 
 const cx = classNames.bind(styles);
 
-function Message({ message, messageIndex, messagesLength }) {
+function Message({
+  message,
+  messageIndex,
+  messagesLength,
+  nowPlaying,
+  setNowPlaying,
+}) {
   const {
     id,
     text: content,
@@ -89,11 +102,21 @@ function Message({ message, messageIndex, messagesLength }) {
     };
   }, [navigate, setSelectedPhoto]);
 
-  //
-  const handlePlay = () => {
+  // Handle Play Video
+  const handlePlay = useCallback(() => {
+    setNowPlaying(id);
     videoRef.current.play();
     videoRef.current.setAttribute("controls", "controls");
+  }, [id, setNowPlaying]);
+
+  const handlePause = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.removeAttribute("controls");
+    }
   };
+
+  console.log("render messages");
 
   const handlePauseVisible = () => {
     setIsPlay(false);
@@ -105,6 +128,13 @@ function Message({ message, messageIndex, messagesLength }) {
   const handleRemoveControls = () => {
     videoRef.current.removeAttribute("controls");
   };
+
+  useEffect(() => {
+    if (nowPlaying !== id) {
+      handlePause();
+    }
+  }, [nowPlaying, id]);
+
   useEffect(() => {
     if (videoRef.current) {
       const videoTag = videoRef.current;
@@ -120,7 +150,7 @@ function Message({ message, messageIndex, messagesLength }) {
         videoTag.addEventListener("play", handlePlayVisible);
       };
     }
-  }, []);
+  }, [handlePlay]);
 
   // Handle display message
   const renderMessageContent = useMemo(() => {
