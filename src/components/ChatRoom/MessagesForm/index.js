@@ -39,15 +39,15 @@ function MessagesForm({ roomId }) {
 
   // Handle image input change and file size limit
   const handleImageInput = (e) => {
-    console.log("file: ", e.target.files[0]);
+    console.log("image type: ", e.target.files[0].type);
     if (
       e.target.files[0].size <= 25000000 &&
-      e.target.files[0].type === "image"
+      e.target.files[0].type.includes("image")
     ) {
       setImageUpload(e.target.files[0]);
       setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
       inputRef.current.focus();
-    } else if (e.target.files[0].type !== "image") {
+    } else if (!e.target.files[0].type.includes("image")) {
       setAlertVisible(true);
       setAlertContent({
         title: "Không tải tệp lên được",
