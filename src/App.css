@@ -9,6 +9,7 @@
   --light-gray: #F3F3F5;
   --gray: #E4E6EB;
   --message-gray: #E4E6EB;
+  --white-light-gray: #FFF;
 
   --medium-gray: #BCC0C4; /*not change*/
   --text-gray: #65676B; /*not change*/
@@ -33,6 +34,7 @@
   --light-gray: #3A3B3C;
   --gray: #767677;
   --message-gray: #3A3B3C;
+  --white-light-gray: #3A3B3C;
 
 
   --overlay: rgba(0, 0, 0, 0.6);

@@ -3,7 +3,11 @@ import styles from "./ChatWindow.module.scss";
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faArrowDown,
+  faEllipsisH,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
 import { AppContext } from "../../../Context/AppProvider";
@@ -93,13 +97,16 @@ function ChatWindow({ roomId }) {
   }, [currentMessage.id, isMutedSound]);
 
   // Handle scroll when have new message
+  const handleScrollToBottom = () => {
+    mesListRef.current.scrollTo({
+      top: mesListRef.current.scrollHeight,
+      left: 0,
+      behavior: "instant",
+    });
+  };
   useEffect(() => {
     if (mesListRef.current) {
-      mesListRef.current.scrollTo({
-        top: mesListRef.current.scrollHeight,
-        left: 0,
-        behavior: "instant",
-      });
+      handleScrollToBottom();
     }
   }, [currentMessage.id, roomId]);
 
@@ -108,16 +115,22 @@ function ChatWindow({ roomId }) {
       const mesListRefNew = mesListRef.current;
 
       const handleToggleScrollBottom = () => {
-        console.log({
-          scrollTop: mesListRef.current.scrollTop,
-          scrollHeight: mesListRef.current.scrollHeight,
-          clientHeight: mesListRef.current.clientHeight,
-        });
+        const scrollTop = mesListRef.current.scrollTop;
+        const scrollHeight = mesListRef.current.scrollHeight;
+        const clientHeight = mesListRef.current.clientHeight;
+
+        if (scrollTop < scrollHeight - clientHeight - 60) {
+          setIsScrollToBottom(true);
+        } else {
+          setIsScrollToBottom(false);
+        }
       };
 
       mesListRefNew.addEventListener("scroll", handleToggleScrollBottom);
 
-      return () => {};
+      return () => {
+        mesListRefNew.removeEventListener("scroll", handleToggleScrollBottom);
+      };
     }
   }, []);
 
@@ -274,6 +287,17 @@ function ChatWindow({ roomId }) {
 
               <span ref={LastMesListRef}></span>
             </div>
+
+            {isScrollToBottom && (
+              <button
+                onClick={() => {
+                  handleScrollToBottom();
+                }}
+                className={cx("message-list_to-bottom-btn")}
+              >
+                <FontAwesomeIcon icon={faArrowDown} />
+              </button>
+            )}
 
             {/*=========== Message Form ===========*/}
             <div className={cx("messages-form-wrapper")}>

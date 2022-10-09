@@ -8,6 +8,7 @@
 }
 
 .chat-window {
+  position: relative;
   flex: 1;
   height: 100%;
   display: flex;
@@ -102,4 +103,37 @@
   padding-bottom: 24px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.message-list_to-bottom-btn {
+  position: absolute;
+  z-index: 0;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  font-size: 1.8rem;
+  color: var(--primary);
+  border-radius: 999px;
+  background-color: var(--white-light-gray);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  animation: bottomToTop 0.2s ease forwards;
+
+  &:hover {
+    background-color: var(--gray);
+  }
+}
+
+@keyframes bottomToTop {
+  from {
+    bottom: 60px;
+  }
+  to {
+    bottom: 80px;
+  }
 }
