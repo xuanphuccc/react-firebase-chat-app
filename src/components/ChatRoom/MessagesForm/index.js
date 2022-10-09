@@ -39,10 +39,22 @@ function MessagesForm({ roomId }) {
 
   // Handle image input change and file size limit
   const handleImageInput = (e) => {
-    if (e.target.files[0].size <= 25000000) {
+    console.log("file: ", e.target.files[0]);
+    if (
+      e.target.files[0].size <= 25000000 &&
+      e.target.files[0].type === "image"
+    ) {
       setImageUpload(e.target.files[0]);
       setPreviewImageInput(URL.createObjectURL(e.target.files[0]));
       inputRef.current.focus();
+    } else if (e.target.files[0].type !== "image") {
+      setAlertVisible(true);
+      setAlertContent({
+        title: "Không tải tệp lên được",
+        description:
+          "File bạn đã chọn không phù hợp. Hiện tại chưa hỗ trợ định dạng này.",
+      });
+      imageInputRef.current.value = "";
     } else {
       setAlertVisible(true);
       setAlertContent({
