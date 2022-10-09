@@ -116,8 +116,6 @@ function Message({
     }
   };
 
-  console.log("render messages");
-
   const handlePauseVisible = () => {
     setIsPlay(false);
   };

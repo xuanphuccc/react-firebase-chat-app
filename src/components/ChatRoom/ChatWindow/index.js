@@ -24,6 +24,7 @@ import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
 import MessagesForm from "../MessagesForm";
 import NotifiMessage from "../NotifiMessage";
+import MessagesList from "../MessagesList";
 
 // import { doc, updateDoc } from "firebase/firestore";
 // import { db } from "../../../firebase/config";
@@ -44,7 +45,6 @@ function ChatWindow({ roomId }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isMutedSound, setIsMutedSound] = useState(true);
   const [isScrollToBottom, setIsScrollToBottom] = useState(false);
-  const [nowPlaying, setNowPlaying] = useState();
 
   const mesListRef = useRef();
   const LastMesListRef = useRef();
@@ -271,23 +271,7 @@ function ChatWindow({ roomId }) {
             {/*=========== Message List ===========*/}
 
             <div ref={mesListRef} className={cx("message-list")}>
-              {sideBySideMessages.map((message, index) => {
-                if (message.type === "@roomnotify") {
-                  return <NotifiMessage key={message.id} message={message} />;
-                }
-
-                return (
-                  <Message
-                    key={message.id}
-                    message={message}
-                    messageIndex={index}
-                    messagesLength={sideBySideMessages.length}
-                    nowPlaying={nowPlaying}
-                    setNowPlaying={setNowPlaying}
-                  />
-                );
-              })}
-
+              <MessagesList sideBySideMessages={sideBySideMessages} />
               <span ref={LastMesListRef}></span>
             </div>
 
@@ -296,7 +280,7 @@ function ChatWindow({ roomId }) {
                 onClick={() => {
                   handleScrollToBottom();
                 }}
-                className={cx("message-list_to-bottom-btn")}
+                className={cx("to-bottom-btn")}
               >
                 <FontAwesomeIcon icon={faArrowDown} />
               </button>
