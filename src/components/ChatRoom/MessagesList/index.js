@@ -5,6 +5,7 @@ import NotifiMessage from "../NotifiMessage";
 
 function MessagesList({ sideBySideMessages }) {
   const [nowPlaying, setNowPlaying] = useState();
+
   return (
     <>
       {sideBySideMessages.map((message, index) => {

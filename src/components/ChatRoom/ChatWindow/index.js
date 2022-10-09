@@ -14,16 +14,13 @@ import { AppContext } from "../../../Context/AppProvider";
 
 import useFirestore from "../../../hooks/useFirestore";
 
-import Message from "../Message";
-import RoomOptions from "../RoomOptions";
-
 import messageSound from "../../../assets/sounds/message.wav";
 import placeHolderImg from "../../../assets/images/user.png";
 
+import RoomOptions from "../RoomOptions";
 import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
 import MessagesForm from "../MessagesForm";
-import NotifiMessage from "../NotifiMessage";
 import MessagesList from "../MessagesList";
 
 // import { doc, updateDoc } from "firebase/firestore";
@@ -45,6 +42,7 @@ function ChatWindow({ roomId }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isMutedSound, setIsMutedSound] = useState(true);
   const [isScrollToBottom, setIsScrollToBottom] = useState(false);
+  const [totalLoadingMessages, setTotalLoadingMessages] = useState(10);
 
   const mesListRef = useRef();
   const LastMesListRef = useRef();
@@ -78,7 +76,7 @@ function ChatWindow({ roomId }) {
     [rooms, roomId]
   );
 
-  // Play sound when have new messag
+  // Play sound when have new message
   useEffect(() => {
     if (messages.length) {
       const messagesLength = messages.length;
@@ -145,9 +143,39 @@ function ChatWindow({ roomId }) {
   //   }
   // }, [currentMessage.id]);
 
+  // Handle load more messages
+  useEffect(() => {
+    if (mesListRef.current) {
+      const mesListRefNew = mesListRef.current;
+      const handleLoadMoreMessages = () => {
+        const scrollTop = mesListRef.current.scrollTop;
+        if (scrollTop === 0) {
+          setTotalLoadingMessages((prev) => {
+            if (prev < messages.length - 11) {
+              return prev + 10;
+            } else return prev;
+          });
+
+          mesListRef.current.scrollTo({
+            top: mesListRef.current.scrollTop + 50,
+            left: 0,
+            behavior: "instant",
+          });
+        }
+      };
+
+      mesListRefNew.addEventListener("scroll", handleLoadMoreMessages);
+
+      return () => {
+        mesListRefNew.removeEventListener("scroll", handleLoadMoreMessages);
+      };
+    }
+  }, [messages.length]);
+
   // Handle side by side messages with the same sender
   const sideBySideMessages = useMemo(() => {
-    const newMessages = [...messages];
+    // const newMessages = [...messages];
+    const newMessages = messages.slice(messages.length - totalLoadingMessages);
 
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
@@ -186,7 +214,7 @@ function ChatWindow({ roomId }) {
       newMessages[0].posType = "default";
     }
     return newMessages;
-  }, [messages]);
+  }, [messages, totalLoadingMessages]);
 
   const findRoomActive = (roomId) => {
     const roomActive = roomsActiveStatus.find(
