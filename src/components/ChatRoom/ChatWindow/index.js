@@ -39,6 +39,7 @@ function ChatWindow({ roomId }) {
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [isMutedSound, setIsMutedSound] = useState(true);
+  const [isScrollToBottom, setIsScrollToBottom] = useState(false);
 
   const mesListRef = useRef();
   const LastMesListRef = useRef();
@@ -101,6 +102,24 @@ function ChatWindow({ roomId }) {
       });
     }
   }, [currentMessage.id, roomId]);
+
+  useEffect(() => {
+    if (mesListRef.current) {
+      const mesListRefNew = mesListRef.current;
+
+      const handleToggleScrollBottom = () => {
+        console.log({
+          scrollTop: mesListRef.current.scrollTop,
+          scrollHeight: mesListRef.current.scrollHeight,
+          clientHeight: mesListRef.current.clientHeight,
+        });
+      };
+
+      mesListRefNew.addEventListener("scroll", handleToggleScrollBottom);
+
+      return () => {};
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (LastMesListRef.current) {

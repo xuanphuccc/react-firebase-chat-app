@@ -90,22 +90,22 @@ function Message({ message, messageIndex, messagesLength }) {
   }, [navigate, setSelectedPhoto]);
 
   //
+  const handlePlay = () => {
+    videoRef.current.play();
+    videoRef.current.setAttribute("controls", "controls");
+  };
+
+  const handlePauseVisible = () => {
+    setIsPlay(false);
+  };
+  const handlePlayVisible = () => {
+    setIsPlay(true);
+  };
+
+  const handleRemoveControls = () => {
+    videoRef.current.removeAttribute("controls");
+  };
   useEffect(() => {
-    const handlePlay = () => {
-      videoRef.current.play();
-      videoRef.current.setAttribute("controls", "controls");
-    };
-
-    const handlePauseVisible = () => {
-      setIsPlay(false);
-    };
-    const handlePlayVisible = () => {
-      setIsPlay(true);
-    };
-
-    const handleRemoveControls = () => {
-      videoRef.current.removeAttribute("controls");
-    };
     if (videoRef.current) {
       const videoTag = videoRef.current;
       videoTag.addEventListener("mouseover", handlePlay);
@@ -272,7 +272,10 @@ function Message({ message, messageIndex, messagesLength }) {
             </Tippy>
 
             {!isPlay && type === "@video" && (
-              <span className={cx("message-video-play-icon")}>
+              <span
+                onClick={handlePlay}
+                className={cx("message-video-play-icon")}
+              >
                 <FontAwesomeIcon icon={faCirclePlay} />
               </span>
             )}
