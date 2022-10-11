@@ -42,7 +42,6 @@ function ChatWindow({ roomId }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isMutedSound, setIsMutedSound] = useState(true);
   const [isScrollToBottom, setIsScrollToBottom] = useState(false);
-  const [totalLoadingMessages, setTotalLoadingMessages] = useState(10);
 
   const mesListRef = useRef();
   const LastMesListRef = useRef();
@@ -95,30 +94,30 @@ function ChatWindow({ roomId }) {
     }
   }, [currentMessage.id, isMutedSound]);
 
-  // Handle scroll when have new message
+  // Handle scroll
   const handleScrollToBottom = () => {
     mesListRef.current.scrollTo({
-      top: mesListRef.current.scrollHeight,
+      top: 0,
       left: 0,
-      behavior: "instant",
+      behavior: "smooth",
     });
+    // instant
   };
-  useEffect(() => {
-    if (mesListRef.current) {
-      handleScrollToBottom();
-    }
-  }, [currentMessage.id, roomId]);
+  // useEffect(() => {
+  //   if (mesListRef.current) {
+  //     handleScrollToBottom();
+  //   }
+  // }, [currentMessage.id, roomId]);
 
+  // Handle toggle show scroll to bottom button
   useEffect(() => {
     if (mesListRef.current) {
       const mesListRefNew = mesListRef.current;
 
       const handleToggleScrollBottom = () => {
         const scrollTop = mesListRef.current.scrollTop;
-        const scrollHeight = mesListRef.current.scrollHeight;
-        const clientHeight = mesListRef.current.clientHeight;
 
-        if (scrollTop < scrollHeight - clientHeight - 60) {
+        if (scrollTop < -60) {
           setIsScrollToBottom(true);
         } else {
           setIsScrollToBottom(false);
@@ -143,39 +142,11 @@ function ChatWindow({ roomId }) {
   //   }
   // }, [currentMessage.id]);
 
-  // Handle load more messages
-  useEffect(() => {
-    if (mesListRef.current) {
-      const mesListRefNew = mesListRef.current;
-      const handleLoadMoreMessages = () => {
-        const scrollTop = mesListRef.current.scrollTop;
-        if (scrollTop === 0) {
-          setTotalLoadingMessages((prev) => {
-            if (prev < messages.length - 11) {
-              return prev + 10;
-            } else return prev;
-          });
-
-          mesListRef.current.scrollTo({
-            top: mesListRef.current.scrollTop + 50,
-            left: 0,
-            behavior: "instant",
-          });
-        }
-      };
-
-      mesListRefNew.addEventListener("scroll", handleLoadMoreMessages);
-
-      return () => {
-        mesListRefNew.removeEventListener("scroll", handleLoadMoreMessages);
-      };
-    }
-  }, [messages.length]);
-
   // Handle side by side messages with the same sender
   const sideBySideMessages = useMemo(() => {
     // const newMessages = [...messages];
-    const newMessages = messages.slice(messages.length - totalLoadingMessages);
+
+    const newMessages = messages.slice(0);
 
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
@@ -213,9 +184,11 @@ function ChatWindow({ roomId }) {
     } else if (newMessages.length === 1) {
       newMessages[0].posType = "default";
     }
-    return newMessages;
-  }, [messages, totalLoadingMessages]);
+    return newMessages.reverse();
+    // return newMessages;
+  }, [messages]);
 
+  // Room active status
   const findRoomActive = (roomId) => {
     const roomActive = roomsActiveStatus.find(
       (roomActive) => roomActive.roomId === roomId
@@ -299,7 +272,12 @@ function ChatWindow({ roomId }) {
             {/*=========== Message List ===========*/}
 
             <div ref={mesListRef} className={cx("message-list")}>
-              <MessagesList sideBySideMessages={sideBySideMessages} />
+              {sideBySideMessages.length > 0 && (
+                <MessagesList
+                  roomId={roomId}
+                  sideBySideMessages={sideBySideMessages}
+                />
+              )}
               <span ref={LastMesListRef}></span>
             </div>
 
