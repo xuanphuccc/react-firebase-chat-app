@@ -98,6 +98,7 @@
 /*-------------- Message --------------*/
 /* Message list */
 .message-list {
+  position: relative;
   flex: 1;
   // padding-top: 36px;
   // padding-bottom: 24px;
@@ -108,7 +109,7 @@
 .to-bottom-btn {
   position: absolute;
   z-index: 0;
-  bottom: 80px;
+  bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -131,9 +132,9 @@
 
 @keyframes bottomToTop {
   from {
-    bottom: 60px;
+    bottom: 0px;
   }
   to {
-    bottom: 80px;
+    bottom: 32px;
   }
 }

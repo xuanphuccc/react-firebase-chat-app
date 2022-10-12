@@ -1,35 +1,24 @@
+// import classNames from "classnames/bind";
+// import styles from "./MessagesList.module.scss";
+
 import { useState, useEffect, useMemo } from "react";
 
 import Message from "../Message";
 import NotifiMessage from "../NotifiMessage";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-function MessagesList({ sideBySideMessages, roomId }) {
+// const cx = classNames.bind(styles);
+
+function MessagesList({
+  sideBySideMessages,
+  roomId,
+  ref1,
+  setIsScrollToBottom,
+}) {
   const [nowPlaying, setNowPlaying] = useState();
-
-  // return (
-  //   <>
-  //     {sideBySideMessages.map((message, index) => {
-  //       if (message.type === "@roomnotify") {
-  //         return <NotifiMessage key={message.id} message={message} />;
-  //       }
-
-  //       return (
-  //         <Message
-  //           key={message.id}
-  //           message={message}
-  //           messageIndex={index}
-  //           messagesLength={sideBySideMessages.length}
-  //           nowPlaying={nowPlaying}
-  //           setNowPlaying={setNowPlaying}
-  //         />
-  //       );
-  //     })}
-  //   </>
-  // );
-
   const [totalCount, setTotalCount] = useState(20);
 
+  // --------- Handle Scroll Infinite ----------
   useEffect(() => {
     setTotalCount(20);
   }, [roomId]);
@@ -44,8 +33,34 @@ function MessagesList({ sideBySideMessages, roomId }) {
     return sideBySideMessages.slice(0, totalCount);
   }, [totalCount, sideBySideMessages]);
 
+  // --------- Handle Scroll To Bottom ----------
+  // Handle toggle show scroll to bottom button
+  useEffect(() => {
+    if (ref1.current) {
+      const mesListRefNew = ref1.current;
+
+      const handleToggleScrollBottom = () => {
+        const scrollTop = ref1.current.scrollTop;
+
+        if (scrollTop < -60) {
+          setIsScrollToBottom(true);
+        } else {
+          setIsScrollToBottom(false);
+        }
+        console.log("scroll top: ", scrollTop);
+      };
+
+      mesListRefNew.addEventListener("scroll", handleToggleScrollBottom);
+
+      return () => {
+        mesListRefNew.removeEventListener("scroll", handleToggleScrollBottom);
+      };
+    }
+  }, [ref1, setIsScrollToBottom]);
+
   return (
     <div
+      ref={ref1}
       id="scrollableDiv"
       style={{
         height: "100%",

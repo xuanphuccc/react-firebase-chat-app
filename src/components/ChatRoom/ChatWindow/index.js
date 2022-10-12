@@ -23,9 +23,6 @@ import ChangeRoomName from "../../Modals/ChangeRoomName";
 import MessagesForm from "../MessagesForm";
 import MessagesList from "../MessagesList";
 
-// import { doc, updateDoc } from "firebase/firestore";
-// import { db } from "../../../firebase/config";
-
 const cx = classNames.bind(styles);
 
 function ChatWindow({ roomId }) {
@@ -44,7 +41,6 @@ function ChatWindow({ roomId }) {
   const [isScrollToBottom, setIsScrollToBottom] = useState(false);
 
   const mesListRef = useRef();
-  const LastMesListRef = useRef();
 
   // Set room ID (AppContext) when selected room or load
   useEffect(() => {
@@ -94,54 +90,6 @@ function ChatWindow({ roomId }) {
     }
   }, [currentMessage.id, isMutedSound]);
 
-  // Handle scroll
-  const handleScrollToBottom = () => {
-    mesListRef.current.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-    // instant
-  };
-  // useEffect(() => {
-  //   if (mesListRef.current) {
-  //     handleScrollToBottom();
-  //   }
-  // }, [currentMessage.id, roomId]);
-
-  // Handle toggle show scroll to bottom button
-  useEffect(() => {
-    if (mesListRef.current) {
-      const mesListRefNew = mesListRef.current;
-
-      const handleToggleScrollBottom = () => {
-        const scrollTop = mesListRef.current.scrollTop;
-
-        if (scrollTop < -60) {
-          setIsScrollToBottom(true);
-        } else {
-          setIsScrollToBottom(false);
-        }
-      };
-
-      mesListRefNew.addEventListener("scroll", handleToggleScrollBottom);
-
-      return () => {
-        mesListRefNew.removeEventListener("scroll", handleToggleScrollBottom);
-      };
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   if (LastMesListRef.current) {
-  //     LastMesListRef.current.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "center",
-  //       inline: "nearest",
-  //     });
-  //   }
-  // }, [currentMessage.id]);
-
   // Handle side by side messages with the same sender
   const sideBySideMessages = useMemo(() => {
     // const newMessages = [...messages];
@@ -185,7 +133,6 @@ function ChatWindow({ roomId }) {
       newMessages[0].posType = "default";
     }
     return newMessages.reverse();
-    // return newMessages;
   }, [messages]);
 
   // Room active status
@@ -204,15 +151,17 @@ function ChatWindow({ roomId }) {
     }
   };
 
-  // Update format from firestore
-  // useEffect(() => {
-  //   messages.forEach((message) => {
-  //     let messageRef = doc(db, "messages", message.id);
-  //     updateDoc(messageRef, {
-  //       fullPath: "",
-  //     });
-  //   });
-  // }, [messages]);
+  // Handle scroll
+  const handleScrollToBottom = () => {
+    if (mesListRef.current) {
+      mesListRef.current.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+    // instant
+  };
 
   return (
     <>
@@ -271,26 +220,28 @@ function ChatWindow({ roomId }) {
 
             {/*=========== Message List ===========*/}
 
-            <div ref={mesListRef} className={cx("message-list")}>
+            <div className={cx("message-list")}>
               {sideBySideMessages.length > 0 && (
                 <MessagesList
+                  ref1={mesListRef}
                   roomId={roomId}
                   sideBySideMessages={sideBySideMessages}
+                  isScrollToBottom={isScrollToBottom}
+                  setIsScrollToBottom={setIsScrollToBottom}
                 />
               )}
-              <span ref={LastMesListRef}></span>
-            </div>
 
-            {isScrollToBottom && (
-              <button
-                onClick={() => {
-                  handleScrollToBottom();
-                }}
-                className={cx("to-bottom-btn")}
-              >
-                <FontAwesomeIcon icon={faArrowDown} />
-              </button>
-            )}
+              {isScrollToBottom && (
+                <button
+                  onClick={() => {
+                    handleScrollToBottom();
+                  }}
+                  className={cx("to-bottom-btn")}
+                >
+                  <FontAwesomeIcon icon={faArrowDown} />
+                </button>
+              )}
+            </div>
 
             {/*=========== Message Form ===========*/}
             <div className={cx("messages-form-wrapper")}>
