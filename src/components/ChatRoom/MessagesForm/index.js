@@ -148,10 +148,18 @@ function MessagesForm({ roomId, setMuted }) {
     inputRef.current.focus();
   };
 
+  // Focus input when change room
   useEffect(() => {
     handleClearPreview();
     setInputValue("");
   }, [roomId]);
+
+  // Focus input when reply message
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [replyMessage]);
 
   return (
     <div className={cx("messages-form-wrapper")}>
