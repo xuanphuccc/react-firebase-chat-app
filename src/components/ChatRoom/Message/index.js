@@ -217,7 +217,8 @@ function Message({
               ? `Bạn`
               : userInfor.nickname || userInfor.displayName || displayName}
             {` đã trả lời `}
-            {message.reply.uid === uid ? "bạn" : message.reply.displayName}
+            {/* {message.reply.uid === uid ? "bạn" : message.reply.displayName} */}
+            {console.log("reply: ", message.reply)}
           </>
         );
       } else {
