@@ -256,9 +256,7 @@ function ChatWindow({ roomId }) {
             </div>
 
             {/*=========== Message Form ===========*/}
-            <div className={cx("messages-form-wrapper")}>
-              <MessagesForm roomId={roomId} setMuted={setIsMutedSound} />
-            </div>
+            <MessagesForm roomId={roomId} setMuted={setIsMutedSound} />
           </div>
           {isRoomMenuVisible && (
             <div className={cx("room-option")}>

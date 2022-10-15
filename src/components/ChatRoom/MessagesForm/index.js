@@ -23,8 +23,13 @@ import StickerModal from "../../Modals/StickerModal";
 const cx = classNames.bind(styles);
 
 function MessagesForm({ roomId, setMuted }) {
-  const { setAlertVisible, setAlertContent, sendMessage } =
-    useContext(AppContext);
+  const {
+    setAlertVisible,
+    setAlertContent,
+    sendMessage,
+    replyMessage,
+    setReplyMessage,
+  } = useContext(AppContext);
 
   const [inputValue, setInputValue] = useState("");
   const [fileUpload, setFileUpload] = useState(null);
@@ -39,7 +44,7 @@ function MessagesForm({ roomId, setMuted }) {
   };
 
   // Handle image input change and file size limit
-  const handleImageInput = (e) => {
+  const handleFileInput = (e) => {
     if (
       e.target.files[0].size <= 25000000 &&
       e.target.files[0].type.includes("image")
@@ -89,7 +94,7 @@ function MessagesForm({ roomId, setMuted }) {
             }
 
             // Send image
-            sendMessage("Photo", url, fullPath, "@image");
+            sendMessage("Hình ảnh", url, fullPath, "@image");
           }
         );
       } else if (fileUpload.type.includes("video")) {
@@ -103,7 +108,7 @@ function MessagesForm({ roomId, setMuted }) {
             }
 
             // Send video
-            sendMessage("Photo", url, fullPath, "@video");
+            sendMessage("Video", url, fullPath, "@video");
           }
         );
       }
@@ -116,6 +121,7 @@ function MessagesForm({ roomId, setMuted }) {
     handleClearPreview();
     setInputValue("");
     setMuted(false);
+    setReplyMessage(null);
   };
 
   // Send icon only
@@ -123,6 +129,7 @@ function MessagesForm({ roomId, setMuted }) {
     if (value) {
       sendMessage(value, null, null, "@icon");
     }
+    setReplyMessage(null);
   };
 
   // Press "Enter" to send messages
@@ -147,106 +154,130 @@ function MessagesForm({ roomId, setMuted }) {
   }, [roomId]);
 
   return (
-    <div className={cx("message-form")}>
-      <div className={cx("media-wrapper")}>
-        <input
-          ref={imageInputRef}
-          className={cx("media_input-image")}
-          onChange={handleImageInput}
-          type="file"
-          accept="image/*, video/*"
-          name=""
-          id=""
-        />
-        <button
-          onClick={() => {
-            imageInputRef.current.click();
-          }}
-          className={cx("media-btn")}
-        >
-          <FontAwesomeIcon icon={faImage} />
-        </button>
-        <Tippy interactive="true" trigger="click" content={<StickerModal />}>
-          <div>
-            <button className={cx("media-btn")}>
-              <StickerIcon />
-            </button>
-            <button className={cx("media-btn")}>
-              <GifIcon />
-            </button>
+    <div className={cx("messages-form-wrapper")}>
+      {/* Reply Message */}
+      {replyMessage && (
+        <div className={cx("reply-messages-wrap")}>
+          <div className={cx("reply-messages")}>
+            <p className={cx("reply-messages_user")}>
+              Đang trả lời{" "}
+              <span className={cx("reply-messages_user-name")}>
+                {replyMessage.displayName}
+              </span>
+            </p>
+            <p className={cx("reply-messages_content")}>{replyMessage.text}</p>
           </div>
-        </Tippy>
-      </div>
-
-      <div className={cx("message-form_input-wrap")}>
-        {previewFileInput && (
-          <div className={cx("media-preview")}>
-            <div className={cx("media-preview-file-wrap")}>
-              {previewFileInput.type === "@image" && (
-                <img
-                  className={cx("media-preview-file")}
-                  src={previewFileInput.data}
-                  alt=""
-                />
-              )}
-
-              {previewFileInput.type === "@video" && (
-                <video
-                  className={cx("media-preview-file")}
-                  src={previewFileInput.data}
-                  width="50"
-                  height="50"
-                ></video>
-              )}
-
-              {previewFileInput.type === "@video" && (
-                <span className={cx("play-preview-file-btn")}>
-                  <FontAwesomeIcon icon={faCirclePlay} />
-                </span>
-              )}
-
-              <button
-                onClick={handleClearPreview}
-                className={cx("remove-preview-file-btn")}
-              >
-                <FontAwesomeIcon icon={faXmark} />
-              </button>
-            </div>
-          </div>
-        )}
-        <input
-          ref={inputRef}
-          onChange={handleInputChange}
-          onKeyUp={handleKeyUp}
-          value={inputValue}
-          type="text"
-          spellCheck="false"
-          placeholder="Aa"
-          className={cx("message-form_input")}
-        />
-      </div>
-
-      <div className={cx("button-wrap")}>
-        {inputValue.trim() || fileUpload ? (
-          <button
-            onClick={handleOnSubmit}
-            className={cx("message-form_btn", "btn", "rounded")}
+          <span
+            onClick={() => {
+              setReplyMessage(null);
+            }}
+            className={cx("cancel-reply")}
           >
-            <FontAwesomeIcon
-              className={cx("form-btn-icon")}
-              icon={faPaperPlane}
-            />
-          </button>
-        ) : (
+            <FontAwesomeIcon icon={faXmark} />
+          </span>
+        </div>
+      )}
+      <div className={cx("message-form")}>
+        <div className={cx("media-wrapper")}>
+          <input
+            ref={imageInputRef}
+            className={cx("media_input-image")}
+            onChange={handleFileInput}
+            type="file"
+            accept="image/*, video/*"
+            name=""
+            id=""
+          />
           <button
             onClick={() => {
-              handleSendIcon("😂");
+              imageInputRef.current.click();
             }}
-            className={cx("message-form_btn", "btn", "rounded")}
+            className={cx("media-btn")}
           >
-            <img className={cx("form-btn-image")} src={hahaIcon} alt="" />
+            <FontAwesomeIcon icon={faImage} />
           </button>
-        )}
+          <Tippy interactive="true" trigger="click" content={<StickerModal />}>
+            <div>
+              <button className={cx("media-btn")}>
+                <StickerIcon />
+              </button>
+              <button className={cx("media-btn")}>
+                <GifIcon />
+              </button>
+            </div>
+          </Tippy>
+        </div>
+
+        <div className={cx("message-form_input-wrap")}>
+          {previewFileInput && (
+            <div className={cx("media-preview")}>
+              <div className={cx("media-preview-file-wrap")}>
+                {previewFileInput.type === "@image" && (
+                  <img
+                    className={cx("media-preview-file")}
+                    src={previewFileInput.data}
+                    alt=""
+                  />
+                )}
+
+                {previewFileInput.type === "@video" && (
+                  <video
+                    className={cx("media-preview-file")}
+                    src={previewFileInput.data}
+                    width="50"
+                    height="50"
+                  ></video>
+                )}
+
+                {previewFileInput.type === "@video" && (
+                  <span className={cx("play-preview-file-btn")}>
+                    <FontAwesomeIcon icon={faCirclePlay} />
+                  </span>
+                )}
+
+                <button
+                  onClick={handleClearPreview}
+                  className={cx("remove-preview-file-btn")}
+                >
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
+              </div>
+            </div>
+          )}
+          <input
+            ref={inputRef}
+            onChange={handleInputChange}
+            onKeyUp={handleKeyUp}
+            value={inputValue}
+            type="text"
+            spellCheck="false"
+            placeholder="Aa"
+            className={cx("message-form_input")}
+          />
+        </div>
+
+        <div className={cx("button-wrap")}>
+          {inputValue.trim() || fileUpload ? (
+            <button
+              onClick={handleOnSubmit}
+              className={cx("message-form_btn", "btn", "rounded")}
+            >
+              <FontAwesomeIcon
+                className={cx("form-btn-icon")}
+                icon={faPaperPlane}
+              />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                handleSendIcon("😂");
+              }}
+              className={cx("message-form_btn", "btn", "rounded")}
+            >
+              <img className={cx("form-btn-image")} src={hahaIcon} alt="" />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

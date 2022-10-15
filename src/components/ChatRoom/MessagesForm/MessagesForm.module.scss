@@ -127,3 +127,37 @@
   border: 1px solid var(--medium-gray);
   cursor: pointer;
 }
+
+// Reply Messages
+.reply-messages-wrap {
+  display: flex;
+  border-top: 1px solid var(--border-color);
+}
+
+.reply-messages {
+  flex: 1;
+  padding: 10px 16px 0;
+}
+
+.reply-messages_user,
+.reply-messages_content {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--text-black);
+}
+
+.reply-messages_content {
+  color: var(--dark-gray);
+  margin-top: 4px;
+}
+
+.reply-messages_user-name {
+  font-weight: 600;
+}
+
+.cancel-reply {
+  font-size: 1.6rem;
+  padding: 10px 16px;
+  color: var(--text-black);
+  cursor: pointer;
+}

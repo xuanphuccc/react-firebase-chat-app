@@ -8,6 +8,7 @@ import Tippy from "@tippyjs/react";
 import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../../../Context/AuthProvider";
+import { AppContext } from "../../../../Context/AppProvider";
 
 import { db } from "../../../../firebase/config";
 import { updateDoc, doc, serverTimestamp } from "firebase/firestore";
@@ -17,19 +18,24 @@ import ReactionsControl from "../ReactionsControl";
 const cx = classNames.bind(styles);
 
 function MessageControls({
-  content,
-  displayName,
-  userId,
-  msgid,
-  roomId,
-  reactions,
+  message,
   setIsHasIcon,
   messageIndex,
   messagesLength,
 }) {
   const { uid } = useContext(AuthContext);
+  const { setReplyMessage } = useContext(AppContext);
 
   const [activeIcon, setActiveIcon] = useState("");
+
+  const {
+    msgid,
+    text: content,
+    displayName,
+    uid: userId,
+    reactions,
+    roomId,
+  } = message;
 
   // Set icon display and set active icon
   useEffect(() => {
@@ -96,7 +102,13 @@ function MessageControls({
         </button>
       </Tippy>
 
-      <button className={cx("control-btn")} title="Trả lời">
+      <button
+        onClick={() => {
+          setReplyMessage(message);
+        }}
+        className={cx("control-btn")}
+        title="Trả lời"
+      >
         <FontAwesomeIcon icon={faReply} />
       </button>
 

@@ -30,6 +30,7 @@ function AppProvider({ children }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertContent, setAlertContent] = useState("");
+  const [replyMessage, setReplyMessage] = useState(null);
 
   // Current room messages
   const [selectedRoomMessages, setSelectedRoomMessages] = useState(null);
@@ -268,6 +269,7 @@ function AppProvider({ children }) {
       fullPath,
       displayName: currentUser.displayName,
       roomId: selectedRoomId || subRoomId,
+      reply: replyMessage,
       reactions: {
         heart: [],
         haha: [],
@@ -397,6 +399,8 @@ function AppProvider({ children }) {
         formatDate,
         usersActiveStatus,
         roomsActiveStatus,
+        replyMessage,
+        setReplyMessage,
       }}
     >
       {children}

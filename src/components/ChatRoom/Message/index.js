@@ -3,7 +3,7 @@ import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faReply } from "@fortawesome/free-solid-svg-icons";
 
 import {
   useContext,
@@ -41,7 +41,6 @@ function Message({
     type,
     reactions,
     messagePhotoURL,
-    roomId,
   } = message;
   const { uid } = useContext(AuthContext);
   const {
@@ -204,6 +203,31 @@ function Message({
     }
   }, [type, content, messagePhotoURL, handleOpenChatMedia]);
 
+  // User name and reply name
+  const userName = useMemo(() => {
+    if (Object.keys(userInfor).length) {
+      if (Object.keys(message).includes("reply")) {
+        return (
+          <>
+            <span>
+              <FontAwesomeIcon icon={faReply} />
+            </span>
+            {` `}
+            {userInfor.uid === uid
+              ? `Bạn`
+              : userInfor.nickname || userInfor.displayName || displayName}
+            {` đã trả lời `}
+            {message.reply.uid === uid ? "bạn" : message.reply.displayName}
+          </>
+        );
+      } else {
+        return (
+          <>{userInfor.nickname || userInfor.displayName || displayName}</>
+        );
+      }
+    }
+  }, [userInfor, uid, message, displayName]);
+
   // handle open and close ReactionsModal
   const handleToggleReactionsModal = () => {
     setIsVisibleReactionsModal(!isVisibleReactionsModal);
@@ -236,13 +260,17 @@ function Message({
       />
 
       <div className={cx("content")}>
-        <h4 className={cx("user-name")}>
-          {/*Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng tên mặc định */}
-          {Object.keys(userInfor).length
-            ? userInfor.nickname || userInfor.displayName
-            : displayName}
+        <h4
+          className={cx("user-name", {
+            replyUserName: Object.keys(message).includes("reply"),
+          })}
+        >
+          {userName}
         </h4>
         <div className={cx("text-wrap")}>
+          {Object.keys(message).includes("reply") && (
+            <p className={cx("reply")}>{message.reply.text}</p>
+          )}
           <div className={cx("text")}>
             {/* Message Content */}
             <Tippy
@@ -279,12 +307,7 @@ function Message({
               })}
             >
               <MessageControls
-                content={content}
-                displayName={displayName}
-                userId={userId}
-                msgid={id}
-                roomId={roomId}
-                reactions={reactions}
+                message={message}
                 setIsHasIcon={setIsHasIcon}
                 messageIndex={messageIndex}
                 messagesLength={messagesLength}
