@@ -15,6 +15,12 @@
   }
   .user-name.replyUserName {
     display: block;
+    margin-top: 12px;
+    text-align: right;
+  }
+
+  .text-wrap {
+    align-items: flex-end;
   }
 
   .text-inner {
@@ -52,9 +58,6 @@
 
 // Nhận tin nhắn
 .wrapper.received {
-  .text-wrap {
-    align-items: flex-start;
-  }
   &.first-message {
     .user-img {
       display: none;
@@ -135,12 +138,13 @@
   color: var(--text-gray);
   margin-left: 16px;
   margin-bottom: 4px;
+  text-align: left;
 }
 
 .text-wrap {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   position: relative;
 }
 
