@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react";
 
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 
 import { AppContext } from "../../../Context/AppProvider";
 
@@ -140,6 +140,11 @@ function MessagesForm({ roomId, setMuted }) {
     imageInputRef.current.value = "";
     inputRef.current.focus();
   };
+
+  useEffect(() => {
+    handleClearPreview();
+    setInputValue("");
+  }, [roomId]);
 
   return (
     <div className={cx("message-form")}>

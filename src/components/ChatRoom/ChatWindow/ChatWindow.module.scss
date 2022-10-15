@@ -108,7 +108,7 @@
 
 .to-bottom-btn {
   position: absolute;
-  z-index: 0;
+  z-index: 99;
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%);

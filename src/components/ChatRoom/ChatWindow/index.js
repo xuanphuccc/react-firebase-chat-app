@@ -22,6 +22,7 @@ import CustomNickname from "../../Modals/CustomNickname";
 import ChangeRoomName from "../../Modals/ChangeRoomName";
 import MessagesForm from "../MessagesForm";
 import MessagesList from "../MessagesList";
+import ReactionsModal from "../../Modals/ReactionsModal";
 
 const cx = classNames.bind(styles);
 
@@ -34,6 +35,9 @@ function ChatWindow({ roomId }) {
     handleRoomMenuVisible,
     isRoomMenuVisible,
     setSelectedRoomMessages,
+    isVisibleReactionsModal,
+    setIsVisibleReactionsModal,
+    currentMessageReactions,
   } = useContext(AppContext);
 
   const [currentMessage, setCurrentMessage] = useState("");
@@ -230,6 +234,14 @@ function ChatWindow({ roomId }) {
                   setIsScrollToBottom={setIsScrollToBottom}
                 />
               )}
+
+              <ReactionsModal
+                isVisible={isVisibleReactionsModal}
+                handleVisible={() => {
+                  setIsVisibleReactionsModal(!isVisibleReactionsModal);
+                }}
+                reactions={currentMessageReactions}
+              />
 
               {isScrollToBottom && (
                 <button

@@ -3,8 +3,7 @@ import styles from "./Message.module.scss";
 
 import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlay, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-import { faFaceSmile } from "@fortawesome/free-regular-svg-icons";
+import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 
 import {
   useContext,
@@ -18,12 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Context/AuthProvider";
 import { AppContext } from "../../../Context/AppProvider";
 
-import { db } from "../../../firebase/config";
-import { updateDoc, doc, serverTimestamp } from "firebase/firestore";
-
-import ReactionsControl from "../ReactionsControl";
-import ReactionsIcon from "../ReactionsIcon";
-import ReactionsModal from "../../Modals/ReactionsModal";
+import ReactionsIcon from "./ReactionsIcon";
+import MessageControls from "./MessageControls";
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +28,7 @@ function Message({
   messagesLength,
   nowPlaying,
   setNowPlaying,
+  zIndex,
 }) {
   const {
     id,
@@ -48,13 +44,19 @@ function Message({
     roomId,
   } = message;
   const { uid } = useContext(AuthContext);
-  const { users, selectedRoom, setSelectedPhoto, formatDate } =
-    useContext(AppContext);
+  const {
+    users,
+    selectedRoom,
+    setSelectedPhoto,
+    formatDate,
+    isVisibleReactionsModal,
+    setIsVisibleReactionsModal,
+    setCurrentMessageReactions,
+  } = useContext(AppContext);
 
   const [isHasIcon, setIsHasIcon] = useState(false);
-  const [activeIcon, setActiveIcon] = useState("");
-  const [isVisibleReactionsModal, setIsVisibleReactionsModal] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
+  const [isOpenMessageControls, setIsOpenMessageControls] = useState(false);
 
   const videoRef = useRef();
 
@@ -123,7 +125,7 @@ function Message({
     setIsPlay(true);
   };
 
-  const handleRemoveControls = () => {
+  const handleRemoveVideoControls = () => {
     videoRef.current.removeAttribute("controls");
   };
 
@@ -137,13 +139,13 @@ function Message({
     if (videoRef.current) {
       const videoTag = videoRef.current;
       videoTag.addEventListener("mouseover", handlePlay);
-      videoTag.addEventListener("mouseleave", handleRemoveControls);
+      videoTag.addEventListener("mouseleave", handleRemoveVideoControls);
       videoTag.addEventListener("pause", handlePauseVisible);
       videoTag.addEventListener("play", handlePlayVisible);
 
       return () => {
         videoTag.removeEventListener("mouseover", handlePlay);
-        videoTag.removeEventListener("mouseleave", handleRemoveControls);
+        videoTag.removeEventListener("mouseleave", handleRemoveVideoControls);
         videoTag.removeEventListener("pause", handlePauseVisible);
         videoTag.addEventListener("play", handlePlayVisible);
       };
@@ -202,60 +204,15 @@ function Message({
     }
   }, [type, content, messagePhotoURL, handleOpenChatMedia]);
 
-  // Set icon display and set active icon
-  useEffect(() => {
-    let count = 0;
-    for (let type in reactions) {
-      if (reactions[type].length >= 1) {
-        setIsHasIcon(true);
-        count = 1;
-
-        if (reactions[type].includes(uid)) {
-          setActiveIcon(type);
-          break;
-        }
-      }
-    }
-
-    if (count === 0) {
-      setIsHasIcon(false);
-    }
-  }, [reactions, uid]);
-
-  // Handle unsend message
-  const handleUnsendMessage = () => {
-    if (userId === uid) {
-      // Update this message type
-      let messageRef = doc(db, "messages", id);
-      updateDoc(messageRef, {
-        type: "@unsentmsg",
-      });
-
-      // Update last message type
-      if (messageIndex === messagesLength - 1) {
-        let roomRef = doc(db, "rooms", roomId);
-        updateDoc(roomRef, {
-          lastMessage: {
-            type: "@unsentmsg",
-            text: content,
-            uid: userId,
-            displayName: displayName,
-            createAt: serverTimestamp(),
-          },
-        });
-      }
-    }
-  };
-
   // handle open and close ReactionsModal
   const handleToggleReactionsModal = () => {
     setIsVisibleReactionsModal(!isVisibleReactionsModal);
+    setCurrentMessageReactions(reactions);
   };
-
-  const [isOpenMessageControls, setIsOpenMessageControls] = useState(false);
 
   return (
     <div
+      style={{ zIndex: zIndex }}
       tabIndex={-1}
       onFocus={() => {
         setIsOpenMessageControls(true);
@@ -287,6 +244,7 @@ function Message({
         </h4>
         <div className={cx("text-wrap")}>
           <div className={cx("text")}>
+            {/* Message Content */}
             <Tippy
               placement="top"
               delay={[400, 250]}
@@ -299,6 +257,7 @@ function Message({
               {renderMessageContent}
             </Tippy>
 
+            {/* Play Video Icon */}
             {!isPlay && type === "@video" && (
               <span
                 onClick={handlePlay}
@@ -308,63 +267,32 @@ function Message({
               </span>
             )}
 
+            {/* Reactions Icon Component */}
             <div onClick={handleToggleReactionsModal}>
               {isHasIcon && <ReactionsIcon reactions={reactions} />}
             </div>
 
+            {/* Message Controls */}
             <div
               className={cx("message-controls", {
                 onlyReaction: userId !== uid,
               })}
             >
-              <Tippy
-                interactive="true"
-                trigger="click"
-                content={
-                  <ReactionsControl
-                    id={id}
-                    reactions={reactions}
-                    activeIcon={activeIcon}
-                    setIsHasIcon={setIsHasIcon}
-                    setActiveIcon={setActiveIcon}
-                  />
-                }
-              >
-                <button className={cx("reaction-btn")}>
-                  <FontAwesomeIcon icon={faFaceSmile} />
-                </button>
-              </Tippy>
-
-              {userId === uid && (
-                <Tippy
-                  interactive="true"
-                  trigger="click"
-                  content={
-                    <div className={cx("unsent-control")}>
-                      <button
-                        onClick={handleUnsendMessage}
-                        className={cx("unsent-btn")}
-                      >
-                        Gỡ tin nhắn
-                      </button>
-                    </div>
-                  }
-                >
-                  <button className={cx("reaction-btn")}>
-                    <FontAwesomeIcon icon={faEllipsisV} />
-                  </button>
-                </Tippy>
-              )}
+              <MessageControls
+                content={content}
+                displayName={displayName}
+                userId={userId}
+                msgid={id}
+                roomId={roomId}
+                reactions={reactions}
+                setIsHasIcon={setIsHasIcon}
+                messageIndex={messageIndex}
+                messagesLength={messagesLength}
+              />
             </div>
           </div>
         </div>
       </div>
-
-      <ReactionsModal
-        isVisible={isVisibleReactionsModal}
-        handleVisible={handleToggleReactionsModal}
-        reactions={reactions}
-      />
     </div>
   );
 }

@@ -170,7 +170,7 @@
   background-color: transparent;
   font-size: 1.6rem;
   color: var(--medium-gray);
-  padding: 10px 16px;
+  padding: 9px 16px;
   border: 1px solid var(--medium-gray);
   border-radius: 20px;
   animation: popup 0.2s ease forwards;
@@ -232,44 +232,26 @@
 // Message Controls
 .message-controls {
   position: absolute;
+  // z-index: 9999px;
   top: 50%;
   transform: translateY(-50%);
   display: none;
-}
-
-.reaction-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 26px;
-  height: 26px;
-  font-size: 1.6rem;
-  margin: 0 2px;
-  padding: 6px;
-  border-radius: 20px;
-  color: #aaa;
-  background-color: transparent;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #e4e6eb;
-    color: #888;
-  }
+  user-select: none;
 }
 
 .wrapper.sent {
   .message-controls {
-    left: -64px;
+    left: -88px;
     flex-direction: row-reverse;
   }
 }
 
 .wrapper.received {
   .message-controls {
-    right: -64px;
+    right: -88px;
   }
   .onlyReaction {
-    right: -34px;
+    right: -60px;
   }
 }
 
@@ -279,31 +261,6 @@
 
 .wrapper.active .message-controls {
   display: flex;
-}
-
-// Unsent Control
-.unsent-control {
-  padding: 4px;
-  background-color: var(--background);
-  border-radius: 12px;
-  box-shadow: var(--box-shadow);
-  border: 1px solid var(--box-border-color);
-}
-
-.unsent-btn {
-  font-size: 1.4rem;
-  font-weight: 600;
-  padding: 12px 8px;
-  min-width: 140px;
-  border-radius: 12px;
-  cursor: pointer;
-  background-color: transparent;
-  transition: all 0.1s ease;
-  color: var(--text-black);
-
-  &:hover {
-    background-color: var(--light-gray);
-  }
 }
 
 @keyframes popup {

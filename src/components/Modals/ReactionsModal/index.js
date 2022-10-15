@@ -33,50 +33,52 @@ function ReactionsModal({ reactions, isVisible, handleVisible }) {
   }, []);
 
   // Render users thả cảm xúc
-  const usersReaction = useMemo(() => {
+  const usersReactions = useMemo(() => {
     let totalReactions = {};
     let allReactions = [];
 
-    for (let typeOfReaction in reactions) {
-      // Lấy tất cả user có id trong mảng các reactions
-      let renderArray = [];
-      if (reactions[typeOfReaction].length >= 1) {
-        renderArray = reactions[typeOfReaction].map((userReactionId) => {
-          let memberReaction = members.find(
-            (member) => member.uid === userReactionId
-          );
+    if (Object.keys(reactions).length) {
+      for (let typeOfReaction in reactions) {
+        // Lấy tất cả user có id trong mảng các reactions
+        let renderArray = [];
+        if (reactions[typeOfReaction].length >= 1) {
+          renderArray = reactions[typeOfReaction].map((userReactionId) => {
+            let memberReaction = members.find(
+              (member) => member.uid === userReactionId
+            );
 
-          return (
-            <div key={userReactionId}>
-              {memberReaction && (
-                <li className={cx("user-item")}>
-                  <div className={cx("user-info")}>
+            return (
+              <div key={userReactionId}>
+                {memberReaction && (
+                  <li className={cx("user-item")}>
+                    <div className={cx("user-info")}>
+                      <img
+                        className={cx("user-img")}
+                        src={memberReaction.photoURL}
+                        alt=""
+                      />
+                      <h4 className={cx("user-name")}>
+                        {memberReaction.displayName}
+                      </h4>
+                    </div>
                     <img
-                      className={cx("user-img")}
-                      src={memberReaction.photoURL}
+                      className={cx("user-reaction")}
+                      src={icons[typeOfReaction]}
                       alt=""
                     />
-                    <h4 className={cx("user-name")}>
-                      {memberReaction.displayName}
-                    </h4>
-                  </div>
-                  <img
-                    className={cx("user-reaction")}
-                    src={icons[typeOfReaction]}
-                    alt=""
-                  />
-                </li>
-              )}
-            </div>
-          );
-        });
+                  </li>
+                )}
+              </div>
+            );
+          });
 
-        // Lấy user của từng reaction
-        totalReactions[typeOfReaction] = renderArray;
+          // Lấy user của từng reaction
+          totalReactions[typeOfReaction] = renderArray;
+        }
+
+        allReactions = [...allReactions, ...renderArray];
+        totalReactions["allReactions"] = allReactions;
       }
-
-      allReactions = [...allReactions, ...renderArray];
-      totalReactions["allReactions"] = allReactions;
     }
 
     return totalReactions;
@@ -102,33 +104,40 @@ function ReactionsModal({ reactions, isVisible, handleVisible }) {
   const reactionTypeCount = useMemo(() => {
     const typeCount = [];
 
-    for (let typeReaction in reactions) {
-      if (reactions[typeReaction].length >= 1) {
-        typeCount.push(
-          <li
-            onClick={(e) => {
-              handleOnClickIconsType(e, typeReaction);
-            }}
-            key={typeReaction}
-            className={cx("header-item")}
-          >
-            <img className={cx("item-img")} src={icons[typeReaction]} alt="" />
-            <span className={cx("reaction-count")}>
-              {reactions[typeReaction].length}
-            </span>
-          </li>
-        );
+    if (Object.keys(reactions).length) {
+      for (let typeReaction in reactions) {
+        if (reactions[typeReaction].length >= 1) {
+          typeCount.push(
+            <li
+              onClick={(e) => {
+                handleOnClickIconsType(e, typeReaction);
+              }}
+              key={typeReaction}
+              className={cx("header-item")}
+            >
+              <img
+                className={cx("item-img")}
+                src={icons[typeReaction]}
+                alt=""
+              />
+              <span className={cx("reaction-count")}>
+                {reactions[typeReaction].length}
+              </span>
+            </li>
+          );
+        }
       }
     }
-
     return typeCount;
   }, [reactions, icons]);
 
   useEffect(() => {
-    setLineStyle({
-      width: allReactionRef.current.clientWidth,
-      left: allReactionRef.current.offsetLeft,
-    });
+    if (allReactionRef.current) {
+      setLineStyle({
+        width: allReactionRef.current.clientWidth,
+        left: allReactionRef.current.offsetLeft,
+      });
+    }
   }, [isVisible]);
 
   return (
@@ -138,36 +147,38 @@ function ReactionsModal({ reactions, isVisible, handleVisible }) {
       okButton={false}
       onCancel={handleVisible}
     >
-      <div className={cx("reactions-modal", { isMobile: isMobile })}>
-        {/*====== Header ======*/}
-        <div className={cx("header-wrap")}>
-          <ul className={cx("header")}>
-            <li
-              ref={allReactionRef}
-              onClick={(e) => {
-                setItemIcon("allReactions");
-                if (e.target.tagName === "LI") {
-                  setLineStyle({
-                    width: e.target.clientWidth,
-                    left: e.target.offsetLeft,
-                  });
-                }
-              }}
-              className={cx("header-item", "all-reaction-item")}
-            >
-              Tất cả {usersReaction["allReactions"].length}
-            </li>
-            {reactionTypeCount}
-          </ul>
+      {Object.keys(reactions).length && (
+        <div className={cx("reactions-modal", { isMobile: isMobile })}>
+          {/*====== Header ======*/}
+          <div className={cx("header-wrap")}>
+            <ul className={cx("header")}>
+              <li
+                ref={allReactionRef}
+                onClick={(e) => {
+                  setItemIcon("allReactions");
+                  if (e.target.tagName === "LI") {
+                    setLineStyle({
+                      width: e.target.clientWidth,
+                      left: e.target.offsetLeft,
+                    });
+                  }
+                }}
+                className={cx("header-item", "all-reaction-item")}
+              >
+                Tất cả {usersReactions["allReactions"].length}
+              </li>
+              {reactionTypeCount}
+            </ul>
 
-          <div style={lineStyle} className={cx("line")}></div>
-        </div>
+            <div style={lineStyle} className={cx("line")}></div>
+          </div>
 
-        {/*====== Content ======*/}
-        <div className={cx("content")}>
-          <ul className={cx("users-list")}>{usersReaction[itemIcon]}</ul>
+          {/*====== Content ======*/}
+          <div className={cx("content")}>
+            <ul className={cx("users-list")}>{usersReactions[itemIcon]}</ul>
+          </div>
         </div>
-      </div>
+      )}
     </Modal>
   );
 }

@@ -231,15 +231,19 @@ function RoomOptions({ messages, activeTime }) {
         }
 
         // Upload new file
-        uploadFile(uploadPhoto, `images/rooms_avatar/`, (url, fullPath) => {
-          const roomRef = doc(db, "rooms", selectedRoomId);
-          updateDoc(roomRef, {
-            photoURL: url,
-            fullPath: fullPath,
-          }).then(() => {
-            sendMessage("đã thay đổi ảnh nhóm", null, null, "@roomnotify");
-          });
-        });
+        uploadFile(
+          uploadPhoto,
+          `images/rooms_avatar/${selectedRoomId}`,
+          (url, fullPath) => {
+            const roomRef = doc(db, "rooms", selectedRoomId);
+            updateDoc(roomRef, {
+              photoURL: url,
+              fullPath: fullPath,
+            }).then(() => {
+              sendMessage("đã thay đổi ảnh nhóm", null, null, "@roomnotify");
+            });
+          }
+        );
       } else {
         setAlertVisible(true);
         setAlertContent({

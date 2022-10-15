@@ -18,6 +18,8 @@ function MessagesList({
   const [nowPlaying, setNowPlaying] = useState();
   const [totalCount, setTotalCount] = useState(20);
 
+  let countIndex = sideBySideMessages.length + 1;
+
   // --------- Handle Scroll Infinite ----------
   useEffect(() => {
     setTotalCount(20);
@@ -47,7 +49,6 @@ function MessagesList({
         } else {
           setIsScrollToBottom(false);
         }
-        console.log("scroll top: ", scrollTop);
       };
 
       mesListRefNew.addEventListener("scroll", handleToggleScrollBottom);
@@ -74,7 +75,11 @@ function MessagesList({
       <InfiniteScroll
         dataLength={newRenderMessages.length}
         next={fetchMoreData}
-        style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
+        style={{
+          display: "flex",
+          flexDirection: "column-reverse",
+          overflowX: "hidden",
+        }} //To put endMessage and loader to the top.
         inverse={true}
         hasMore={true}
         loader={
@@ -88,8 +93,11 @@ function MessagesList({
               return <NotifiMessage key={message.id} message={message} />;
             }
 
+            countIndex--;
+
             return (
               <Message
+                zIndex={countIndex}
                 key={message.id}
                 message={message}
                 messageIndex={index}
