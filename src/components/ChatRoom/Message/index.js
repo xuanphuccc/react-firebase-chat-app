@@ -207,20 +207,21 @@ function Message({
   const userName = useMemo(() => {
     if (Object.keys(userInfor).length) {
       if (Object.keys(message).includes("reply")) {
-        return (
-          <>
-            <span>
-              <FontAwesomeIcon icon={faReply} />
-            </span>
-            {` `}
-            {userInfor.uid === uid
-              ? `Bạn`
-              : userInfor.nickname || userInfor.displayName || displayName}
-            {` đã trả lời `}
-            {/* {message.reply.uid === uid ? "bạn" : message.reply.displayName} */}
-            {console.log("reply: ", message.reply)}
-          </>
-        );
+        if (message.reply) {
+          return (
+            <>
+              <span>
+                <FontAwesomeIcon icon={faReply} />
+              </span>
+              {` `}
+              {userInfor.uid === uid
+                ? `Bạn`
+                : userInfor.nickname || userInfor.displayName || displayName}
+              {` đã trả lời `}
+              {message.reply.uid === uid ? "bạn" : message.reply.displayName}
+            </>
+          );
+        }
       } else {
         return (
           <>{userInfor.nickname || userInfor.displayName || displayName}</>
@@ -263,13 +264,14 @@ function Message({
       <div className={cx("content")}>
         <h4
           className={cx("user-name", {
-            replyUserName: Object.keys(message).includes("reply"),
+            replyUserName:
+              Object.keys(message).includes("reply") && message.reply,
           })}
         >
           {userName}
         </h4>
         <div className={cx("text-wrap")}>
-          {Object.keys(message).includes("reply") && (
+          {Object.keys(message).includes("reply") && message.reply && (
             <p className={cx("reply")}>{message.reply.text}</p>
           )}
           <div className={cx("text")}>
