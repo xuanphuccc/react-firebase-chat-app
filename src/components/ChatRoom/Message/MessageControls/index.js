@@ -29,7 +29,7 @@ function MessageControls({
   const [activeIcon, setActiveIcon] = useState("");
 
   const {
-    msgid,
+    id: msgid,
     text: content,
     displayName,
     uid: userId,
