@@ -271,7 +271,9 @@ function RoomOptions({ messages, activeTime }) {
 
   // Handle accept room link or not
   useEffect(() => {
-    setIsAcceptRoomLink(selectedRoom.isAcceptLink);
+    if (selectedRoom) {
+      setIsAcceptRoomLink(selectedRoom.isAcceptLink);
+    }
   }, [selectedRoom]);
 
   const handleToggleAcceptLink = () => {
