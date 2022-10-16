@@ -25,7 +25,7 @@ function MessagesList({
     setTotalCount(20);
   }, [roomId]);
 
-  console.log("TotalCount: ", totalCount);
+  // console.log("TotalCount: ", totalCount);
 
   const fetchMoreData = () => {
     setTotalCount((prev) => prev + 20);

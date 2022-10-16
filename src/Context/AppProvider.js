@@ -252,6 +252,30 @@ function AppProvider({ children }) {
     };
   }, [currentUser]);
 
+  // Handle create chat room
+  const handleCreateRoom = (members, nicknames, role, callback) => {
+    const data = {
+      name: "",
+      description: "",
+      isAcceptLink: false,
+      photoURL: "",
+      fullPath: "",
+      members: [...members],
+      admins: [uid],
+      roomNicknames: [...nicknames],
+      role: role,
+      lastMessage: {
+        type: "",
+        text: "",
+        uid: "",
+        displayName: "",
+        createAt: serverTimestamp(),
+      },
+    };
+
+    addDocument("rooms", data, callback);
+  };
+
   // Send message (add document to "messages" collection)
   const sendMessage = (
     messText = "",
@@ -401,6 +425,7 @@ function AppProvider({ children }) {
         roomsActiveStatus,
         replyMessage,
         setReplyMessage,
+        handleCreateRoom,
       }}
     >
       {children}

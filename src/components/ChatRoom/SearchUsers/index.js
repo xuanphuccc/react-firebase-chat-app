@@ -1,19 +1,25 @@
 import classNames from "classnames/bind";
 import styles from "./SearchUsers.module.scss";
-
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../../Context/AppProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { AppContext } from "../../../Context/AppProvider";
 import { AuthContext } from "../../../Context/AuthProvider";
 
 const cx = classNames.bind(styles);
 
 function SearchUsers({ inputValue, setInputValue }) {
   const { uid } = useContext(AuthContext);
-  const { isMobile, users } = useContext(AppContext);
+  const { isMobile, users, rooms, handleCreateRoom, setIsOpenSearchUsers } =
+    useContext(AppContext);
   const [searchingUsers, setSearchingUsers] = useState([]);
 
+  const navigate = useNavigate();
+
+  // Handle Search User
   useEffect(() => {
     if (users.length > 1 && inputValue.trim() !== "") {
       const searching = users.filter((user) => {
@@ -38,6 +44,34 @@ function SearchUsers({ inputValue, setInputValue }) {
     }
   }, [inputValue, users, uid]);
 
+  // Handle Create Room
+  const createChatRoom = (userId) => {
+    if (rooms) {
+      const existRoom = rooms.filter((room) => {
+        return (
+          room.members.length === 2 &&
+          room.role.includes("person") &&
+          room.members.includes(uid) &&
+          room.members.includes(userId)
+        );
+      });
+
+      console.log("Room: ", existRoom);
+    }
+    // const members = [uid, userId];
+    // const nicknames = [
+    //   { nickname: "", uid: uid },
+    //   { nickname: "", uid: userId },
+    // ];
+    // const role = "person";
+
+    // handleCreateRoom(members, nicknames, role, (data) => {
+    //   setInputValue("");
+    //   setIsOpenSearchUsers(false);
+    //   navigate(`/room/${data.id}`);
+    // });
+  };
+
   return (
     <div className={cx("wrapper", { isMobile })}>
       <ul className={cx("users-list")}>
@@ -50,7 +84,13 @@ function SearchUsers({ inputValue, setInputValue }) {
           </h6>
         </li>
         {searchingUsers.map((user) => (
-          <li key={user.uid} className={cx("users-list_item")}>
+          <li
+            onClick={() => {
+              createChatRoom(user.uid);
+            }}
+            key={user.uid}
+            className={cx("users-list_item")}
+          >
             <div className={cx("users-list_item-infor")}>
               <img
                 className={cx("users-list_item-img")}

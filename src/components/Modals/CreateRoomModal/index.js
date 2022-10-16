@@ -58,6 +58,7 @@ function CreateRoomModal() {
           members: [currentUser.uid],
           admins: [currentUser.uid],
           roomNicknames: [{ nickname: "", uid: currentUser.uid }],
+          role: "group",
           lastMessage: {
             type: "",
             text: "",
@@ -72,22 +73,6 @@ function CreateRoomModal() {
 
       isValid = true;
     }
-    // add new room without avatar to firestore
-    // else if (name !== "") {
-    //   const data = {
-    //     name,
-    //     description,
-    //     photoURL: "",
-    //     fullPath: "",
-    //     members: [currentUser.uid],
-    //     admins: [currentUser.uid],
-    //     roomNicknames: [
-    //       { nickname: currentUser.displayName, uid: currentUser.uid },
-    //     ],
-    //   };
-    //   addDocument("rooms", data);
-    //   isValid = true;
-    // }
 
     // Close modal and clear input
     if (isValid) {
