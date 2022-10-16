@@ -45,7 +45,7 @@ function SearchUsers({ inputValue, setInputValue }) {
   }, [inputValue, users, uid]);
 
   // Handle Create Room
-  const createChatRoom = (userId) => {
+  const createChatRoom = (userId, userDisplayName) => {
     if (rooms) {
       const existRoom = rooms.filter((room) => {
         return (
@@ -56,20 +56,27 @@ function SearchUsers({ inputValue, setInputValue }) {
         );
       });
 
-      console.log("Room: ", existRoom);
-    }
-    // const members = [uid, userId];
-    // const nicknames = [
-    //   { nickname: "", uid: uid },
-    //   { nickname: "", uid: userId },
-    // ];
-    // const role = "person";
+      if (existRoom.length > 0) {
+        // If room exist -> navigate this room
+        setInputValue("");
+        setIsOpenSearchUsers(false);
+        navigate(`/room/${existRoom[0].id}`);
+      } else {
+        // Create new room
+        const members = [uid, userId];
+        const nicknames = [
+          { nickname: "", uid: uid },
+          { nickname: "", uid: userId },
+        ];
+        const role = "person";
 
-    // handleCreateRoom(members, nicknames, role, (data) => {
-    //   setInputValue("");
-    //   setIsOpenSearchUsers(false);
-    //   navigate(`/room/${data.id}`);
-    // });
+        handleCreateRoom(members, nicknames, role, userDisplayName, (data) => {
+          setInputValue("");
+          setIsOpenSearchUsers(false);
+          navigate(`/room/${data.id}`);
+        });
+      }
+    }
   };
 
   return (
@@ -86,7 +93,7 @@ function SearchUsers({ inputValue, setInputValue }) {
         {searchingUsers.map((user) => (
           <li
             onClick={() => {
-              createChatRoom(user.uid);
+              createChatRoom(user.uid, user.displayName);
             }}
             key={user.uid}
             className={cx("users-list_item")}

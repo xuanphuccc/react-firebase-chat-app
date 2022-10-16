@@ -38,6 +38,7 @@ function ChatWindow({ roomId }) {
     isVisibleReactionsModal,
     setIsVisibleReactionsModal,
     currentMessageReactions,
+    handleGenerateRoomName,
   } = useContext(AppContext);
 
   const [currentMessage, setCurrentMessage] = useState("");
@@ -193,13 +194,16 @@ function ChatWindow({ roomId }) {
                 )}
 
                 <img
-                  src={selectedRoom.photoURL || placeHolderImg}
+                  src={
+                    handleGenerateRoomName(selectedRoom).photoURL ||
+                    placeHolderImg
+                  }
                   alt=""
                   className={cx("chat-window_header-img")}
                 />
                 <div className={cx("chat-window_header-name-wrap")}>
                   <h4 className={cx("chat-window_header-name")}>
-                    {selectedRoom.name}
+                    {handleGenerateRoomName(selectedRoom).name}
                   </h4>
                   {findRoomActive(roomId) && (
                     <>

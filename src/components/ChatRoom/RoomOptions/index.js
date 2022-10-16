@@ -59,6 +59,7 @@ function RoomOptions({ messages, activeTime }) {
     setAlertVisible,
     setAlertContent,
     sendMessage,
+    handleGenerateRoomName,
   } = useContext(AppContext);
   const [admins, setAdmins] = useState([]);
   const [visibleAdmin, setVisibleAdmin] = useState(false);
@@ -300,11 +301,16 @@ function RoomOptions({ messages, activeTime }) {
             <div className={cx("room-img-wrap")}>
               <img
                 className={cx("room-img")}
-                src={selectedRoom.photoURL || userPlaceHolderImg}
+                src={
+                  handleGenerateRoomName(selectedRoom).photoURL ||
+                  userPlaceHolderImg
+                }
                 alt=""
               />
             </div>
-            <h2 className={cx("room-name")}>{selectedRoom.name}</h2>
+            <h2 className={cx("room-name")}>
+              {handleGenerateRoomName(selectedRoom).name}
+            </h2>
             <p className={cx("room-desc")}>{activeTime}</p>
             <ul className={cx("quick-options")}>
               <li className={cx("quick-item")}>

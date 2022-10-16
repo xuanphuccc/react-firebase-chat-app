@@ -58,6 +58,7 @@ function InviteMemberModal() {
         // members: [...originMemberId, ...selectedUsers],
         members: arrayUnion(...selectedUsers),
         roomNicknames: arrayUnion(...usersNickname),
+        role: "group",
       }).then(() => {
         users.forEach((user) => {
           if (selectedUsers.includes(user.uid)) {

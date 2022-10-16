@@ -20,6 +20,7 @@ function RoomList() {
     selectedRoomId,
     formatDate,
     isMobile,
+    handleGenerateRoomName,
   } = useContext(AppContext);
 
   const descriptionText = (room) => {
@@ -136,7 +137,9 @@ function RoomList() {
               <div className={cx("room_img-wrapper")}>
                 <img
                   className={cx("room_img")}
-                  src={room.photoURL || userPlacehoderImg}
+                  src={
+                    handleGenerateRoomName(room).photoURL || userPlacehoderImg
+                  }
                   alt=""
                 />
                 {findRoomActive(room.id) && (
@@ -158,7 +161,9 @@ function RoomList() {
                 )}
               </div>
               <div className={cx("room-info")}>
-                <h4 className={cx("room_name")}>{room.name}</h4>
+                <h4 className={cx("room_name")}>
+                  {handleGenerateRoomName(room).name}
+                </h4>
                 <div className={cx("room-desc-wrap")}>
                   <p className={cx("room-desc")}>{descriptionText(room)}</p>
                   <span className={cx("room-desc-time")}>

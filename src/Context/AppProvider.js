@@ -253,9 +253,9 @@ function AppProvider({ children }) {
   }, [currentUser]);
 
   // Handle create chat room
-  const handleCreateRoom = (members, nicknames, role, callback) => {
+  const handleCreateRoom = (members, nicknames, role, name = "", callback) => {
     const data = {
-      name: "",
+      name: name,
       description: "",
       isAcceptLink: false,
       photoURL: "",
@@ -317,6 +317,39 @@ function AppProvider({ children }) {
     }).catch((error) => {
       console.error(error);
     });
+  };
+
+  // Generate room name
+  const handleGenerateRoomName = (room) => {
+    if (room) {
+      if (room.role.includes("person")) {
+        if (room.members.length === 1) {
+          return {
+            name: room.name,
+            photoURL: room.photoURL,
+          };
+        } else if (room.members.length === 2) {
+          // Return friend name
+          const friendUID = room.members.find((members) => members !== uid);
+          const friendInfor =
+            friendUID &&
+            users.find((user) => {
+              return user.uid === friendUID;
+            });
+          return (
+            friendInfor && {
+              name: friendInfor.displayName,
+              photoURL: friendInfor.photoURL,
+            }
+          );
+        }
+      } else if (room.role.includes("group")) {
+        return {
+          name: room.name,
+          photoURL: room.photoURL,
+        };
+      }
+    }
   };
 
   // Date time format
@@ -426,6 +459,7 @@ function AppProvider({ children }) {
         replyMessage,
         setReplyMessage,
         handleCreateRoom,
+        handleGenerateRoomName,
       }}
     >
       {children}

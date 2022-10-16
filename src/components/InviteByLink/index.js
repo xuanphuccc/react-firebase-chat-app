@@ -38,6 +38,7 @@ function InviteByLink() {
       updateDoc(roomRef, {
         members: arrayUnion(uid),
         roomNicknames: arrayUnion({ nickname: "", uid }),
+        role: "group",
       })
         .then(() => {
           navigate(`/room/${roomid}`);
