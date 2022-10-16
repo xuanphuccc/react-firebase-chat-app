@@ -253,12 +253,19 @@ function AppProvider({ children }) {
   }, [currentUser]);
 
   // Handle create chat room
-  const handleCreateRoom = (members, nicknames, role, name = "", callback) => {
+  const handleCreateRoom = (
+    members,
+    nicknames,
+    role,
+    name = "",
+    photoURL = "",
+    callback
+  ) => {
     const data = {
       name: name,
       description: "",
       isAcceptLink: false,
-      photoURL: "",
+      photoURL: photoURL,
       fullPath: "",
       members: [...members],
       admins: [uid],

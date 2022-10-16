@@ -45,7 +45,7 @@ function SearchUsers({ inputValue, setInputValue }) {
   }, [inputValue, users, uid]);
 
   // Handle Create Room
-  const createChatRoom = (userId, userDisplayName) => {
+  const createChatRoom = (userId, userDisplayName, userPhotoURL) => {
     if (rooms) {
       const existRoom = rooms.filter((room) => {
         return (
@@ -70,11 +70,18 @@ function SearchUsers({ inputValue, setInputValue }) {
         ];
         const role = "person";
 
-        handleCreateRoom(members, nicknames, role, userDisplayName, (data) => {
-          setInputValue("");
-          setIsOpenSearchUsers(false);
-          navigate(`/room/${data.id}`);
-        });
+        handleCreateRoom(
+          members,
+          nicknames,
+          role,
+          userDisplayName,
+          userPhotoURL,
+          (data) => {
+            setInputValue("");
+            setIsOpenSearchUsers(false);
+            navigate(`/room/${data.id}`);
+          }
+        );
       }
     }
   };
@@ -93,7 +100,7 @@ function SearchUsers({ inputValue, setInputValue }) {
         {searchingUsers.map((user) => (
           <li
             onClick={() => {
-              createChatRoom(user.uid, user.displayName);
+              createChatRoom(user.uid, user.displayName, user.photoURL);
             }}
             key={user.uid}
             className={cx("users-list_item")}
