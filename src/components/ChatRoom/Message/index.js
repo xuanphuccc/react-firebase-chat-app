@@ -206,22 +206,20 @@ function Message({
   // User name and reply name
   const userName = useMemo(() => {
     if (Object.keys(userInfor).length) {
-      if (Object.keys(message).includes("reply")) {
-        if (message.reply) {
-          return (
-            <>
-              <span>
-                <FontAwesomeIcon icon={faReply} />
-              </span>
-              {` `}
-              {userInfor.uid === uid
-                ? `Bạn`
-                : userInfor.nickname || userInfor.displayName || displayName}
-              {` đã trả lời `}
-              {message.reply.uid === uid ? "bạn" : message.reply.displayName}
-            </>
-          );
-        }
+      if (Object.keys(message).includes("reply") && message.reply) {
+        return (
+          <>
+            <span>
+              <FontAwesomeIcon icon={faReply} />
+            </span>
+            {` `}
+            {userInfor.uid === uid
+              ? `Bạn`
+              : userInfor.nickname || userInfor.displayName || displayName}
+            {` đã trả lời `}
+            {message.reply.uid === uid ? "bạn" : message.reply.displayName}
+          </>
+        );
       } else {
         return (
           <>{userInfor.nickname || userInfor.displayName || displayName}</>
@@ -256,7 +254,7 @@ function Message({
     >
       <img
         className={cx("user-img")}
-        // Trường hợp tin nhắn của người trong phòng (đã rời phòng) thì dùng ảnh mặc định
+        // Trường hợp tin nhắn của người đã rời phòng thì dùng ảnh mặc định
         src={Object.keys(userInfor).length ? userInfor.photoURL : photoURL}
         alt=""
       />

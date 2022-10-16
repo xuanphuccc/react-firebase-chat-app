@@ -77,6 +77,11 @@
       display: none;
     }
 
+    .user-name.replyUserName {
+      display: block;
+      margin-top: 12px;
+    }
+
     .text-inner {
       border-radius: 6px 20px 20px 6px;
     }
@@ -85,6 +90,11 @@
   &.last-message {
     .user-name {
       display: none;
+    }
+
+    .user-name.replyUserName {
+      display: block;
+      margin-top: 12px;
     }
 
     .text-inner {
