@@ -1,14 +1,35 @@
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../firebase/config";
 
 import Form from "../Form";
 
 const cx = classNames.bind(styles);
 
 function Login() {
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+
   const navigate = useNavigate();
+
+  const handleLoginWithEmailAndPassword = () => {
+    signInWithEmailAndPassword(auth, emailInput, passwordInput)
+      .then((userCredential) => {
+        // Signed in
+        // const user = userCredential.user;
+
+        console.log("Log In: ", userCredential);
+        // ...
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <Form>
@@ -18,12 +39,23 @@ function Login() {
           Hoặc đăng nhập với email và mật khẩu của bạn:
         </p>
         <div className={cx("form_input-wrapper")}>
+          {/* Email */}
           <input
+            onChange={(e) => {
+              setEmailInput(e.target.value);
+            }}
+            value={emailInput}
             className={cx("form_input")}
             type="text"
             placeholder="Email của bạn"
           />
+
+          {/* Password */}
           <input
+            onChange={(e) => {
+              setPasswordInput(e.target.value);
+            }}
+            value={passwordInput}
             className={cx("form_input")}
             type="password"
             name=""
@@ -42,7 +74,10 @@ function Login() {
 
       {/* Controls */}
       <div className={cx("form_controls")}>
-        <button className={cx("form_controls-btn", " btn", "primary")}>
+        <button
+          onClick={handleLoginWithEmailAndPassword}
+          className={cx("form_controls-btn", " btn", "primary")}
+        >
           Đăng nhập
         </button>
         <button

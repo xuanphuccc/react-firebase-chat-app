@@ -1,8 +1,17 @@
 import classNames from "classnames/bind";
 import styles from "./SignUp.module.scss";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { auth } from "../../../firebase/config";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
+import { addDocument } from "../../../firebase/service";
+import { serverTimestamp } from "firebase/firestore";
 
 import Form from "../Form";
 import Validator from "../../../validateForm/Validator";
@@ -20,8 +29,8 @@ function SignUp() {
   const [passwordError, setPasswordError] = useState("");
 
   const navigate = useNavigate();
-
-  const nameInputRef = useRef();
+  const defaultPhotoURL =
+    "https://firebasestorage.googleapis.com/v0/b/chataap-34af1.appspot.com/o/logo.png?alt=media&token=b4ccdd5d-e77a-4b0e-8602-f7cd65b2d00a";
 
   const validateNameInput = () => {
     const isValid = Validator({
@@ -62,7 +71,46 @@ function SignUp() {
       validateEmailInput() &&
       validatePasswordInput()
     ) {
-      console.log("submit: ", { nameInput, emailInput, passwordInput });
+      createUserWithEmailAndPassword(auth, emailInput, passwordInput)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+
+          console.log("Sign Up: ", userCredential);
+
+          sendEmailVerification(auth.currentUser).then(() => {
+            // Email verification sent!
+            console.log("Email verification sent!");
+          });
+
+          // Update profile autithencation
+          updateProfile(auth.currentUser, {
+            displayName: nameInput,
+            photoURL: defaultPhotoURL,
+          }).catch((error) => {
+            console.error(error);
+          });
+
+          // Create user firestore
+          addDocument("users", {
+            displayName: nameInput,
+            email: emailInput,
+            photoURL: defaultPhotoURL,
+            fullPath: "",
+            uid: user.uid,
+            providerId: user.providerId,
+            stickers: [],
+            active: serverTimestamp(),
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      //   Clear input
+      setNameInput("");
+      setEmailInput("");
+      setPasswordInput("");
     }
   };
 
@@ -76,7 +124,6 @@ function SignUp() {
         <div className={cx("form_input-wrapper")}>
           {/* Name Input */}
           <input
-            ref={nameInputRef}
             onBlur={validateNameInput}
             onChange={(e) => {
               setNameInput(e.target.value);
