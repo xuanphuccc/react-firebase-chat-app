@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
-import styles from "./Login.module.scss";
-import Logo from "../../assets/images/logo-full.png";
-import Google from "../../assets/images/brands/google.png";
-import Facebook from "../../assets/images/brands/facebook.png";
+import styles from "./Form.module.scss";
+import Logo from "../../../assets/images/logo-full.png";
+import Google from "../../../assets/images/brands/google.png";
+import Facebook from "../../../assets/images/brands/facebook.png";
 
 import {
   GoogleAuthProvider,
@@ -10,15 +10,15 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { auth } from "../../firebase/config";
-import { addDocument } from "../../firebase/service";
+import { auth } from "../../../firebase/config";
+import { addDocument } from "../../../firebase/service";
 import { useContext } from "react";
-import { AppContext } from "../../Context/AppProvider";
+import { AppContext } from "../../../Context/AppProvider";
 import { serverTimestamp } from "firebase/firestore";
 
 const cx = classNames.bind(styles);
 
-function Login() {
+function Form({ title = "Đăng nhập vào Satellite", children }) {
   const fbProvider = new FacebookAuthProvider(); //OK
   const googleProvider = new GoogleAuthProvider();
 
@@ -120,81 +120,45 @@ function Login() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("login")}>
+      <div className={cx("form")}>
         {/* Login container */}
-        <div className={cx("login_container", { isMobile: isMobile })}>
+        <div className={cx("form_container", { isMobile: isMobile })}>
           {/* Header */}
-          <div className={cx("login_header")}>
-            <div className={cx("login_logo-wrapper")}>
-              <img className={cx("login_logo")} src={Logo} alt="" />
+          <div className={cx("form_header")}>
+            <div className={cx("form_logo-wrapper")}>
+              <img className={cx("form_logo")} src={Logo} alt="" />
             </div>
-            <h1 className={cx("login_title")}>Đăng nhập vào Satellite</h1>
+            <h1 className={cx("form_title")}>{title}</h1>
           </div>
 
           {/* Provider */}
-          <ul className={cx("login_provider")}>
+          <ul className={cx("form_provider")}>
             <li
               onClick={handleGoogleLogin}
-              className={cx("login_provider-item")}
+              className={cx("form_provider-item")}
             >
               <img
-                className={cx("login_provider-item-img")}
+                className={cx("form_provider-item-img")}
                 src={Google}
                 alt=""
               />
             </li>
-            <li onClick={handleFblogin} className={cx("login_provider-item")}>
+            <li onClick={handleFblogin} className={cx("form_provider-item")}>
               <img
-                className={cx("login_provider-item-img")}
+                className={cx("form_provider-item-img")}
                 src={Facebook}
                 alt=""
               />
             </li>
           </ul>
 
-          {/* Login with password */}
-          <div className={cx("login_with-password")}>
-            <p className={cx("login_description")}>
-              Hoặc đăng nhập với email và mật khẩu của bạn:
-            </p>
-            <div className={cx("login_input-wrapper")}>
-              <input
-                className={cx("login_input")}
-                type="text"
-                placeholder="Email của bạn"
-              />
-              <input
-                className={cx("login_input")}
-                type="password"
-                name=""
-                id=""
-                placeholder="Mật khẩu"
-              />
-            </div>
-          </div>
-
-          {/* Terms */}
-          <p className={cx("login_terms")}>
-            Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
-            <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
-            chúng tôi.
-          </p>
-
-          {/* Controls */}
-          <div className={cx("login_controls")}>
-            <button className={cx("login_controls-btn", " btn", "primary")}>
-              Đăng nhập
-            </button>
-            <button className={cx("login_controls-btn", " btn", "border")}>
-              Đăng ký
-            </button>
-          </div>
+          {children}
         </div>
 
         {/* Background image */}
         {isDesktop && (
-          <div className={cx("login_cool-img-wrapper")}>
-            <div className={cx("login_cool-img")}></div>
+          <div className={cx("form_cool-img-wrapper")}>
+            <div className={cx("form_cool-img")}></div>
           </div>
         )}
       </div>
@@ -202,4 +166,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Form;

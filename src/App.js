@@ -3,7 +3,8 @@ import { Route, Routes } from "react-router-dom";
 
 import { AppContext } from "./Context/AppProvider";
 
-import Login from "./components/Login";
+import Login from "./components/Forms/Login";
+import SignUp from "./components/Forms/SignUp";
 import ChatRoom from "./components/ChatRoom";
 import Sidebar from "./components/ChatRoom/Sidebar";
 import ChatWindow from "./components/ChatRoom/ChatWindow";
@@ -19,6 +20,7 @@ function App() {
     <Routes>
       {/* <Route path="/login" element={<Login />} /> */}
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
 
       <Route path="/room" element={<ChatRoom />}>
         {rooms.map((room) => (

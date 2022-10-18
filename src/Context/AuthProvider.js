@@ -35,6 +35,7 @@ function AuthProvider({ children }) {
         if (isMobile) {
           if (
             window.location.pathname === "/login" ||
+            window.location.pathname === "/signup" ||
             window.location.pathname === "/room/room-id" ||
             window.location.pathname === "/"
           ) {
@@ -43,6 +44,7 @@ function AuthProvider({ children }) {
         } else {
           if (
             window.location.pathname === "/login" ||
+            window.location.pathname === "/signup" ||
             window.location.pathname === "/room-list" ||
             window.location.pathname === "/"
           ) {
@@ -52,7 +54,9 @@ function AuthProvider({ children }) {
       } else {
         // Chuyển về trang login khi đăng nhập không thành công
         // hoặc chưa đăng nhập
-        navigate("/login");
+        if (!window.location.pathname.includes("signup")) {
+          navigate("/login");
+        }
       }
     });
 

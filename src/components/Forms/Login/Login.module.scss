@@ -1,0 +1,48 @@
+// Infor
+.form_description {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.form_input {
+  display: block;
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 10px;
+  background-color: var(--light-gray);
+  border: 1px solid var(--medium-gray);
+  outline: none;
+  border-radius: 8px;
+  margin-top: 16px;
+
+  &::placeholder {
+    color: var(--medium-gray);
+  }
+}
+
+// Terms
+.form_terms {
+  font-size: 1.2rem;
+  margin: 16px 0 24px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+// Controls
+.form_controls {
+  display: flex;
+  width: 100%;
+  padding-bottom: 24px;
+}
+
+.form_controls-btn {
+  flex: 1;
+
+  + .form_controls-btn {
+    margin-left: 12px;
+  }
+}
+
+.text-highlight {
+  color: var(--primary);
+}

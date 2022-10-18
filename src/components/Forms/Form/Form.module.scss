@@ -1,0 +1,86 @@
+.wrapper {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.form {
+  height: 100%;
+  min-height: 680px;
+  display: flex;
+}
+
+.form_container {
+  flex: 1;
+  height: 100%;
+  padding: 0 60px;
+  display: flex;
+  flex-direction: column;
+  //   justify-content: center;
+
+  &.isMobile {
+    padding: 0 16px;
+
+    .form_logo-wrapper {
+      text-align: center;
+    }
+  }
+}
+
+// Header
+.form_header {
+  padding-top: 36px;
+}
+
+.form_logo {
+  height: 24px;
+  user-select: none;
+}
+
+.form_title {
+  margin-top: 42px;
+  font-size: 3.2rem;
+  text-align: center;
+}
+
+// Provider
+.form_provider {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 24px 0;
+}
+
+.form_provider-item {
+  display: flex;
+  padding: 4px;
+  border-radius: 99px;
+  border: 1.5px solid var(--primary);
+  cursor: pointer;
+  user-select: none;
+  + .form_provider-item {
+    margin-left: 16px;
+  }
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
+}
+
+.form_provider-item-img {
+  width: 28px;
+  height: 28px;
+}
+
+// Background
+.form_cool-img-wrapper {
+  width: 50%;
+  height: 100%;
+}
+
+.form_cool-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px 0 0 12px;
+  background: no-repeat center/cover
+    url("../../../assets/images/background1.jpg");
+}
