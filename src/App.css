@@ -89,7 +89,7 @@ body {
 button {
   font-family: "Be Vietnam Pro", sans-serif;
 
-  border: none;
+  border: 1.5px solid transparent;
   outline: none;
 }
 
@@ -102,11 +102,11 @@ input {
 }
 
 .btn {
-  min-width: 120px;
+  min-width: 140px;
   padding: 9px 12px;
   font-size: 1.4rem;
   font-weight: 600;
-  border-radius: 1px solid var(--medium-gray);
+  border-radius: 1.5px solid var(--medium-gray);
   border-radius: 8px;
   cursor: pointer;
   outline: none;
@@ -131,6 +131,7 @@ input {
 }
 
 .btn.border {
+  background-color: transparent;
   border-color: var(--primary);
   font-weight: 600;
   color: var(--primary);
