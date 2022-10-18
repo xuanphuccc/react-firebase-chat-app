@@ -77,6 +77,8 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
       .then((result) => {
         const { user, _tokenResponse } = result;
 
+        console.log(result);
+
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
           console.log("New User!");
