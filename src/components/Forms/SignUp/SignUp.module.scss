@@ -14,6 +14,7 @@
   outline: none;
   border-radius: 8px;
   margin-top: 16px;
+  appearance: none;
 
   &::placeholder {
     color: var(--medium-gray);
@@ -39,7 +40,6 @@
   border-radius: 99px;
   color: var(--dark-gray);
   user-select: none;
-  appearance: none;
 
   &:hover {
     background-color: var(--gray);

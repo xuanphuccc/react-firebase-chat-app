@@ -10,6 +10,7 @@ import { auth } from "../../../firebase/config";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -82,7 +83,6 @@ function SignUp() {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("Sign Up: ", userCredential);
 
           sendEmailVerification(auth.currentUser).then(() => {
             // Email verification sent!
@@ -108,6 +108,17 @@ function SignUp() {
             stickers: [],
             active: serverTimestamp(),
           });
+
+          sendPasswordResetEmail(auth, emailInput)
+            .then(() => {
+              // Password reset email sent!
+              // ..
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              // ..
+            });
 
           // Clear input
           setNameInput("");
