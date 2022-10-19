@@ -14,9 +14,36 @@
   outline: none;
   border-radius: 8px;
   margin-top: 16px;
+  appearance: none;
 
   &::placeholder {
     color: var(--medium-gray);
+  }
+}
+
+.form_password-input-wrap {
+  width: 100%;
+  position: relative;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  border-radius: 99px;
+  color: var(--dark-gray);
+  user-select: none;
+
+  &:hover {
+    background-color: var(--gray);
+    color: var(--text-black);
   }
 }
 
@@ -44,5 +71,12 @@
 }
 
 .text-highlight {
+  color: var(--primary);
+}
+
+// Error message
+.error-message {
+  font-size: 1.2rem;
+  margin: 4px 0 0 4px;
   color: var(--primary);
 }

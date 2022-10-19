@@ -1,13 +1,16 @@
 import classNames from "classnames/bind";
 import styles from "./SignUp.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { auth } from "../../../firebase/config";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { addDocument } from "../../../firebase/service";
@@ -29,6 +32,7 @@ function SignUp() {
   const [passwordError, setPasswordError] = useState("");
 
   const navigate = useNavigate();
+  const passwordRef = useRef();
   const defaultPhotoURL =
     "https://firebasestorage.googleapis.com/v0/b/chataap-34af1.appspot.com/o/logo.png?alt=media&token=b4ccdd5d-e77a-4b0e-8602-f7cd65b2d00a";
 
@@ -115,7 +119,31 @@ function SignUp() {
           const errorMessage = error.message;
 
           console.error({ errorCode, errorMessage });
+
+          if (errorCode.includes("auth/email-already-in-use")) {
+            setPasswordError(
+              "Email đã được sử dụng vui lòng Đăng nhập hoặc sử dụng email khác"
+            );
+          }
+
+          // signOut when error
+          signOut(auth)
+            .then(() => {
+              console.log("Sign out successful");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
         });
+    }
+  };
+
+  // handle show/hide password
+  const handleToggleShowPassword = () => {
+    if (passwordRef.current) {
+      passwordRef.current.type === "password"
+        ? (passwordRef.current.type = "text")
+        : (passwordRef.current.type = "password");
     }
   };
 
@@ -156,19 +184,29 @@ function SignUp() {
           <p className={cx("error-message")}>{emailError}</p>
 
           {/* Password Input */}
-          <input
-            onBlur={validatePasswordInput}
-            onChange={(e) => {
-              setPasswordInput(e.target.value);
-              setPasswordError("");
-            }}
-            value={passwordInput}
-            className={cx("form_input")}
-            type="password"
-            name=""
-            id=""
-            placeholder="Mật khẩu"
-          />
+          <div className={cx("form_password-input-wrap")}>
+            <input
+              ref={passwordRef}
+              onBlur={validatePasswordInput}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+                setPasswordError("");
+              }}
+              value={passwordInput}
+              className={cx("form_input")}
+              type="password"
+              name=""
+              id=""
+              placeholder="Mật khẩu"
+            />
+
+            <span
+              onClick={handleToggleShowPassword}
+              className={cx("show-password-btn")}
+            >
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+          </div>
           <p className={cx("error-message")}>{passwordError}</p>
         </div>
       </div>

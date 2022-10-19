@@ -1,10 +1,12 @@
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../../firebase/config";
 
 import Form from "../Form";
@@ -14,15 +16,17 @@ const cx = classNames.bind(styles);
 function Login() {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
+  const passwordRef = useRef();
 
   const handleLoginWithEmailAndPassword = () => {
     signInWithEmailAndPassword(auth, emailInput, passwordInput)
       .then((userCredential) => {
         // Signed in
         // const user = userCredential.user;
-
         console.log("Log In: ", userCredential);
       })
       .catch((error) => {
@@ -30,7 +34,27 @@ function Login() {
         const errorMessage = error.message;
 
         console.error({ errorCode, errorMessage });
+
+        setErrorMessage("Email hoặc mật khẩu không đúng");
+
+        // sign out when login error
+        signOut(auth)
+          .then(() => {
+            console.log("Sign out successful");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
+  };
+
+  // handle show/hide password
+  const handleToggleShowPassword = () => {
+    if (passwordRef.current) {
+      passwordRef.current.type === "password"
+        ? (passwordRef.current.type = "text")
+        : (passwordRef.current.type = "password");
+    }
   };
 
   return (
@@ -53,17 +77,29 @@ function Login() {
           />
 
           {/* Password */}
-          <input
-            onChange={(e) => {
-              setPasswordInput(e.target.value);
-            }}
-            value={passwordInput}
-            className={cx("form_input")}
-            type="password"
-            name=""
-            id=""
-            placeholder="Mật khẩu"
-          />
+          <div className={cx("form_password-input-wrap")}>
+            <input
+              ref={passwordRef}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+              }}
+              value={passwordInput}
+              className={cx("form_input")}
+              type="password"
+              name=""
+              id=""
+              placeholder="Mật khẩu"
+            />
+
+            <span
+              onClick={handleToggleShowPassword}
+              className={cx("show-password-btn")}
+            >
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+          </div>
+
+          <p className={cx("error-message")}>{errorMessage}</p>
         </div>
       </div>
 

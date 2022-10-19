@@ -20,6 +20,33 @@
   }
 }
 
+.form_password-input-wrap {
+  width: 100%;
+  position: relative;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  border-radius: 99px;
+  color: var(--dark-gray);
+  user-select: none;
+  appearance: none;
+
+  &:hover {
+    background-color: var(--gray);
+    color: var(--text-black);
+  }
+}
+
 // Terms
 .form_terms {
   font-size: 1.2rem;
