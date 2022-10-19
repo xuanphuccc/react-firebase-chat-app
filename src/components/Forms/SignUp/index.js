@@ -10,7 +10,6 @@ import { auth } from "../../../firebase/config";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  sendPasswordResetEmail,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -108,17 +107,6 @@ function SignUp() {
             stickers: [],
             active: serverTimestamp(),
           });
-
-          sendPasswordResetEmail(auth, emailInput)
-            .then(() => {
-              // Password reset email sent!
-              // ..
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              // ..
-            });
 
           // Clear input
           setNameInput("");
@@ -222,13 +210,6 @@ function SignUp() {
         </div>
       </div>
 
-      {/* Terms */}
-      <p className={cx("form_terms")}>
-        Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
-        <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
-        chúng tôi.
-      </p>
-
       {/* Controls */}
       <div className={cx("form_controls")}>
         <button
@@ -246,6 +227,13 @@ function SignUp() {
           Đăng nhập
         </button>
       </div>
+
+      {/* Terms */}
+      <p className={cx("form_terms")}>
+        Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
+        <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
+        chúng tôi.
+      </p>
     </Form>
   );
 }

@@ -102,13 +102,6 @@ function Login() {
         </div>
       </div>
 
-      {/* Terms */}
-      <p className={cx("form_terms")}>
-        Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
-        <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
-        chúng tôi.
-      </p>
-
       {/* Controls */}
       <div className={cx("form_controls")}>
         <button
@@ -126,6 +119,18 @@ function Login() {
           Đăng ký
         </button>
       </div>
+
+      {/* Forgot password */}
+      <div className={cx("forgot-password")}>
+        <button className={cx("forgot-password-btn")}>Quên mật khẩu?</button>
+      </div>
+
+      {/* Terms */}
+      <p className={cx("form_terms")}>
+        Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
+        <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
+        chúng tôi.
+      </p>
     </Form>
   );
 }

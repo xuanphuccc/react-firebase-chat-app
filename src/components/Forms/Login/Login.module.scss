@@ -50,7 +50,7 @@
 // Terms
 .form_terms {
   font-size: 1.2rem;
-  margin: 16px 0 24px;
+  padding: 16px 0 24px;
   line-height: 1.5;
   text-align: center;
 }
@@ -59,7 +59,7 @@
 .form_controls {
   display: flex;
   width: 100%;
-  padding-bottom: 24px;
+  padding: 24px 0 24px;
 }
 
 .form_controls-btn {
@@ -79,4 +79,25 @@
   font-size: 1.2rem;
   margin: 4px 0 0 4px;
   color: var(--primary);
+}
+
+// Forgot password
+.forgot-password {
+  padding: 16px 0 0;
+  text-align: center;
+}
+
+.forgot-password-btn {
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--primary);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
