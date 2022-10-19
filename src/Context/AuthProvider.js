@@ -54,7 +54,12 @@ function AuthProvider({ children }) {
       } else {
         // Chuyển về trang login khi đăng nhập không thành công
         // hoặc chưa đăng nhập
-        if (!window.location.pathname.includes("signup")) {
+        if (
+          !(
+            window.location.pathname.includes("signup") ||
+            window.location.pathname.includes("forgot-password")
+          )
+        ) {
           navigate("/login");
         }
       }

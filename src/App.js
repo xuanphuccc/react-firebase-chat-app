@@ -5,6 +5,7 @@ import { AppContext } from "./Context/AppProvider";
 
 import Login from "./components/Forms/Login";
 import SignUp from "./components/Forms/SignUp";
+import ResetPassword from "./components/ResetPassword";
 import ChatRoom from "./components/ChatRoom";
 import Sidebar from "./components/ChatRoom/Sidebar";
 import ChatWindow from "./components/ChatRoom/ChatWindow";
@@ -20,6 +21,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/forgot-password" element={<ResetPassword />} />
 
       <Route path="/room" element={<ChatRoom />}>
         {rooms.map((room) => (

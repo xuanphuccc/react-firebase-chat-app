@@ -122,7 +122,14 @@ function Login() {
 
       {/* Forgot password */}
       <div className={cx("forgot-password")}>
-        <button className={cx("forgot-password-btn")}>Quên mật khẩu?</button>
+        <button
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
+          className={cx("forgot-password-btn")}
+        >
+          Quên mật khẩu?
+        </button>
       </div>
 
       {/* Terms */}
