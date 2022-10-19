@@ -168,6 +168,13 @@ function ChatWindow({ roomId }) {
     // instant
   };
 
+  // Auto scroll to bottom
+  useEffect(() => {
+    if (!isScrollToBottom) {
+      handleScrollToBottom();
+    }
+  }, [messages, isScrollToBottom]);
+
   return (
     <>
       {selectedRoom && (
