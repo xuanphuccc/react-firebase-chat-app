@@ -24,10 +24,12 @@ function Login() {
         // const user = userCredential.user;
 
         console.log("Log In: ", userCredential);
-        // ...
       })
       .catch((error) => {
-        console.error(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        console.error({ errorCode, errorMessage });
       });
   };
 

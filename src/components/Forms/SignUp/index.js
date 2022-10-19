@@ -32,6 +32,7 @@ function SignUp() {
   const defaultPhotoURL =
     "https://firebasestorage.googleapis.com/v0/b/chataap-34af1.appspot.com/o/logo.png?alt=media&token=b4ccdd5d-e77a-4b0e-8602-f7cd65b2d00a";
 
+  // Validate name
   const validateNameInput = () => {
     const isValid = Validator({
       setErrorMessage: setNameError,
@@ -41,6 +42,7 @@ function SignUp() {
     return isValid;
   };
 
+  // Validate email
   const validateEmailInput = () => {
     const isValid = Validator({
       setErrorMessage: setEmailError,
@@ -53,6 +55,7 @@ function SignUp() {
     return isValid;
   };
 
+  // Validate password
   const validatePasswordInput = () => {
     const isValid = Validator({
       setErrorMessage: setPasswordError,
@@ -75,7 +78,6 @@ function SignUp() {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-
           console.log("Sign Up: ", userCredential);
 
           sendEmailVerification(auth.currentUser).then(() => {
@@ -104,7 +106,10 @@ function SignUp() {
           });
         })
         .catch((error) => {
-          console.error(error);
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          console.error({ errorCode, errorMessage });
         });
 
       //   Clear input
