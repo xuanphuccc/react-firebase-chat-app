@@ -41,7 +41,7 @@ function RoomList() {
         (user) => user.uid === lastMessage.uid
       );
 
-      if (memberNickname) {
+      if (memberNickname && userCurrentName) {
         userName = memberNickname.nickname || userCurrentName.displayName;
       } else if (userCurrentName) {
         userName = userCurrentName.displayName;

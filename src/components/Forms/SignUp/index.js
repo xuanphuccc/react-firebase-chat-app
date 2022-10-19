@@ -104,6 +104,11 @@ function SignUp() {
             stickers: [],
             active: serverTimestamp(),
           });
+
+          // Clear input
+          setNameInput("");
+          setEmailInput("");
+          setPasswordInput("");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -111,11 +116,6 @@ function SignUp() {
 
           console.error({ errorCode, errorMessage });
         });
-
-      //   Clear input
-      setNameInput("");
-      setEmailInput("");
-      setPasswordInput("");
     }
   };
 
