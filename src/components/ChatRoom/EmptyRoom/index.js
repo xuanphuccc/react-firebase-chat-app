@@ -32,7 +32,6 @@ function EmptyRoom() {
         </div>
       )}
       <div className={cx("wrapper")}>
-        <h4 className={cx("title")}>Bạn chưa chọn phòng</h4>
         <img className={cx("img")} src={placeHolderImg} alt="" />
       </div>
     </div>
