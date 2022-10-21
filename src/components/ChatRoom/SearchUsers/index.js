@@ -13,11 +13,25 @@ const cx = classNames.bind(styles);
 
 function SearchUsers({ inputValue, setInputValue }) {
   const { uid } = useContext(AuthContext);
-  const { isMobile, users, rooms, handleCreateRoom, setIsOpenSearchUsers } =
-    useContext(AppContext);
+  const {
+    isMobile,
+    users,
+    rooms,
+    handleCreateRoom,
+    isOpenSearchUsers,
+    setIsOpenSearchUsers,
+  } = useContext(AppContext);
   const [searchingUsers, setSearchingUsers] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setInputValue("");
+
+    return () => {
+      setInputValue("");
+    };
+  }, [isOpenSearchUsers, setInputValue]);
 
   // Handle Search User
   useEffect(() => {

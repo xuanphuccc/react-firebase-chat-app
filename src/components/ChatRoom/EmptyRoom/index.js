@@ -12,10 +12,15 @@ import { Link } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 function EmptyRoom() {
-  const { isMobile } = useContext(AppContext);
+  const { isMobile, setIsOpenSearchUsers } = useContext(AppContext);
 
   return (
-    <div className={cx("empty-room")}>
+    <div
+      onClick={() => {
+        setIsOpenSearchUsers(false);
+      }}
+      className={cx("empty-room")}
+    >
       {isMobile && (
         <div className={cx("header")}>
           <Link className={cx("back-wrap")} to={"/room-list"}>

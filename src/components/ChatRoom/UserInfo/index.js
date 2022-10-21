@@ -37,7 +37,12 @@ function UserInfo({ inputValue, setInputValue }) {
 
   return (
     <div className={cx("user-info")}>
-      <div className={cx("user-info-wrapper")}>
+      <div
+        onClick={() => {
+          setIsOpenSearchUsers(false);
+        }}
+        className={cx("user-info-wrapper")}
+      >
         <div
           onClick={() => {
             setUserOptionsVisible(true);
@@ -67,7 +72,6 @@ function UserInfo({ inputValue, setInputValue }) {
           <span
             onClick={() => {
               setIsOpenSearchUsers(false);
-              setInputValue("");
             }}
             className={cx("users-search_back-btn")}
           >
