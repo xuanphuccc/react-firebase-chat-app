@@ -206,14 +206,24 @@ function ChatWindow({ roomId }) {
                   false
                 )}
 
-                <img
-                  src={
-                    handleGenerateRoomName(selectedRoom).photoURL ||
-                    placeHolderImg
-                  }
-                  alt=""
-                  className={cx("chat-window_header-img")}
-                />
+                <div className={cx("chat-window_header-img-wrap")}>
+                  <img
+                    src={
+                      handleGenerateRoomName(selectedRoom).photoURL ||
+                      placeHolderImg
+                    }
+                    alt=""
+                    className={cx("chat-window_header-img")}
+                  />
+
+                  {/* Room active status */}
+                  {findRoomActive(roomId) &&
+                    findRoomActive(roomId).includes("Đang hoạt động") && (
+                      <span
+                        className={cx("chat-window_header-active-status")}
+                      ></span>
+                    )}
+                </div>
                 <div className={cx("chat-window_header-name-wrap")}>
                   <h4 className={cx("chat-window_header-name")}>
                     {handleGenerateRoomName(selectedRoom).name}

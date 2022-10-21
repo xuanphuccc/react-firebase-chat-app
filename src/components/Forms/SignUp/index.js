@@ -36,7 +36,7 @@ function SignUp() {
   const navigate = useNavigate();
   const passwordRef = useRef();
   const defaultPhotoURL =
-    "https://firebasestorage.googleapis.com/v0/b/chataap-34af1.appspot.com/o/logo.png?alt=media&token=b4ccdd5d-e77a-4b0e-8602-f7cd65b2d00a";
+    "https://firebasestorage.googleapis.com/v0/b/chataap-34af1.appspot.com/o/user.png?alt=media&token=84085bd3-d19e-427a-84ed-c5d1d68a01a8";
 
   // Validate name
   const validateNameInput = () => {

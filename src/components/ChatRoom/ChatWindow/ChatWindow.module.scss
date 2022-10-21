@@ -16,7 +16,7 @@
 }
 
 .chat-window_header {
-  height: 50px;
+  height: 58px;
   display: flex;
   justify-content: space-between;
   background-color: var(--background);
@@ -46,6 +46,11 @@
   flex: 1;
 }
 
+.chat-window_header-img-wrap {
+  position: relative;
+  display: flex;
+}
+
 .chat-window_header-img {
   position: relative;
   width: 38px;
@@ -56,8 +61,19 @@
   border: 1px solid var(--border-color);
 }
 
+.chat-window_header-active-status {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  background-color: var(--active-green);
+  border-radius: 99px;
+  border: 2px solid var(--background);
+}
+
 .chat-window_header-name {
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: 600;
   color: var(--text-black);
 

@@ -16,11 +16,7 @@ import Modal from "../Modal";
 const cx = classNames.bind(styles);
 
 function InviteMemberModal() {
-  const [inputValue, setInputValue] = useState("");
-  const [searchUsers, setSearchUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const inputRef = useRef();
-
+  const { uid } = useContext(AuthContext);
   const {
     isInviteMemberVisible,
     setIsInviteMemberVisible,
@@ -30,7 +26,10 @@ function InviteMemberModal() {
     sendMessage,
   } = useContext(AppContext);
 
-  const { uid } = useContext(AuthContext);
+  const [inputValue, setInputValue] = useState("");
+  const [searchUsers, setSearchUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const inputRef = useRef();
 
   const originMemberId = useMemo(() => {
     return members.map((member) => member.uid);
@@ -41,17 +40,14 @@ function InviteMemberModal() {
     if (selectedUsers.length >= 1) {
       // Set nick name cho những users được thêm
       let usersNickname = users.map((user) => {
-        return selectedUsers.includes(user.uid)
-          ? {
-              uid: user.uid,
-              nickname: "",
-            }
-          : {
-              uid: "",
-              nickname: "",
-            };
+        return (
+          selectedUsers.includes(user.uid) && {
+            uid: user.uid,
+            nickname: "",
+          }
+        );
       });
-      usersNickname = usersNickname.filter((user) => user.uid !== "");
+      usersNickname = usersNickname.filter((user) => user !== false);
 
       const roomRef = doc(db, "rooms", selectedRoomId);
       updateDoc(roomRef, {
@@ -149,6 +145,7 @@ function InviteMemberModal() {
       onCancel={handleCancel}
     >
       <div className={cx("wrapper")}>
+        {/* Input */}
         <div className={cx("input-wrap")}>
           <span className={cx("input-search-icon")}>
             <FontAwesomeIcon icon={faSearch} />
@@ -165,6 +162,7 @@ function InviteMemberModal() {
           />
         </div>
 
+        {/* Choosing users */}
         <ul className={cx("users-choosing")}>
           {renderSelectedUsers.length > 0 ? (
             renderSelectedUsers.map((user) => (
@@ -194,6 +192,7 @@ function InviteMemberModal() {
           )}
         </ul>
 
+        {/* Search users */}
         <ul className={cx("users-list")}>
           {searchUsers.map((searchUser) => (
             <li
