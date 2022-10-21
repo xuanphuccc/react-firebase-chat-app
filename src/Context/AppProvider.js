@@ -336,8 +336,12 @@ function AppProvider({ children }) {
             photoURL: room.photoURL,
           };
         } else if (room.members.length === 2) {
+          console.log("room info: ", room);
           // Return friend name
           const friendUID = room.members.find((members) => members !== uid);
+          const friendNickname = room.roomNicknames.find(
+            (nickname) => nickname.uid !== uid
+          );
           const friendInfor =
             friendUID &&
             users.find((user) => {
@@ -345,7 +349,9 @@ function AppProvider({ children }) {
             });
           return (
             friendInfor && {
-              name: friendInfor.displayName,
+              name:
+                (friendNickname && friendNickname.nickname) ||
+                friendInfor.displayName,
               photoURL: friendInfor.photoURL,
             }
           );
