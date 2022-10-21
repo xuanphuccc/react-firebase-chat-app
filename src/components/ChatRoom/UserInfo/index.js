@@ -22,7 +22,6 @@ function UserInfo({ inputValue, setInputValue }) {
     setIsAddRoomVisible,
     isOpenSearchUsers,
     setIsOpenSearchUsers,
-    isMobile,
     currentUser,
   } = useContext(AppContext);
 
@@ -54,7 +53,7 @@ function UserInfo({ inputValue, setInputValue }) {
           )}
         </div>
 
-        <h2 className={cx("title")}>Chat</h2>
+        <h1 className={cx("title")}>Chat</h1>
 
         <div className={cx("new-room-wrap")}>
           <i onClick={handleAddRoom} className={cx("new-room-icon")}>
