@@ -16,6 +16,8 @@ import {
 import { addDocument } from "../../../firebase/service";
 import { serverTimestamp } from "firebase/firestore";
 
+import { Helmet } from "react-helmet-async";
+
 import Form from "../Form";
 import Validator from "../../../validateForm/Validator";
 
@@ -147,94 +149,105 @@ function SignUp() {
   };
 
   return (
-    <Form title="Đăng ký tài khoản Satellite">
-      {/* Sign Up with password */}
-      <div className={cx("form_with-password")}>
-        <p className={cx("form_description")}>
-          Hoặc đăng ký với email và mật khẩu của bạn:
-        </p>
-        <div className={cx("form_input-wrapper")}>
-          {/* Name Input */}
-          <input
-            onBlur={validateNameInput}
-            onChange={(e) => {
-              setNameInput(e.target.value);
-              setNameError("");
-            }}
-            value={nameInput}
-            className={cx("form_input")}
-            type="text"
-            placeholder="Họ và tên của bạn"
-          />
-          <p className={cx("error-message")}>{nameError}</p>
+    <>
+      <Helmet>
+        <title>Đăng ký Satellite - Ứng dụng nhắn tin</title>
+        <meta
+          name="description"
+          content="Ứng dụng nhắn tin với giao diện được thiết kế theo phong cách tối giản"
+        />
+        <link rel="canonical" href="/login" />
+      </Helmet>
 
-          {/* Email Input */}
-          <input
-            onBlur={validateEmailInput}
-            onChange={(e) => {
-              setEmailInput(e.target.value);
-              setEmailError("");
-            }}
-            value={emailInput}
-            className={cx("form_input")}
-            type="text"
-            placeholder="Email của bạn"
-          />
-          <p className={cx("error-message")}>{emailError}</p>
-
-          {/* Password Input */}
-          <div className={cx("form_password-input-wrap")}>
+      <Form title="Đăng ký tài khoản Satellite">
+        {/* Sign Up with password */}
+        <div className={cx("form_with-password")}>
+          <p className={cx("form_description")}>
+            Hoặc đăng ký với email và mật khẩu của bạn:
+          </p>
+          <div className={cx("form_input-wrapper")}>
+            {/* Name Input */}
             <input
-              ref={passwordRef}
-              onBlur={validatePasswordInput}
+              onBlur={validateNameInput}
               onChange={(e) => {
-                setPasswordInput(e.target.value);
-                setPasswordError("");
+                setNameInput(e.target.value);
+                setNameError("");
               }}
-              value={passwordInput}
+              value={nameInput}
               className={cx("form_input")}
-              type="password"
-              name=""
-              id=""
-              placeholder="Mật khẩu"
+              type="text"
+              placeholder="Họ và tên của bạn"
             />
+            <p className={cx("error-message")}>{nameError}</p>
 
-            <span
-              onClick={handleToggleShowPassword}
-              className={cx("show-password-btn")}
-            >
-              <FontAwesomeIcon icon={faEye} />
-            </span>
+            {/* Email Input */}
+            <input
+              onBlur={validateEmailInput}
+              onChange={(e) => {
+                setEmailInput(e.target.value);
+                setEmailError("");
+              }}
+              value={emailInput}
+              className={cx("form_input")}
+              type="text"
+              placeholder="Email của bạn"
+            />
+            <p className={cx("error-message")}>{emailError}</p>
+
+            {/* Password Input */}
+            <div className={cx("form_password-input-wrap")}>
+              <input
+                ref={passwordRef}
+                onBlur={validatePasswordInput}
+                onChange={(e) => {
+                  setPasswordInput(e.target.value);
+                  setPasswordError("");
+                }}
+                value={passwordInput}
+                className={cx("form_input")}
+                type="password"
+                name=""
+                id=""
+                placeholder="Mật khẩu"
+              />
+
+              <span
+                onClick={handleToggleShowPassword}
+                className={cx("show-password-btn")}
+              >
+                <FontAwesomeIcon icon={faEye} />
+              </span>
+            </div>
+            <p className={cx("error-message")}>{passwordError}</p>
           </div>
-          <p className={cx("error-message")}>{passwordError}</p>
         </div>
-      </div>
 
-      {/* Controls */}
-      <div className={cx("form_controls")}>
-        <button
-          onClick={handleSubmit}
-          className={cx("form_controls-btn", " btn", "primary ")}
-        >
-          Đăng ký
-        </button>
-        <button
-          onClick={() => {
-            navigate("/login");
-          }}
-          className={cx("form_controls-btn", " btn", "border")}
-        >
-          Đăng nhập
-        </button>
-      </div>
+        {/* Controls */}
+        <div className={cx("form_controls")}>
+          <button
+            onClick={handleSubmit}
+            className={cx("form_controls-btn", " btn", "primary ")}
+          >
+            Đăng ký
+          </button>
+          <button
+            onClick={() => {
+              navigate("/login");
+            }}
+            className={cx("form_controls-btn", " btn", "border")}
+          >
+            Đăng nhập
+          </button>
+        </div>
 
-      {/* Terms */}
-      <p className={cx("form_terms")}>
-        Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
-        <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
-        chúng tôi.
-      </p>
-    </Form>
+        {/* Terms */}
+        <p className={cx("form_terms")}>
+          Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn đồng ý với{" "}
+          <span className={cx("text-highlight")}>Điều khoản sử dụng</span> của
+          chúng tôi.
+        </p>
+      </Form>
+    </>
   );
 }
 

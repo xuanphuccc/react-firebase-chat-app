@@ -84,6 +84,7 @@ function MessageControls({
 
   return (
     <>
+      {/* Reactions message */}
       <Tippy
         interactive="true"
         trigger="click"
@@ -102,6 +103,7 @@ function MessageControls({
         </button>
       </Tippy>
 
+      {/* Reply message */}
       <button
         onClick={() => {
           setReplyMessage(message);
@@ -112,6 +114,7 @@ function MessageControls({
         <FontAwesomeIcon icon={faReply} />
       </button>
 
+      {/* Unsend message */}
       {userId === uid && (
         <Tippy
           interactive="true"

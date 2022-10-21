@@ -1,0 +1,8 @@
+https://www.xuanphuc.space/
+https://www.xuanphuc.space/login
+https://www.xuanphuc.space/signup
+https://www.xuanphuc.space/forgot-password
+https://www.xuanphuc.space/room
+https://www.xuanphuc.space/room-list
+https://www.xuanphuc.space/chat-media
+https://www.xuanphuc.space/p/:roomid

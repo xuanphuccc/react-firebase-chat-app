@@ -1,6 +1,8 @@
 import classNames from "classnames/bind";
 import styles from "./Sidebar.module.scss";
 
+import { Helmet } from "react-helmet-async";
+
 import { useContext, useState } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 
@@ -24,33 +26,43 @@ function Sidebar() {
   const [inputValue, setInputValue] = useState("");
 
   return (
-    <div className={cx("side-bar", { isMobile })} data-theme={theme}>
-      {isUsersLoading ? (
-        <UserInfo.Loading />
-      ) : (
-        <UserInfo inputValue={inputValue} setInputValue={setInputValue} />
-      )}
+    <>
+      <Helmet>
+        <title>Satellite - Ứng dụng nhắn tin</title>
+        <meta
+          name="description"
+          content="Ứng dụng nhắn tin với giao diện được thiết kế theo phong cách tối giản"
+        />
+        <link rel="canonical" href="/login" />
+      </Helmet>
+      <div className={cx("side-bar", { isMobile })} data-theme={theme}>
+        {isUsersLoading ? (
+          <UserInfo.Loading />
+        ) : (
+          <UserInfo inputValue={inputValue} setInputValue={setInputValue} />
+        )}
 
-      {isRoomListLoading ? (
-        <RoomList.Loading />
-      ) : (
-        <>
-          {isOpenSearchUsers ? (
-            <SearchUsers
-              inputValue={inputValue}
-              setInputValue={setInputValue}
-            />
-          ) : (
-            <RoomList />
-          )}
-        </>
-      )}
+        {isRoomListLoading ? (
+          <RoomList.Loading />
+        ) : (
+          <>
+            {isOpenSearchUsers ? (
+              <SearchUsers
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+              />
+            ) : (
+              <RoomList />
+            )}
+          </>
+        )}
 
-      {/* Modal */}
-      <AlertModal />
-      <UserOptions />
-      <CreateRoomModal />
-    </div>
+        {/* Modal */}
+        <AlertModal />
+        <UserOptions />
+        <CreateRoomModal />
+      </div>
+    </>
   );
 }
 

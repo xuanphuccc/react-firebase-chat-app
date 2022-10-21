@@ -8,6 +8,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
+import { Helmet } from "react-helmet-async";
+
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 
@@ -91,43 +93,53 @@ function ChatMedia() {
   };
 
   return (
-    <div className={cx("wrapper", { isMobile: isMobile })}>
-      <button
-        onClick={() => {
-          navigate(-1);
-        }}
-        className={cx("back-btn")}
-      >
-        <FontAwesomeIcon icon={faXmark} />
-      </button>
-      <div className={cx("main-slider")}>
-        <Slider asNavFor={nav2} ref={slider1Ref} {...settingCarousel}>
-          {roomPhotos.map((photoURL, index) => (
-            <div key={index} className={cx("media-img-wrap")}>
-              {photoURL && (
-                <div className={cx("img-background")}>
-                  <img className={cx("media-img")} src={photoURL} alt="" />{" "}
-                </div>
-              )}
-            </div>
-          ))}
-        </Slider>
-      </div>
+    <>
+      <Helmet>
+        <title>Satellite - Ứng dụng nhắn tin</title>
+        <meta
+          name="description"
+          content="Ứng dụng nhắn tin với giao diện được thiết kế theo phong cách tối giản"
+        />
+        <link rel="canonical" href="/login" />
+      </Helmet>
+      <div className={cx("wrapper", { isMobile: isMobile })}>
+        <button
+          onClick={() => {
+            navigate(-1);
+          }}
+          className={cx("back-btn")}
+        >
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
+        <div className={cx("main-slider")}>
+          <Slider asNavFor={nav2} ref={slider1Ref} {...settingCarousel}>
+            {roomPhotos.map((photoURL, index) => (
+              <div key={index} className={cx("media-img-wrap")}>
+                {photoURL && (
+                  <div className={cx("img-background")}>
+                    <img className={cx("media-img")} src={photoURL} alt="" />{" "}
+                  </div>
+                )}
+              </div>
+            ))}
+          </Slider>
+        </div>
 
-      <div className={cx("nav-slider")}>
-        <Slider asNavFor={nav1} ref={slider2Ref} {...settingsSliderNav}>
-          {roomPhotos.map((photoURL, index) => (
-            <div key={index} className={cx("media-img-wrap")}>
-              {photoURL && (
-                <div className={cx("img-background")}>
-                  <img className={cx("media-img")} src={photoURL} alt="" />
-                </div>
-              )}
-            </div>
-          ))}
-        </Slider>
+        <div className={cx("nav-slider")}>
+          <Slider asNavFor={nav1} ref={slider2Ref} {...settingsSliderNav}>
+            {roomPhotos.map((photoURL, index) => (
+              <div key={index} className={cx("media-img-wrap")}>
+                {photoURL && (
+                  <div className={cx("img-background")}>
+                    <img className={cx("media-img")} src={photoURL} alt="" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </Slider>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
