@@ -166,59 +166,61 @@ function InviteMemberModal() {
         </div>
 
         <ul className={cx("users-choosing")}>
-          {renderSelectedUsers.map((user) => (
-            <li className={cx("users-choosing_item")}>
-              <div className={cx("user-img-wrap")}>
-                <img
-                  className={cx("users-choosing_img")}
-                  src={user.photoURL}
-                  alt=""
-                />
-                <span
-                  onClick={() => {
-                    handleCheckedUsers(user.uid);
-                  }}
-                  className={cx("users-choosing_remove")}
-                >
-                  <FontAwesomeIcon icon={faXmark} />
-                </span>
-              </div>
-              <h4 className={cx("users-choosing_name")}>{user.displayName}</h4>
-            </li>
-          ))}
-        </ul>
-
-        <ul className={cx("users-list")}>
-          {searchUsers.length > 0 ? (
-            searchUsers.map((searchUser) => (
-              <li
-                key={searchUser.uid}
-                onClick={() => {
-                  handleCheckedUsers(searchUser.uid);
-                }}
-                className={cx("user-item")}
-              >
-                <div className={cx("user-info")}>
+          {renderSelectedUsers.length > 0 ? (
+            renderSelectedUsers.map((user) => (
+              <li key={user.uid} className={cx("users-choosing_item")}>
+                <div className={cx("user-img-wrap")}>
                   <img
-                    className={cx("user-img")}
-                    src={searchUser.photoURL}
+                    className={cx("users-choosing_img")}
+                    src={user.photoURL}
                     alt=""
                   />
-                  <h4 className={cx("user-name")}>{searchUser.displayName}</h4>
+                  <span
+                    onClick={() => {
+                      handleCheckedUsers(user.uid);
+                    }}
+                    className={cx("users-choosing_remove")}
+                  >
+                    <FontAwesomeIcon icon={faXmark} />
+                  </span>
                 </div>
-                <input
-                  className={cx("choose-user")}
-                  type="checkbox"
-                  name=""
-                  id=""
-                  checked={selectedUsers.includes(searchUser.uid)}
-                  onChange={() => {}}
-                />
+                <h4 className={cx("users-choosing_name")}>
+                  {user.displayName}
+                </h4>
               </li>
             ))
           ) : (
             <p className={cx("empty-user")}>Chưa chọn người dùng nào</p>
           )}
+        </ul>
+
+        <ul className={cx("users-list")}>
+          {searchUsers.map((searchUser) => (
+            <li
+              key={searchUser.uid}
+              onClick={() => {
+                handleCheckedUsers(searchUser.uid);
+              }}
+              className={cx("user-item")}
+            >
+              <div className={cx("user-info")}>
+                <img
+                  className={cx("user-img")}
+                  src={searchUser.photoURL}
+                  alt=""
+                />
+                <h4 className={cx("user-name")}>{searchUser.displayName}</h4>
+              </div>
+              <input
+                className={cx("choose-user")}
+                type="checkbox"
+                name=""
+                id=""
+                checked={selectedUsers.includes(searchUser.uid)}
+                onChange={() => {}}
+              />
+            </li>
+          ))}
         </ul>
       </div>
     </Modal>

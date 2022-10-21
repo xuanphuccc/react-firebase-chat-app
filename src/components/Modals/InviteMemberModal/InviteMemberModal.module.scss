@@ -1,7 +1,7 @@
 /* Add Room Modal */
 .wrapper {
   min-width: 160px;
-  padding: 16px;
+  padding: 16px 16px 0;
 }
 
 .input-wrap {
@@ -48,10 +48,9 @@
 }
 
 .empty-user {
-  display: flex;
-  margin-top: 24px;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  line-height: 88px;
+  text-align: center;
   font-size: 1.2rem;
   font-weight: 400;
   color: var(--dark-gray);
@@ -98,6 +97,7 @@
 
 // Users
 .users-choosing {
+  min-height: 120px;
   display: flex;
   padding: 16px;
   flex-wrap: nowrap;
@@ -107,6 +107,7 @@
 
 .users-choosing_item {
   position: relative;
+  width: 94px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,7 +132,6 @@
   font-weight: 300;
   padding-top: 6px;
   color: var(--text-black);
-  max-width: 78px;
   white-space: pre-wrap;
   text-align: center;
 }
