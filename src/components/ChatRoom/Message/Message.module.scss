@@ -34,19 +34,19 @@
 
   &.first-message {
     .text-inner {
-      border-radius: 28px 28px 8px 28px;
+      border-radius: 20px 20px 6px 20px;
     }
   }
 
   &.middle-message {
     .text-inner {
-      border-radius: 28px 8px 8px 28px;
+      border-radius: 20px 6px 6px 20px;
     }
   }
 
   &.last-message {
     .text-inner {
-      border-radius: 28px 8px 28px 28px;
+      border-radius: 20px 6px 20px 20px;
     }
   }
 
@@ -64,7 +64,7 @@
     }
 
     .text-inner {
-      border-radius: 28px 28px 28px 8px;
+      border-radius: 20px 20px 20px 6px;
     }
   }
 
@@ -83,7 +83,7 @@
     }
 
     .text-inner {
-      border-radius: 8px 28px 28px 8px;
+      border-radius: 6px 20px 20px 6px;
     }
   }
 
@@ -98,7 +98,7 @@
     }
 
     .text-inner {
-      border-radius: 8px 28px 28px 28px;
+      border-radius: 6px 20px 20px 20px;
     }
   }
 
@@ -170,12 +170,12 @@
 }
 
 .text-inner {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1.5;
   color: var(--text-black);
   background-color: var(--message-gray);
-  padding: 10px 16px;
-  border-radius: 28px;
+  padding: 8px 16px;
+  border-radius: 20px;
   word-break: break-word;
   animation: popup 0.2s ease forwards;
   transition: all 0.2s ease;
