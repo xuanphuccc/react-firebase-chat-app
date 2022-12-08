@@ -139,10 +139,10 @@ function CreateRoomModal() {
 
   return (
     <Modal
-      title="Tạo phòng chat"
+      title="Tạo nhóm chat"
       visible={isAddRoomVisible}
       onOk={handleOk}
-      OkTitle="Tạo phòng chat"
+      OkTitle="Tạo nhóm chat"
       onCancel={handleCancel}
     >
       <div className={cx("wrapper")}>
