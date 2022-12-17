@@ -80,7 +80,6 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const { user, _tokenResponse } = result;
-        console.log("new (google) user", user);
 
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
