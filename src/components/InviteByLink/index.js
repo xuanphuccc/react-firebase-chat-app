@@ -59,6 +59,7 @@ function InviteByLink() {
     }
   };
 
+  // Check valid room
   useEffect(() => {
     getDoc(roomRef)
       .then((data) => {

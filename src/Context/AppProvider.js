@@ -4,7 +4,12 @@ import useFirestore from "../hooks/useFirestore";
 
 import useViewport from "../hooks/useViewport";
 import useGetAllFirestore from "../hooks/useGetAllFirestore";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 import { addDocument } from "../firebase/service";
 
@@ -324,6 +329,32 @@ function AppProvider({ children }) {
     }).catch((error) => {
       console.error(error);
     });
+  };
+
+  // Handle join Global chat (default)
+  const joinGlobalChat = () => {
+    const roomid = "pe0dBPnY8yAkOwdiCUDU";
+    const roomRef = doc(db, "rooms", roomid);
+
+    if (uid && roomid) {
+      updateDoc(roomRef, {
+        members: arrayUnion(uid),
+        roomNicknames: arrayUnion({ nickname: "", uid }),
+        role: "group",
+      })
+        .then(() => {
+          sendMessage(
+            `đã tham gia Satellite`,
+            null,
+            null,
+            "@roomnotify",
+            roomid
+          );
+        })
+        .catch((error) => {
+          console.warn(error);
+        });
+    }
   };
 
   // Generate room name
