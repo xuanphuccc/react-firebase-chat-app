@@ -331,8 +331,8 @@ function AppProvider({ children }) {
     });
   };
 
-  // Handle join Global chat (default)
-  const joinGlobalChat = () => {
+  // Handle join Global chat (for new user)
+  const joinGlobalChat = (uid) => {
     const roomid = "pe0dBPnY8yAkOwdiCUDU";
     const roomRef = doc(db, "rooms", roomid);
 
@@ -503,6 +503,7 @@ function AppProvider({ children }) {
         setReplyMessage,
         handleCreateRoom,
         handleGenerateRoomName,
+        joinGlobalChat,
       }}
     >
       {children}

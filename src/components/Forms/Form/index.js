@@ -19,6 +19,7 @@ import { serverTimestamp } from "firebase/firestore";
 const cx = classNames.bind(styles);
 
 function Form({ title = "Đăng nhập vào Satellite", children }) {
+  const { joinGlobalChat } = useContext(AppContext);
   const fbProvider = new FacebookAuthProvider(); //OK
   const googleProvider = new GoogleAuthProvider();
 
@@ -43,6 +44,9 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
             uid: user.uid,
             providerId: _tokenResponse.providerId,
           });
+
+          // join Global chat
+          joinGlobalChat(user.uid);
         }
 
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
@@ -76,8 +80,7 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const { user, _tokenResponse } = result;
-
-        console.log(result);
+        console.log("new (google) user", user);
 
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
@@ -93,6 +96,9 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
             stickers: [],
             active: serverTimestamp(),
           });
+
+          // join Global chat
+          joinGlobalChat(user.uid);
         }
 
         // This gives you a Google Access Token. You can use it to access the Google API.

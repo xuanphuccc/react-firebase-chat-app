@@ -3,7 +3,7 @@ import styles from "./SignUp.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { auth } from "../../../firebase/config";
@@ -20,10 +20,13 @@ import { Helmet } from "react-helmet-async";
 
 import Form from "../Form";
 import Validator from "../../../validateForm/Validator";
+import { AppContext } from "../../../Context/AppProvider";
 
 const cx = classNames.bind(styles);
 
 function SignUp() {
+  const { joinGlobalChat } = useContext(AppContext);
+
   const [nameInput, setNameInput] = useState("");
   const [nameError, setNameError] = useState("");
 
@@ -109,6 +112,9 @@ function SignUp() {
             stickers: [],
             active: serverTimestamp(),
           });
+
+          // join Global chat
+          joinGlobalChat(user.uid);
 
           // Clear input
           setNameInput("");
