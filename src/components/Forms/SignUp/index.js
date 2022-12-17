@@ -115,7 +115,6 @@ function SignUp() {
 
           // join Global chat
           joinGlobalChat(user);
-          console.log(user);
 
           // Clear input
           setNameInput("");

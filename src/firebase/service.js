@@ -16,9 +16,13 @@ function addDocument(collectionName, data, callback) {
   addDoc(collection(db, collectionName), {
     ...data,
     createAt: serverTimestamp(),
-  }).then((data) => {
-    if (typeof callback === "function") callback(data);
-  });
+  })
+    .then((data) => {
+      if (typeof callback === "function") callback(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 // ============ STORAGE ============
