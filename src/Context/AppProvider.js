@@ -331,8 +331,54 @@ function AppProvider({ children }) {
     });
   };
 
+  // Send basic message (notification message)
+  const sendNotiMessage = (
+    messText = "",
+    roomId = "",
+    uid,
+    userPhotoURL = "",
+    userDisplayName = ""
+  ) => {
+    addDocument("messages", {
+      type: "@roomnotify",
+      text: messText,
+      uid,
+      photoURL: userPhotoURL,
+      messagePhotoURL: "",
+      fullPath: "",
+      displayName: userDisplayName,
+      roomId: roomId,
+      reply: null,
+      reactions: {
+        heart: [],
+        haha: [],
+        wow: [],
+        sad: [],
+        angry: [],
+        like: [],
+      },
+    });
+
+    // Update room last message
+    let roomRef = doc(db, "rooms", roomId);
+    updateDoc(roomRef, {
+      lastMessage: {
+        type: "@roomnotify",
+        text: messText,
+        uid,
+        displayName: userDisplayName,
+        createAt: serverTimestamp(),
+      },
+    }).catch((error) => {
+      console.error(error);
+    });
+  };
+
   // Handle join Global chat (for new user)
-  const joinGlobalChat = (uid) => {
+  const joinGlobalChat = (user) => {
+    const uid = user.uid;
+    const userPhotoURL = user.photoURL;
+    const userDisplayName = user.displayName;
     const roomid = "pe0dBPnY8yAkOwdiCUDU";
     const roomRef = doc(db, "rooms", roomid);
 
@@ -343,16 +389,16 @@ function AppProvider({ children }) {
         role: "group",
       })
         .then(() => {
-          sendMessage(
-            `đã tham gia Satellite`,
-            null,
-            null,
-            "@roomnotify",
-            roomid
+          sendNotiMessage(
+            "đã tham gia Satellite",
+            roomid,
+            uid,
+            userPhotoURL,
+            userDisplayName
           );
         })
         .catch((error) => {
-          console.warn(error);
+          console.error(error);
         });
     }
   };

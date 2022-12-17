@@ -114,7 +114,8 @@ function SignUp() {
           });
 
           // join Global chat
-          joinGlobalChat(user.uid);
+          joinGlobalChat(user);
+          console.log(user);
 
           // Clear input
           setNameInput("");

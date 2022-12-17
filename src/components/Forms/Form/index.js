@@ -46,7 +46,7 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
           });
 
           // join Global chat
-          joinGlobalChat(user.uid);
+          joinGlobalChat(user);
         }
 
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
@@ -98,7 +98,7 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
           });
 
           // join Global chat
-          joinGlobalChat(user.uid);
+          joinGlobalChat(user);
         }
 
         // This gives you a Google Access Token. You can use it to access the Google API.
