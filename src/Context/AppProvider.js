@@ -161,7 +161,7 @@ function AppProvider({ children }) {
         const currentTime = Date.parse(new Date()) / 1000;
         const activeTime = user.active.seconds;
         const timeCount = Math.floor((currentTime - activeTime) / 60);
-        const isActive = Math.floor((currentTime - activeTime) / 60) <= 1;
+        const isActive = Math.floor((currentTime - activeTime) / 60) <= 4;
 
         return {
           uid: user.uid,
@@ -183,7 +183,7 @@ function AppProvider({ children }) {
       if (users) {
         updateUserActive();
       }
-    }, 60 * 1000);
+    }, 4 * 60 * 1000);
 
     return () => {
       clearInterval(timeId);
@@ -236,7 +236,7 @@ function AppProvider({ children }) {
           const currentTime = Date.parse(new Date()) / 1000;
           const activeTime = currentUser.active.seconds;
 
-          if (currentTime - activeTime > 180) {
+          if (currentTime - activeTime > 240) {
             console.log("Active");
             const currentUserRef = doc(db, "users", currentUser.id);
             updateDoc(currentUserRef, {
