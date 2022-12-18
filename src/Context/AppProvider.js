@@ -236,7 +236,7 @@ function AppProvider({ children }) {
           const currentTime = Date.parse(new Date()) / 1000;
           const activeTime = currentUser.active.seconds;
 
-          if (currentTime - activeTime > 60) {
+          if (currentTime - activeTime > 180) {
             console.log("Active");
             const currentUserRef = doc(db, "users", currentUser.id);
             updateDoc(currentUserRef, {

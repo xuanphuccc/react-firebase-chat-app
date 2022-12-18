@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect, useMemo } from "react";
 import { AppContext } from "../../../Context/AppProvider";
 import { listAllFile, uploadFile } from "../../../firebase/service";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
@@ -22,21 +22,38 @@ function StickerModal() {
 
   const [editStickers, setEditSticker] = useState(false);
   const [stickersType, setStickersType] = useState("default");
-  const [listAllStickers, setListAllStickers] = useState({
-    default: [],
-    custom: [],
-  });
+  const [listAllStickers, setListAllStickers] = useState({});
 
   const inputStickerRef = useRef();
 
+  // useEffect(() => {
+  //   listAllFile("images/stickers_store/default", (listURL) => {
+  //     setListAllStickers({
+  //       default: [...listURL],
+  //       custom: [...currentUser.stickers],
+  //     });
+  //   });
+  // }, [currentUser]);
+
   useEffect(() => {
-    listAllFile("images/stickers_store/default", (listURL) => {
-      setListAllStickers({
-        default: [...listURL],
-        custom: [...currentUser.stickers],
+    const stickersGroupsName = ["default"];
+    const stickersGroups = {};
+    stickersGroupsName.forEach((item) => {
+      listAllFile(`images/stickers_store/${item}`, (listURL) => {
+        stickersGroups[item] = listURL;
+        console.log("list URL: ", listURL);
       });
+      console.log("hêllo");
     });
+
+    stickersGroups["custom"] = currentUser.stickers;
+
+    console.log("stickers Groups: ", stickersGroups);
+    setListAllStickers(stickersGroups);
   }, [currentUser]);
+
+  // console.log("stickers Groups: ", listAllStickers);
+  // console.log("stickers Groups: ", listAllStickers["default"]);
 
   const handleUploadSticker = (e) => {
     if (e.target.files[0].size <= 3000000) {
@@ -83,112 +100,118 @@ function StickerModal() {
   };
 
   return (
-    <div className={cx("wrapper")}>
-      <input
-        ref={inputStickerRef}
-        onChange={handleUploadSticker}
-        style={{ display: "none" }}
-        type="file"
-        accept="image/*"
-        name=""
-        id=""
-      />
-      <button
-        onClick={() => {
-          inputStickerRef.current.click();
-        }}
-        className={cx("add-stickers-btn")}
-      >
-        <FontAwesomeIcon icon={faPlus} />
-      </button>
+    // <div className={cx("wrapper")}>
+    //   <input
+    //     ref={inputStickerRef}
+    //     onChange={handleUploadSticker}
+    //     style={{ display: "none" }}
+    //     type="file"
+    //     accept="image/*"
+    //     name=""
+    //     id=""
+    //   />
+    //   <button
+    //     onClick={() => {
+    //       inputStickerRef.current.click();
+    //     }}
+    //     className={cx("add-stickers-btn")}
+    //     title="Add custom sticker"
+    //   >
+    //     <FontAwesomeIcon icon={faPlus} />
+    //   </button>
 
-      <ul className={cx("stickers-header")}>
-        <li
-          onClick={() => {
-            setStickersType("default");
-          }}
-          className={cx("stickers-header_item", {
-            active: stickersType === "default",
-          })}
-        >
-          <FontAwesomeIcon icon={faFaceSmile} />
-        </li>
-        <li
-          onClick={() => {
-            setStickersType("custom");
-          }}
-          className={cx("stickers-header_item", {
-            active: stickersType === "custom",
-          })}
-        >
-          {listAllStickers["custom"][0] ? (
-            <img
-              className={cx("stickers-header_thumb")}
-              src={listAllStickers["custom"][0].url}
-              alt=""
-            />
-          ) : (
-            <FontAwesomeIcon icon={faSplotch} />
-          )}
-        </li>
-      </ul>
-      <div className={cx("stickers-content-wrap")}>
-        <ul className={cx("stickers-content")}>
-          {listAllStickers[stickersType].map((sticker, index) => (
-            <li key={index} className={cx("stickers-content_item")}>
-              <div className={cx("stickers-content_item-bg")}>
-                {editStickers && stickersType === "custom" && (
-                  <span
-                    onClick={() => {
-                      handleRemoveSticker(sticker.fullPath);
-                    }}
-                    className={cx("stickers-content_item-cancel")}
-                  >
-                    <FontAwesomeIcon icon={faXmark} />
-                  </span>
-                )}
-                <img
-                  onClick={() => {
-                    handleSendMessage(sticker.url);
-                  }}
-                  className={cx("stickers-content_item-img")}
-                  src={sticker.url}
-                  alt=""
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
+    //   <ul className={cx("stickers-header")}>
+    //     <li
+    //       onClick={() => {
+    //         setStickersType("default");
+    //       }}
+    //       className={cx("stickers-header_item", {
+    //         active: stickersType === "default",
+    //       })}
+    //     >
+    //       <FontAwesomeIcon icon={faFaceSmile} />
+    //     </li>
+    //     <li
+    //       onClick={() => {
+    //         setStickersType("custom");
+    //       }}
+    //       className={cx("stickers-header_item", {
+    //         active: stickersType === "custom",
+    //       })}
+    //     >
+    //       {/* {Object.keys(listAllStickers).length > 0 &&
+    //       listAllStickers["custom"][0] ? (
+    //         <img
+    //           className={cx("stickers-header_thumb")}
+    //           src={listAllStickers["custom"][0].url}
+    //           alt=""
+    //         />
+    //       ) : ( */}
+    //       <FontAwesomeIcon icon={faSplotch} />
+    //       {/* )} */}
+    //     </li>
+    //   </ul>
+    //   <div className={cx("stickers-content-wrap")}>
+    //     <ul className={cx("stickers-content")}>
+    //       {Object.keys(listAllStickers).length > 0 &&
+    //         listAllStickers[stickersType].map((sticker, index) => (
+    //           <li key={index} className={cx("stickers-content_item")}>
+    //             <div className={cx("stickers-content_item-bg")}>
+    //               {editStickers && stickersType === "custom" && (
+    //                 <span
+    //                   onClick={() => {
+    //                     handleRemoveSticker(sticker.fullPath);
+    //                   }}
+    //                   className={cx("stickers-content_item-cancel")}
+    //                 >
+    //                   <FontAwesomeIcon icon={faXmark} />
+    //                 </span>
+    //               )}
+    //               <img
+    //                 onClick={() => {
+    //                   handleSendMessage(sticker.url);
+    //                 }}
+    //                 className={cx("stickers-content_item-img")}
+    //                 src={sticker.url}
+    //                 alt=""
+    //               />
+    //             </div>
+    //           </li>
+    //         ))}
+    //     </ul>
 
-        {listAllStickers["custom"].length > 0 && stickersType === "custom" ? (
-          <div className={cx("controls")}>
-            {!editStickers ? (
-              <button
-                onClick={() => {
-                  setEditSticker(true);
-                }}
-                className={cx("control-btn")}
-              >
-                Sửa
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setEditSticker(false);
-                }}
-                className={cx("control-btn")}
-              >
-                Xong
-              </button>
-            )}
-          </div>
-        ) : (
-          <p className={cx("empty-sticker")}>
-            {stickersType === "custom" && "Nhấn vào + để thêm Sticker của bạn."}
-          </p>
-        )}
-      </div>
-    </div>
+    //     {Object.keys(listAllStickers).length > 0 &&
+    //     listAllStickers["custom"].length > 0 &&
+    //     stickersType === "custom" ? (
+    //       <div className={cx("controls")}>
+    //         {!editStickers ? (
+    //           <button
+    //             onClick={() => {
+    //               setEditSticker(true);
+    //             }}
+    //             className={cx("control-btn")}
+    //           >
+    //             Sửa
+    //           </button>
+    //         ) : (
+    //           <button
+    //             onClick={() => {
+    //               setEditSticker(false);
+    //             }}
+    //             className={cx("control-btn")}
+    //           >
+    //             Xong
+    //           </button>
+    //         )}
+    //       </div>
+    //     ) : (
+    //       <p className={cx("empty-sticker")}>
+    //         {stickersType === "custom" && "Nhấn vào + để thêm Sticker của bạn."}
+    //       </p>
+    //     )}
+    //   </div>
+    // </div>
+    <div></div>
   );
 }
 
