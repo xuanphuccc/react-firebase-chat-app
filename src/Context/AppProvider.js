@@ -92,6 +92,7 @@ function AppProvider({ children }) {
   const roomsError = useMemo(() => {
     return (error) => {
       if (error.code.includes("resource-exhausted")) {
+        setAlertVisible(true);
         setAlertContent({
           title: "😵‍💫 Ooops hệ thống đang quá tải!",
           description:
