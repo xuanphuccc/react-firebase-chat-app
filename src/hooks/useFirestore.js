@@ -50,7 +50,14 @@ function useFirestore(collectionName, condition, callback, callbackError) {
           setDocuments(documents);
         },
         (error) => {
-          console.error(error, error.code, error.message);
+          console.error({
+            error,
+            erorCode: error.code,
+            errorMsg: error.message,
+          });
+          if (typeof callbackError === "function") {
+            callbackError(error);
+          }
         }
       );
 
@@ -60,7 +67,7 @@ function useFirestore(collectionName, condition, callback, callbackError) {
         unsubscribe();
       };
     }
-  }, [collectionName, condition, uid, callback]);
+  }, [collectionName, condition, uid, callback, callbackError]);
 
   return documents;
 }

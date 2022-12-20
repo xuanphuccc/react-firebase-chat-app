@@ -4,7 +4,7 @@ import { db } from "../firebase/config";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 
-function useGetAllFirestore(collectionName, callback) {
+function useGetAllFirestore(collectionName, callback, callbackError) {
   const [documents, setDocuments] = useState([]);
   const { uid } = useContext(AuthContext);
 
@@ -28,10 +28,14 @@ function useGetAllFirestore(collectionName, callback) {
           setDocuments(documents);
         },
         (error) => {
-          console.error(error);
-          // alert(
-          //   "Thông báo: Hiện tại ứng dụng đã hết lượt truy cập. Vui lòng thử lại sau 😵‍💫"
-          // );
+          console.error({
+            error,
+            erorCode: error.code,
+            errorMsg: error.message,
+          });
+          if (typeof callbackError === "function") {
+            callbackError(error);
+          }
         }
       );
 
@@ -39,7 +43,7 @@ function useGetAllFirestore(collectionName, callback) {
         unsubscribe();
       };
     }
-  }, [collectionName, uid, callback]);
+  }, [collectionName, uid, callback, callbackError]);
 
   return documents;
 }

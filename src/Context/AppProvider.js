@@ -89,7 +89,24 @@ function AppProvider({ children }) {
     };
   }, []);
 
-  const rooms = useFirestore("rooms", roomsCondition, roomsCallback);
+  const roomsError = useMemo(() => {
+    return (error) => {
+      if (error.code.includes("resource-exhausted")) {
+        setAlertContent({
+          title: "😵‍💫 Ooops hệ thống đang quá tải!",
+          description:
+            "Hệ thống tạm thời ngưng hoạt động do hết lượt truy cập (Dự kiến mở lại vào 15h hàng ngày).",
+        });
+      }
+    };
+  }, []);
+
+  const rooms = useFirestore(
+    "rooms",
+    roomsCondition,
+    roomsCallback,
+    roomsError
+  );
 
   // Lấy ra phòng được selected
   const selectedRoom = useMemo(() => {
