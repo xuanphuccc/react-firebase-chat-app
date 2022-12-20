@@ -89,7 +89,7 @@ function AppProvider({ children }) {
         setAlertContent({
           title: "😵‍💫 Ooops hệ thống đang quá tải!",
           description:
-            "Hệ thống tạm thời ngưng hoạt động do hết lượt truy cập (Dự kiến mở lại vào 15h hàng ngày).",
+            "Hệ thống tạm thời ngưng hoạt động do hết lượt truy cập (dự kiến mở lại vào 15h hàng ngày).",
         });
       }
     };
