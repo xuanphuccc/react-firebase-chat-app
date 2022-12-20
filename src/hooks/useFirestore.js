@@ -9,7 +9,7 @@ import { db } from "../firebase/config";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 
-function useFirestore(collectionName, condition, callback) {
+function useFirestore(collectionName, condition, callback, callbackError) {
   const [documents, setDocuments] = useState([]);
   const { uid } = useContext(AuthContext);
 
@@ -50,10 +50,7 @@ function useFirestore(collectionName, condition, callback) {
           setDocuments(documents);
         },
         (error) => {
-          console.error(error);
-          // alert(
-          //   "Thông báo: Hiện tại ứng dụng đã hết lượt truy cập. Vui lòng thử lại sau 😵‍💫"
-          // );
+          console.error(error, error.code, error.message);
         }
       );
 
