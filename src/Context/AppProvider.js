@@ -15,10 +15,8 @@ import { addDocument } from "../firebase/service";
 
 const AppContext = createContext();
 
-// LƯU TRỮ CHUNG DỮ LIỆU CHO TOÀN BỘ APP
+// APP GLOBAL DATA
 
-// Có nhiệm vụ truyền context khi lấy được data
-// từ câu truy vấn đến realtime database
 function AppProvider({ children }) {
   const [isUsersLoading, setIsUsersLoading] = useState(true);
   const [isRoomListLoading, setIsRoomListLoading] = useState(true);
@@ -67,13 +65,6 @@ function AppProvider({ children }) {
   const { uid } = useContext(AuthContext);
 
   // Lấy danh sách các phòng có user hiện tại
-  /**room:
-   * {
-   *    name: 'room name',
-   *    description: 'mo ta',
-   *    members: [uid1, uid2,...]
-   * }
-   */
   const roomsCondition = useMemo(() => {
     // Tìm tất cả rooms có trường members chứa uid
     return {
@@ -83,12 +74,14 @@ function AppProvider({ children }) {
     };
   }, [uid]);
 
+  // Call when getting rooms data successfully
   const roomsCallback = useMemo(() => {
     return () => {
       setIsRoomListLoading(false);
     };
   }, []);
 
+  // Call when getting rooms data error
   const roomsError = useMemo(() => {
     return (error) => {
       if (error.code.includes("resource-exhausted")) {
@@ -109,7 +102,7 @@ function AppProvider({ children }) {
     roomsError
   );
 
-  // Lấy ra phòng được selected
+  // Get selected room
   const selectedRoom = useMemo(() => {
     return rooms.find((room) => room.id === selectedRoomId);
   }, [rooms, selectedRoomId]);
@@ -133,7 +126,7 @@ function AppProvider({ children }) {
     };
   }, []);
 
-  // Get All user
+  // Get All users
   const users = useGetAllFirestore("users", usersCallback);
 
   // Get members by selected room
