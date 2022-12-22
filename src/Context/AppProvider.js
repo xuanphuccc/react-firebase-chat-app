@@ -194,7 +194,7 @@ function AppProvider({ children }) {
       if (users) {
         updateUserActive();
       }
-    }, 4 * 60 * 1000);
+    }, 60 * 1000);
 
     return () => {
       clearInterval(timeId);
@@ -239,7 +239,7 @@ function AppProvider({ children }) {
     }
   }, [rooms, usersActiveStatus, uid]);
 
-  // Active time
+  // Active time event
   useEffect(() => {
     const updateActiveTime = () => {
       if (currentUser) {
