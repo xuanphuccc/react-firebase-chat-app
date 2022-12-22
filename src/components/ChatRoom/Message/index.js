@@ -270,7 +270,13 @@ function Message({
         </h4>
         <div className={cx("text-wrap")}>
           {Object.keys(message).includes("reply") && message.reply && (
-            <p className={cx("reply")}>{message.reply.text}</p>
+            <>
+              {message.reply.type === "@unsentmsg" ? (
+                <p className={cx("reply")}>Tin nhắn đã bị thu hồi</p>
+              ) : (
+                <p className={cx("reply")}>{message.reply.text}</p>
+              )}
+            </>
           )}
           <div className={cx("text")}>
             {/* Message Content */}
