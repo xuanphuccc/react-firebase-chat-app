@@ -59,10 +59,12 @@ function CustomNickname() {
     );
 
     if (prevNickname.nickname !== inputValue.trim()) {
+      // delete old nickname
       const newRoomNicknames = selectedRoom.roomNicknames.filter(
         (nickname) => nickname.uid !== userId
       );
 
+      // push new nickname
       newRoomNicknames.push({ uid: userId, nickname: inputValue });
 
       const roomRef = doc(db, "rooms", selectedRoomId);

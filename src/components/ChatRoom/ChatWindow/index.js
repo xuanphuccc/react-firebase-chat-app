@@ -87,7 +87,7 @@ function ChatWindow({ roomId }) {
 
   useEffect(() => {
     const audio = new Audio(messageSound);
-    audio.volume = 0.5;
+    audio.volume = 0.3;
     if (isMutedSound) {
       audio.muted = true;
     } else {
@@ -102,40 +102,86 @@ function ChatWindow({ roomId }) {
 
     const newMessages = messages.slice(0);
 
+    //### Messages length = 3
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
+        //## i = 0
         if (i === 0) {
-          if (newMessages[i].uid === newMessages[i + 1].uid) {
-            newMessages[i].posType = "first-message";
-          } else newMessages[i].posType = "default";
-        } else if (i === newMessages.length - 1) {
-          if (newMessages[i].uid === newMessages[i - 1].uid) {
-            newMessages[i].posType = "last-message";
-          } else newMessages[i].posType = "default";
-        } else {
           if (
             newMessages[i].uid === newMessages[i + 1].uid &&
-            newMessages[i].uid === newMessages[i - 1].uid
+            newMessages[i].type !== "@roomnotify"
+          ) {
+            newMessages[i].posType = "first-message";
+          } else newMessages[i].posType = "default";
+        }
+
+        //## i = messages list length
+        else if (i === newMessages.length - 1) {
+          if (
+            newMessages[i].uid === newMessages[i - 1].uid &&
+            newMessages[i].type !== "@roomnotify"
+          ) {
+            newMessages[i].posType = "last-message";
+          } else newMessages[i].posType = "default";
+        }
+
+        //## i = messages[i]
+        else {
+          // messages[i-1].uid = messages[i].uid = messages[i+1].uid
+          // => Middle message
+          if (
+            newMessages[i].uid === newMessages[i + 1].uid &&
+            newMessages[i].uid === newMessages[i - 1].uid &&
+            newMessages[i + 1].type !== "@roomnotify" &&
+            newMessages[i - 1].type !== "@roomnotify"
           ) {
             newMessages[i].posType = "middle-message";
-          } else if (newMessages[i].uid === newMessages[i + 1].uid) {
+          }
+
+          // messages[i-1].uid != messages[i].uid = messages[i+1].uid
+          // First message
+          else if (
+            newMessages[i].uid === newMessages[i + 1].uid &&
+            newMessages[i + 1].type !== "@roomnotify"
+          ) {
             newMessages[i].posType = "first-message";
-          } else if (newMessages[i].uid === newMessages[i - 1].uid) {
+          }
+
+          // messages[i-1].uid = messages[i].uid != messages[i+1].uid
+          // Last message
+          else if (
+            newMessages[i].uid === newMessages[i - 1].uid &&
+            newMessages[i - 1].type !== "@roomnotify"
+          ) {
             newMessages[i].posType = "last-message";
-          } else {
+          }
+
+          // messages[i-1].uid != messages[i].uid != messages[i+1].uid
+          // Default message
+          else {
             newMessages[i].posType = "default";
           }
         }
       }
-    } else if (newMessages.length === 2) {
-      if (newMessages[0].uid === newMessages[1].uid) {
+    }
+
+    //### Messages length = 2
+    else if (newMessages.length === 2) {
+      if (
+        newMessages[0].uid === newMessages[1].uid &&
+        newMessages[0].type !== "@roomnotify" &&
+        newMessages[1].type !== "@roomnotify"
+      ) {
         newMessages[0].posType = "first-message";
         newMessages[1].posType = "last-message";
       } else {
         newMessages[0].posType = "default";
         newMessages[1].posType = "default";
       }
-    } else if (newMessages.length === 1) {
+    }
+
+    //### Messages length = 1
+    else if (newMessages.length === 1) {
       newMessages[0].posType = "default";
     }
     return newMessages.reverse();
