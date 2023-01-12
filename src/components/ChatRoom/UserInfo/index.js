@@ -54,13 +54,14 @@ function UserInfo({ inputValue, setInputValue }) {
               className={cx("user-img")}
               src={currentUser.photoURL || userPlacehoderImg}
               alt=""
+              title="Tùy chọn tài khoản"
             />
           )}
         </div>
 
         <h1 className={cx("title")}>Chat</h1>
 
-        <div className={cx("new-room-wrap")}>
+        <div className={cx("new-room-wrap")} title="Tạo nhóm chat">
           <i onClick={handleAddRoom} className={cx("new-room-icon")}>
             <FontAwesomeIcon icon={faPenToSquare} />
           </i>
@@ -90,7 +91,7 @@ function UserInfo({ inputValue, setInputValue }) {
             value={inputValue}
             className={cx("users-search_input")}
             type="text"
-            placeholder="Tìm kiếm"
+            placeholder="Nhắn tin riêng tư"
           />
         </div>
       </div>

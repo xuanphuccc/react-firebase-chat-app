@@ -102,14 +102,14 @@ function ChatWindow({ roomId }) {
 
     const newMessages = messages.slice(0);
 
-    //### Messages length = 3
+    //### Messages length >= 3
     if (newMessages.length >= 3) {
       for (let i = 0; i < newMessages.length; i++) {
         //## i = 0
         if (i === 0) {
           if (
             newMessages[i].uid === newMessages[i + 1].uid &&
-            newMessages[i].type !== "@roomnotify"
+            newMessages[i + 1].type !== "@roomnotify"
           ) {
             newMessages[i].posType = "first-message";
           } else newMessages[i].posType = "default";
@@ -119,7 +119,7 @@ function ChatWindow({ roomId }) {
         else if (i === newMessages.length - 1) {
           if (
             newMessages[i].uid === newMessages[i - 1].uid &&
-            newMessages[i].type !== "@roomnotify"
+            newMessages[i - 1].type !== "@roomnotify"
           ) {
             newMessages[i].posType = "last-message";
           } else newMessages[i].posType = "default";
@@ -289,6 +289,7 @@ function ChatWindow({ roomId }) {
                 <i
                   onClick={handleRoomMenuVisible}
                   className={cx("header-menu_icon")}
+                  title="Tùy chọn đoạn chat"
                 >
                   <FontAwesomeIcon icon={faEllipsisH} />
                 </i>
