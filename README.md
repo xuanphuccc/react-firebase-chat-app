@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+# Satellite - Chat app (Messenger clone)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🚀 Deploy: https://www.xuanphuc.space
 
-## Available Scripts
+### ⚙️ Technologies:
+- ReactJS
+- Firebase
+- HTML
+- CSS
+- JavaScript
+### 🕹️ Features:
+- Login, register, fogot password
+- Send message, sticker, image, video
+- Reply message, reaction message, unsent message
+- Group chat, private chat
+- Edit nickname, edit group name, edit group avatar, edit group admin
+- Group join link, add group members, remove group member
+- Active status
+- Search user
+- Dark mode / Light mode
+- Skeleton loading
+- Responsive
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img width="960" alt="Login, Register, Fogot password" src="https://user-images.githubusercontent.com/70096508/213052828-044ad164-faa1-4e10-bbb4-9d1ac1dcdefe.png">
+<img width="960" alt="Dark mode" src="https://user-images.githubusercontent.com/70096508/213052913-2c567df8-1842-4eb6-96dc-c92e26babde6.png">
+<img width="960" alt="Light mode" src="https://user-images.githubusercontent.com/70096508/213052920-3a8f1d21-681c-4acb-b46b-82c93ca6d580.png">
