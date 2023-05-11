@@ -1,13 +1,7 @@
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "../firebase/config";
-import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../Context/AuthProvider";
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../Context/AuthProvider';
 
 function useFirestore(collectionName, condition, callback, callbackError) {
   const [documents, setDocuments] = useState([]);
@@ -16,7 +10,7 @@ function useFirestore(collectionName, condition, callback, callbackError) {
   useEffect(() => {
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
-        console.log("End useFirestore!");
+        console.log('End useFirestore!');
         return;
       }
     }
@@ -27,7 +21,7 @@ function useFirestore(collectionName, condition, callback, callbackError) {
       const q = query(
         collectionRef,
         where(condition.fielName, condition.operator, condition.compareValue),
-        orderBy("createAt")
+        orderBy('createAt'),
       );
 
       const unsubscribe = onSnapshot(
@@ -44,7 +38,7 @@ function useFirestore(collectionName, condition, callback, callbackError) {
             };
           });
 
-          if (typeof callback === "function") {
+          if (typeof callback === 'function') {
             callback();
           }
           setDocuments(documents);
@@ -55,15 +49,15 @@ function useFirestore(collectionName, condition, callback, callbackError) {
             erorCode: error.code,
             errorMsg: error.message,
           });
-          if (typeof callbackError === "function") {
+          if (typeof callbackError === 'function') {
             callbackError(error);
           }
-        }
+        },
       );
 
       // Cleanup function
       return () => {
-        console.log("Clean up useFirestore: ", collectionName);
+        console.log('Clean up useFirestore: ', collectionName);
         unsubscribe();
       };
     }

@@ -3,11 +3,7 @@ import styles from "./ChatWindow.module.scss";
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleLeft,
-  faArrowDown,
-  faEllipsisH,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faArrowDown, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 
 import { useContext, useState, useRef, useEffect, useMemo, memo } from "react";
 import { AppContext } from "../../../Context/AppProvider";
@@ -72,10 +68,7 @@ function ChatWindow({ roomId }) {
   }, [messages, setSelectedRoomMessages]);
 
   // Get selected room with room id
-  const selectedRoom = useMemo(
-    () => rooms.find((room) => room.id === roomId),
-    [rooms, roomId]
-  );
+  const selectedRoom = useMemo(() => rooms.find((room) => room.id === roomId), [rooms, roomId]);
 
   // Play sound when have new message
   useEffect(() => {
@@ -107,20 +100,14 @@ function ChatWindow({ roomId }) {
       for (let i = 0; i < newMessages.length; i++) {
         //## i = 0
         if (i === 0) {
-          if (
-            newMessages[i].uid === newMessages[i + 1].uid &&
-            newMessages[i + 1].type !== "@roomnotify"
-          ) {
+          if (newMessages[i].uid === newMessages[i + 1].uid && newMessages[i + 1].type !== "@roomnotify") {
             newMessages[i].posType = "first-message";
           } else newMessages[i].posType = "default";
         }
 
         //## i = messages list length
         else if (i === newMessages.length - 1) {
-          if (
-            newMessages[i].uid === newMessages[i - 1].uid &&
-            newMessages[i - 1].type !== "@roomnotify"
-          ) {
+          if (newMessages[i].uid === newMessages[i - 1].uid && newMessages[i - 1].type !== "@roomnotify") {
             newMessages[i].posType = "last-message";
           } else newMessages[i].posType = "default";
         }
@@ -140,19 +127,13 @@ function ChatWindow({ roomId }) {
 
           // messages[i-1].uid != messages[i].uid = messages[i+1].uid
           // First message
-          else if (
-            newMessages[i].uid === newMessages[i + 1].uid &&
-            newMessages[i + 1].type !== "@roomnotify"
-          ) {
+          else if (newMessages[i].uid === newMessages[i + 1].uid && newMessages[i + 1].type !== "@roomnotify") {
             newMessages[i].posType = "first-message";
           }
 
           // messages[i-1].uid = messages[i].uid != messages[i+1].uid
           // Last message
-          else if (
-            newMessages[i].uid === newMessages[i - 1].uid &&
-            newMessages[i - 1].type !== "@roomnotify"
-          ) {
+          else if (newMessages[i].uid === newMessages[i - 1].uid && newMessages[i - 1].type !== "@roomnotify") {
             newMessages[i].posType = "last-message";
           }
 
@@ -189,16 +170,12 @@ function ChatWindow({ roomId }) {
 
   // Room active status
   const findRoomActive = (roomId) => {
-    const roomActive = roomsActiveStatus.find(
-      (roomActive) => roomActive.roomId === roomId
-    );
+    const roomActive = roomsActiveStatus.find((roomActive) => roomActive.roomId === roomId);
     if (roomActive) {
       if (roomActive.isActive) {
         return "Đang hoạt động";
       } else {
-        return (
-          roomActive.timeCount && `Hoạt động ${roomActive.timeCount} trước`
-        );
+        return roomActive.timeCount && `Hoạt động ${roomActive.timeCount} trước`;
       }
     }
   };
@@ -254,31 +231,21 @@ function ChatWindow({ roomId }) {
 
                 <div className={cx("chat-window_header-img-wrap")}>
                   <img
-                    src={
-                      handleGenerateRoomName(selectedRoom).photoURL ||
-                      placeHolderImg
-                    }
+                    src={handleGenerateRoomName(selectedRoom).photoURL || placeHolderImg}
                     alt=""
                     className={cx("chat-window_header-img")}
                   />
 
                   {/* Room active status */}
-                  {findRoomActive(roomId) &&
-                    findRoomActive(roomId).includes("Đang hoạt động") && (
-                      <span
-                        className={cx("chat-window_header-active-status")}
-                      ></span>
-                    )}
+                  {findRoomActive(roomId) && findRoomActive(roomId).includes("Đang hoạt động") && (
+                    <span className={cx("chat-window_header-active-status")}></span>
+                  )}
                 </div>
                 <div className={cx("chat-window_header-name-wrap")}>
-                  <h4 className={cx("chat-window_header-name")}>
-                    {handleGenerateRoomName(selectedRoom).name}
-                  </h4>
+                  <h4 className={cx("chat-window_header-name")}>{handleGenerateRoomName(selectedRoom).name}</h4>
                   {findRoomActive(roomId) && (
                     <>
-                      <p className={cx("chat-desc")}>
-                        {findRoomActive(roomId)}
-                      </p>
+                      <p className={cx("chat-desc")}>{findRoomActive(roomId)}</p>
                     </>
                   )}
                 </div>
@@ -286,11 +253,7 @@ function ChatWindow({ roomId }) {
 
               {/* Room Controls btn*/}
               <div className={cx("chat-window_header-users")}>
-                <i
-                  onClick={handleRoomMenuVisible}
-                  className={cx("header-menu_icon")}
-                  title="Tùy chọn đoạn chat"
-                >
+                <i onClick={handleRoomMenuVisible} className={cx("header-menu_icon")} title="Tùy chọn đoạn chat">
                   <FontAwesomeIcon icon={faEllipsisH} />
                 </i>
               </div>
@@ -334,10 +297,7 @@ function ChatWindow({ roomId }) {
           </div>
           {isRoomMenuVisible && (
             <div className={cx("room-option")}>
-              <RoomOptions
-                messages={messages}
-                activeTime={findRoomActive(roomId)}
-              />
+              <RoomOptions messages={messages} activeTime={findRoomActive(roomId)} />
             </div>
           )}
 

@@ -1,24 +1,19 @@
-import classNames from "classnames/bind";
-import styles from "./Form.module.scss";
-import Logo from "../../../assets/images/logo-full.png";
-import Google from "../../../assets/images/brands/google.png";
-import Facebook from "../../../assets/images/brands/facebook.png";
+import classNames from 'classnames/bind';
+import styles from './Form.module.scss';
+import Logo from '../../../assets/images/logo-full.png';
+import Google from '../../../assets/images/brands/google.png';
+import Facebook from '../../../assets/images/brands/facebook.png';
 
-import {
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
-import { auth } from "../../../firebase/config";
-import { addDocument } from "../../../firebase/service";
-import { useContext } from "react";
-import { AppContext } from "../../../Context/AppProvider";
-import { serverTimestamp } from "firebase/firestore";
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { auth } from '../../../firebase/config';
+import { addDocument } from '../../../firebase/service';
+import { useContext } from 'react';
+import { AppContext } from '../../../Context/AppProvider';
+import { serverTimestamp } from 'firebase/firestore';
 
 const cx = classNames.bind(styles);
 
-function Form({ title = "Đăng nhập vào Satellite", children }) {
+function Form({ title = 'Đăng nhập vào Satellite', children }) {
   const { joinGlobalChat } = useContext(AppContext);
   const fbProvider = new FacebookAuthProvider(); //OK
   const googleProvider = new GoogleAuthProvider();
@@ -34,13 +29,13 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
 
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
-          console.log("New User!");
+          console.log('New User!');
 
-          addDocument("users", {
+          addDocument('users', {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
-            fullPath: "",
+            fullPath: '',
             uid: user.uid,
             providerId: _tokenResponse.providerId,
           });
@@ -67,7 +62,7 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
 
         signOut(auth)
           .then(() => {
-            console.log("Sign out successful");
+            console.log('Sign out successful');
           })
           .catch((error) => {
             console.error(error);
@@ -81,15 +76,17 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
       .then((result) => {
         const { user, _tokenResponse } = result;
 
+        console.log('result', result);
+
         // If new user then write data to firestore
         if (_tokenResponse.isNewUser) {
-          console.log("New User!");
+          console.log('New User!');
 
-          addDocument("users", {
+          addDocument('users', {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
-            fullPath: "",
+            fullPath: '',
             uid: user.uid,
             providerId: _tokenResponse.providerId,
             stickers: [],
@@ -117,7 +114,7 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
 
         signOut(auth)
           .then(() => {
-            console.log("Sign out successful");
+            console.log('Sign out successful');
           })
           .catch((error) => {
             console.error(error);
@@ -126,36 +123,25 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
   };
 
   return (
-    <div className={cx("wrapper")}>
-      <div className={cx("form")}>
+    <div className={cx('wrapper')}>
+      <div className={cx('form')}>
         {/* Login container */}
-        <div className={cx("form_container", { isMobile: isMobile })}>
+        <div className={cx('form_container', { isMobile: isMobile })}>
           {/* Header */}
-          <div className={cx("form_header")}>
-            <div className={cx("form_logo-wrapper")}>
-              <img className={cx("form_logo")} src={Logo} alt="" />
+          <div className={cx('form_header')}>
+            <div className={cx('form_logo-wrapper')}>
+              <img className={cx('form_logo')} src={Logo} alt="" />
             </div>
-            <h1 className={cx("form_title")}>{title}</h1>
+            <h1 className={cx('form_title')}>{title}</h1>
           </div>
 
           {/* Provider */}
-          <ul className={cx("form_provider")}>
-            <li
-              onClick={handleGoogleLogin}
-              className={cx("form_provider-item")}
-            >
-              <img
-                className={cx("form_provider-item-img")}
-                src={Google}
-                alt=""
-              />
+          <ul className={cx('form_provider')}>
+            <li onClick={handleGoogleLogin} className={cx('form_provider-item')}>
+              <img className={cx('form_provider-item-img')} src={Google} alt="" />
             </li>
-            <li onClick={handleFblogin} className={cx("form_provider-item")}>
-              <img
-                className={cx("form_provider-item-img")}
-                src={Facebook}
-                alt=""
-              />
+            <li onClick={handleFblogin} className={cx('form_provider-item')}>
+              <img className={cx('form_provider-item-img')} src={Facebook} alt="" />
             </li>
           </ul>
 
@@ -164,8 +150,8 @@ function Form({ title = "Đăng nhập vào Satellite", children }) {
 
         {/* Background image */}
         {isDesktop && (
-          <div className={cx("form_cool-img-wrapper")}>
-            <div className={cx("form_cool-img")}></div>
+          <div className={cx('form_cool-img-wrapper')}>
+            <div className={cx('form_cool-img')}></div>
           </div>
         )}
       </div>

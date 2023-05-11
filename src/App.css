@@ -106,7 +106,6 @@ input {
   padding: 9px 12px;
   font-size: 1.4rem;
   font-weight: 600;
-  border-radius: 1.5px solid var(--medium-gray);
   border-radius: 8px;
   cursor: pointer;
   outline: none;
