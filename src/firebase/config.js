@@ -15,8 +15,6 @@ const firebaseConfig = {
     measurementId: "G-6G3DSF9VJD",
 };
 
-console.log(process.env["REACT_APP_FIREBASE_KEY"]);
-
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
